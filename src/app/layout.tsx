@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import {Inter, Rubik} from "next/font/google";
 import "./globals.css";
+import providers from "./providers";
 
   const inter = Rubik({ subsets: ["latin"] });
 
