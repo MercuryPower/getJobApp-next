@@ -2,6 +2,8 @@
 import React, {useState} from 'react';
 import {FormControl, InputLabel, ListSubheader, MenuItem, Select, SelectChangeEvent, TextField} from "@mui/material";
 import VacancyStep1 from "@/components/VacancyStep1";
+import VacancyStep2 from "@/components/VacancyStep2";
+import {Button} from "@/components/ui/Button";
 
 const VacancyForm = () => {
     const initialValues = {
@@ -20,16 +22,22 @@ const VacancyForm = () => {
             [name]: value,
         });
     };
+    const handleContinue = () => {
+        if (step < 3){
+            setStep(step + 1)
+        }
+    }
     const [step, setStep] = useState(1)
     return (
-        <form className={'flex  flex-col self-center w-1/2 m-6 h-auto shadow rounded border p-4'}>
+        <form className={'flex  flex-col self-center w-1/2  m-6 h-fit shadow rounded border p-4'}>
             <div  className={'flex flex-col justify-center text-2xl font-bold'}>
                 <div className={'flex justify-center'}>
                     Этап {step}
                 </div>
                 {step === 1 && <VacancyStep1 />}
+                {step === 2 && <VacancyStep2 />}
                 <div className={'flex justify-center m-4 '}>
-                    <button type={'submit '} className={'shadow p-4 rounded bg-green-600 hover:opacity-75'}>Продолжить</button>
+                    {step <= 3 && <Button type={'button'} onClick={handleContinue} className={'transition-all shadow p-4 rounded bg-green-600 '}>Продолжить</Button>}
                 </div>
             {/*    <div className={'flex justify-center'}>*/}
             {/*        <VacancyStep1 />*/}

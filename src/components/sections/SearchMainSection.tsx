@@ -1,7 +1,10 @@
 'use client'
 import React, {useEffect, useState} from 'react';
-import AnimatedNumbers from "react-animated-numbers";
+import dynamic from "next/dynamic";
 
+const AnimatedNumbers = dynamic(() => import('react-animated-numbers'), {
+    ssr: false
+});
 const SearchMainSection = () => {
     const jobsList:string[] = [
         'DevOps',
@@ -22,7 +25,7 @@ const SearchMainSection = () => {
     useEffect(()=>{
         let ticker = setInterval(()=>{
             tick();
-        }, delta)
+        }, delta, tick)
         return () => {clearInterval(ticker)}
     }, [text])
 
@@ -74,16 +77,16 @@ const SearchMainSection = () => {
             <div className={'flex  justify-center gap-12'}>
                 <div className={'w-80  flex justify-center self-end text-center'}>
                     <h2>
-                            <span className={'font-bold flex flex-col text-center text-4xl'}>
-                                <AnimatedNumbers
-                                    includeComma
-                                    transitions={(index) => ({
-                                        type: "spring",
-                                        duration: index + 1,
-                                    })}
-                                    animateToNumber={1444}
-                                />
-                            </span> Доступных вакансий</h2>
+                        <span className={'font-bold flex flex-col text-center text-4xl'}>
+                            <AnimatedNumbers
+                                includeComma
+                                transitions={(index) => ({
+                                    type: "spring",
+                                    duration: index + 1,
+                                })}
+                                animateToNumber={1444}
+                            />
+                        </span> Доступных вакансий</h2>
                 </div>
                 <div className={'w-80 flex justify-center self-end text-center mb-4'}>
                     <h2>
