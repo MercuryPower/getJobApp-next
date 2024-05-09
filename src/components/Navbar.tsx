@@ -1,5 +1,5 @@
 'use client'
-import React, {useState} from 'react';
+import React from 'react';
 import Image from "next/image";
 import {useRouter} from "next/navigation";
 import ThemeSwitch from "@/components/ui/ThemeSwitch";
@@ -7,12 +7,10 @@ import {Button} from "@/components/ui/Button";
 import {
     DropdownMenu,
     DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator, DropdownMenuShortcut,
+    DropdownMenuShortcut,
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import {CreditCard, User} from "lucide-react";
-import NavbarItem from "@/components/ui/NavbarItem";
 
 const Navbar = () => {
     const router = useRouter();
@@ -43,7 +41,7 @@ const Navbar = () => {
                 </button>
             </div>
             <div className={'flex  self-center justify-center'}>
-                <NavbarItem itemName={'Вакансия'} ></NavbarItem>
+                {/*<NavbarItem itemName={'Вакансия'} ></NavbarItem>*/}
                 <div>
                     <button type={'button'} onClick={() => router.push('/vacancies')} className={'flex border-black p-2 rounded  font-bold hover:opacity-70 transition'}>
                         <svg className={'mr-2 self-center dark:invert'} width="15" height="14" viewBox="0 0 15 14" fill="black" xmlns="http://www.w3.org/2000/svg">
