@@ -29,7 +29,7 @@ const VacancyForm = () => {
     }
     const [step, setStep] = useState(1)
     return (
-        <form className={'flex  flex-col self-center w-1/2  m-6 h-fit shadow rounded border p-4'}>
+        <form className={'flex flex-grow flex-col self-center min-w-4 w-1/2  m-6 shadow rounded border p-4'}>
             <div  className={'flex flex-col justify-center text-2xl font-bold'}>
                 <div className={'flex justify-center'}>
                     Этап {step}
@@ -37,7 +37,7 @@ const VacancyForm = () => {
                 {step === 1 && <VacancyStep1 />}
                 {step === 2 && <VacancyStep2 />}
                 <div className={'flex justify-center m-4 '}>
-                    {step <= 3 && <Button type={'button'} onClick={handleContinue} className={'transition-all shadow p-4 rounded bg-green-600 '}>Продолжить</Button>}
+                    {step <= 3 && <Button size={'lg'}  type={'button'} onClick={handleContinue} className={'transition-all shadow p-6 h-16 rounded bg-green-600 '}>Продолжить</Button>}
                 </div>
             {/*    <div className={'flex justify-center'}>*/}
             {/*        <VacancyStep1 />*/}
@@ -59,13 +59,13 @@ const VacancyForm = () => {
             {/*                    autoWidth*/}
             {/*                    label="Тип занятости"*/}
             {/*                >*/}
-            {/*                    <MenuItem value="">*/}
+            {/*                    <NavbarItem value="">*/}
             {/*                        <em>Не указано</em>*/}
-            {/*                    </MenuItem>*/}
-            {/*                    <MenuItem value={'fullDay'}>Полный рабочий день</MenuItem>*/}
-            {/*                    <MenuItem value={'notFullDay'}>Неполный рабочий день</MenuItem>*/}
-            {/*                    <MenuItem value={'flexday'}>Гибкий график</MenuItem>*/}
-            {/*                    <MenuItem value={22}>Сменный график</MenuItem>*/}
+            {/*                    </NavbarItem>*/}
+            {/*                    <NavbarItem value={'fullDay'}>Полный рабочий день</NavbarItem>*/}
+            {/*                    <NavbarItem value={'notFullDay'}>Неполный рабочий день</NavbarItem>*/}
+            {/*                    <NavbarItem value={'flexday'}>Гибкий график</NavbarItem>*/}
+            {/*                    <NavbarItem value={22}>Сменный график</NavbarItem>*/}
             {/*                </Select>*/}
             {/*            </FormControl>*/}
             {/*    </div>*/}
@@ -79,14 +79,14 @@ const VacancyForm = () => {
             {/*                name={'workType'}*/}
             {/*                label="Уровень опыта"*/}
             {/*            >*/}
-            {/*                <MenuItem value="">*/}
+            {/*                <NavbarItem value="">*/}
             {/*                    <em>Не указано</em>*/}
-            {/*                </MenuItem>*/}
-            {/*                <MenuItem value={1}>Intern</MenuItem>*/}
-            {/*                <MenuItem value={2}>Junior</MenuItem>*/}
-            {/*                <MenuItem value={3}>Middle</MenuItem>*/}
-            {/*                <MenuItem value={4}>Senior</MenuItem>*/}
-            {/*                <MenuItem value={5}>Lead</MenuItem>*/}
+            {/*                </NavbarItem>*/}
+            {/*                <NavbarItem value={1}>Intern</NavbarItem>*/}
+            {/*                <NavbarItem value={2}>Junior</NavbarItem>*/}
+            {/*                <NavbarItem value={3}>Middle</NavbarItem>*/}
+            {/*                <NavbarItem value={4}>Senior</NavbarItem>*/}
+            {/*                <NavbarItem value={5}>Lead</NavbarItem>*/}
             {/*            </Select>*/}
             {/*        </FormControl>*/}
             {/*    </div>*/}

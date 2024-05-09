@@ -13,7 +13,7 @@ const Page = () => {
                         Найти
                     </button>
                 </div>
-                <div className={'h-dvh rounded m-4 w-1/2 '}>
+                <div className={'h-dvh rounded m-4'}>
                     <VacancyCard />
                 </div>
             </div>

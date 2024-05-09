@@ -10,7 +10,7 @@ const KeyFeaturesSection = () => {
                         <Image
                             src="/statistics.png"
                             alt="Logo"
-                            className={'self-center m-2 dark:invert'}
+                            className={'self-center m-2'}
                             width={100}
                             height={50}
                         />
@@ -23,7 +23,7 @@ const KeyFeaturesSection = () => {
                         <Image
                             src="/recomendation.svg"
                             alt="Logo"
-                            className={'self-center m-2 dark:invert  '}
+                            className={'self-center m-2'}
                             width={100}
                             height={50}
                         />
@@ -36,7 +36,7 @@ const KeyFeaturesSection = () => {
                         <Image
                             src="/update.svg"
                             alt="Logo"
-                            className={'self-center m-2 dark:invert '}
+                            className={'self-center m-2 '}
                             width={100}
                             height={50}
                         />

@@ -8,18 +8,25 @@ export interface testVacancyInfo {
     vacancyName:string;
     salary?: string;
     tp?:string;
+    skills:string[];
     cities:{
         city:string
     }[]
-
+    exp:string;
 }
 const VacancyCard = () => {
-    const vacancyInfo:testVacancyInfo =
+    const vacancyInfo:testVacancyInfo[] =[
         {
             id: 1,
             companyName: 'Company',
-            vacancyName: 'Frontend developer / Фронтенд разработик',
-            salary:'40000',
+            vacancyName: 'Frontend developer / Фронтенд разработчик',
+            exp:'Middle',
+            skills:[
+              'React',
+              'TypeScript',
+              'Redux'
+            ],
+            salary:'120000',
             tp:'Полнй день',
             cities:[
                 {
@@ -30,24 +37,85 @@ const VacancyCard = () => {
                 }
 
             ]
-        }
+        },
+        {
+            id: 2,
+            companyName: 'Company2',
+            vacancyName: 'QA-engineer / QA-инженер',
+            exp:'Senior',
+            salary:'60000',
+            tp:'Гибкий график',
+            skills:[
+                'C++',
+                'Git',
+            ],
+            cities:[
+                {
+                    city:'Москва',
+                },
+                {
+                    city:'Санкт-Петербург'
+                }
+
+            ]
+        },
+        {
+            id: 3,
+            companyName: 'Company3',
+            vacancyName: 'Java Developer',
+            exp:'Senior',
+            salary:'60000',
+            tp:'Гибкий график',
+            skills:[
+                'C++',
+                'Git',
+            ],
+            cities:[
+                {
+                    city:'Москва',
+                },
+                {
+                    city:'Санкт-Петербург'
+                }
+
+            ]
+        },
+    ]
+
     return (
-        <div className={'flex justify-center shadow-lg   m-8 p-4 border rounded'}>
-            <div className={'w-9/12 text-center'}>
-                <p className={'text-3xl font-bold  cursor-pointer'}>{vacancyInfo.vacancyName}</p>
-                <p className={'text-center text-2xl'}>от {vacancyInfo.salary} &#8381; </p>
-                <p className={'font-light'}>{vacancyInfo.companyName}</p>
-                <p>Тип занятости: {vacancyInfo.tp}</p>
-                <div className={'flex justify-center'}>
-                    {vacancyInfo.cities.map((city, index) =>{
-                        return <p className={'m-1 border  hover:bg-gray-500 p-2 rounded-2xl'} key={index}>{city.city}{index !== vacancyInfo.cities.length}</p>
-                    })}
-                </div>
+        <div className={'flex justify-center shadow-lg m-4 p-4 border rounded'}>
+            <div className={'text-center'}>
+                {vacancyInfo.map((vacancy,index) => {
+                    return (
+                        <div key={index} className={'flex shadow p-4 m-2 my-6 rounded gap-5 border'}>
+                            <div  className={'p-2 flex flex-col flex-grow rounded'} >
+                                <div className={'flex text-center justify-center'}>
+                                    <p className={'text-3xl font-bold  cursor-pointer'}>{vacancy.exp} {vacancy.vacancyName}</p>
+                                </div>
 
-            </div>
+                                <p className={'text-center text-2xl'}>от {vacancy.salary} &#8381; </p>
+                                <p className={'font-light'}>{vacancy.companyName}</p>
+                                <div className={'flex justify-center'}>
 
-            <div className={'flex self-center'}>
-                <Button>Откликнутся</Button>
+                                    {vacancy.skills.map((skill, index) => {
+                                        return <p key={index} className={'m-1 text-xl border font-bold hover:bg-gray-400 p-2 rounded-2xl'}>{skill}</p>
+                                    })}
+                                </div>
+                                <p>Тип занятости: {vacancy.tp}</p>
+                                <div className={'flex justify-center'}>
+                                    {vacancy.cities.map((city, index) =>{
+                                        return <p className={'m-1 border  hover:bg-gray-500 p-2 rounded-2xl'} key={index}>{city.city}{index !== vacancy.cities.length}</p>
+                                    })}
+                                </div>
+                            </div>
+                            <div className={'flex self-center flex-col '}>
+                                <Button size={'lg'}>Откликнутся</Button>
+                            </div>
+                        </div>
+
+
+                    )
+                })}
             </div>
         </div>
     );
