@@ -8,9 +8,13 @@ export interface VacancyInfo {
     vacancyName:string;
     salary?: string;
     tp?:string;
-    skills:string[];
+    skills:{
+        id:number;
+        skill:string;
+    }[]
     cities:{
-        city:string
+        id:number;
+        city:string;
     }[]
     exp:string;
 }
@@ -21,17 +25,11 @@ const Page = () => {
     async function getVacancies() {
         try {
             setIsLoading(true);
-            const res = await fetch(`https://jsonplaceholder.typicode.com/comments`, {
-                cache:'force-cache',
-                method:'GET'
+            const res = await fetch(`http://127.0.0.1:8000/vacancies`, {
             })
-            if(res.ok){
+            if(res){
                 const jsonData = await res.json();
-                if (Array.isArray(jsonData)) {
-                    setData(jsonData);
-                } else if (jsonData) {
-                    setData([jsonData]);
-                }
+                setData(jsonData);
             }
         }
         catch(error){
@@ -58,7 +56,7 @@ const Page = () => {
                     </button>
                 </div>
                 <div className={'h-dvh rounded m-4'}>
-                        {!isLoading ? <VacancyCard data={data}/> : <Skeleton className="w-[100px] h-[400px] rounded-2xl" /> }
+                        {!isLoading && data.length > 0 ? <VacancyCard data={data}/> : <Skeleton className=" w-[850px] h-[500px] rounded-2xl"/>}
                 </div>
             </div>
         </>

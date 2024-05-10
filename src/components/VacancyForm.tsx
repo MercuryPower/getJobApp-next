@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import {FormControl, InputLabel, ListSubheader, MenuItem, Select, SelectChangeEvent, TextField} from "@mui/material";
 import VacancyStep1 from "@/components/VacancyStep1";
 import VacancyStep2 from "@/components/VacancyStep2";
-import {Button} from "@/components/ui/Button";
+import {Button} from "@/components/ui/button";
 
 const VacancyForm = () => {
     const initialValues = {
