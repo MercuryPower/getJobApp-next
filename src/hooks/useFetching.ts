@@ -1,38 +1,37 @@
 import { useState, useEffect } from 'react';
 
-interface FetchState<T> {
-    data: T | null;
-    isLoading: boolean;
-    error: string | null;
-}
-
-const useFetch = <T>(url: string, options?: RequestInit): FetchState<T> => {
-    const [data, setData] = useState<T | null>(null);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const res = await fetch(url, options);
-                if (!res.ok) {
-                    throw new Error('Failed to fetch data');
-                }
-                const responseData: T = await res.json();
-                setData(responseData);
-            } catch (error) {
-                if (error instanceof Error) {
-                    setError(error.message);
-                }
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        void fetchData();
-    }, [url, options]);
-
-    return { data, isLoading, error };
+export type TApiResponse = {
+    status: Number;
+    statusText: String;
+    data: any;
+    error: any;
+    loading: Boolean;
 };
 
-export default useFetch;
+export const useApiGet = (url: string, options?:RequestInit): TApiResponse => {
+    const [status, setStatus] = useState<Number>(0);
+    const [statusText, setStatusText] = useState<String>('');
+    const [data, setData] = useState<any>();
+    const [error, setError] = useState<any>();
+    const [loading, setLoading] = useState<boolean>(false);
+
+    const getAPIData = async () => {
+        setLoading(true);
+        try {
+            const apiResponse = await fetch(url);
+            const json = await apiResponse.json();
+            setStatus(apiResponse.status);
+            setStatusText(apiResponse.statusText);
+            setData(json);
+        } catch (error) {
+            setError(error);
+        }
+        setLoading(false);
+    };
+
+    useEffect(() => {
+        getAPIData();
+    }, []);
+
+    return { status, statusText, data, error, loading };
+};

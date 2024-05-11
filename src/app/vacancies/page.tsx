@@ -6,7 +6,7 @@ import {Button} from "@/components/ui/button";
 import {VacancyInfo} from "@/types/types";
 import VacancyCardSkeleton from "@/components/ui/skeletons/VacancyCardSkeleton";
 import Search from "@/components/search";
-import useFetch from "@/hooks/useFetching";
+import {useApiGet} from "@/hooks/useFetching";
 import {Pagination} from "@/components/ui/pagination";
 
 
@@ -14,7 +14,7 @@ const Page = ({searchParams,}:{searchParams?:{query?: string; page?:string}}) =>
     const query = searchParams?.query || '';
     const currentPage = Number(searchParams?.page) || 1;
 
-    const { data, isLoading, error } = useFetch<VacancyInfo[]>(`http://127.0.0.1:8000/vacancies?query=${query}&page=${currentPage}`, { cache: 'force-cache', next: { revalidate: 900 } });
+    const { data, error } = useApiGet(`http://127.0.0.1:8000/vacancies`, { cache: 'force-cache', next: { revalidate: 900 } });
 
     return (
         <>
