@@ -1,12 +1,12 @@
 'use client'
-import React, {useEffect, useState} from 'react';
+import React, {memo, useCallback, useEffect, useState} from 'react';
 import dynamic from "next/dynamic";
 
 const AnimatedNumbers = dynamic(() => import('react-animated-numbers'), {
     ssr: false
 });
 const SearchMainSection = () => {
-    const jobsList:string[] = [
+    const [jobsList, setJobList] = useState([
         'DevOps',
         'Frontend',
         'Backend',
@@ -17,19 +17,12 @@ const SearchMainSection = () => {
         'Kotlin Developer',
         'Swift Developer',
         'QA-engineer'
-    ]
+    ]);
     const [loopNum, setLoopNum] = useState(0)
     const [isDeleting, setIsDeleting] = useState(false)
     const [text, setText] = useState('')
     const [delta, setDelta] = useState(300 - Math.random() * 100)
-    useEffect(()=>{
-        let ticker = setInterval(()=>{
-            tick();
-        }, delta, tick)
-        return () => {clearInterval(ticker)}
-    }, [text])
-
-    const tick = () => {
+    const tick = useCallback(() => {
         let i = loopNum % jobsList.length;
         let fullText = jobsList[i];
         let updatedText = isDeleting ? fullText.substring(0, text.length - text.length) :  fullText.substring(0, text.length + 1)
@@ -45,7 +38,13 @@ const SearchMainSection = () => {
             setLoopNum(loopNum + 1)
             setDelta(250);
         }
-    }
+    }, [isDeleting, jobsList, loopNum, text.length])
+    useEffect(()=>{
+        let ticker = setInterval(()=>{
+            tick();
+        }, delta, tick)
+        return () => {clearInterval(ticker)}
+    }, [text, delta, tick])
     return (
         <section>
             <div className={'flex flex-col items-center justify-center m-48'}>

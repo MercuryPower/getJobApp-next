@@ -51,7 +51,7 @@ const Navbar = () => {
                     </button>
                 </div>
                 <div className={'ml-9'}>
-                    <button className={'flex border-black p-2 rounded font-bold hover:opacity-70 transition'}>
+                    <button type={'button'} onClick={() => router.push('/jobseekers')} className={'flex border-black p-2 rounded font-bold hover:opacity-70 transition'}>
                         <svg className={'mr-2 self-center dark:invert '} width="15" height="11" viewBox="0 0 15 11" fill="black" xmlns="http://www.w3.org/2000/svg">
                             <path d="M2.25 4.5C3.07734 4.5 3.75 3.82734 3.75 3C3.75 2.17266 3.07734 1.5 2.25 1.5C1.42266 1.5 0.75 2.17266 0.75 3C0.75 3.82734 1.42266 4.5 2.25 4.5ZM12.75 4.5C13.5773 4.5 14.25 3.82734 14.25 3C14.25 2.17266 13.5773 1.5 12.75 1.5C11.9227 1.5 11.25 2.17266 11.25 3C11.25 3.82734 11.9227 4.5 12.75 4.5ZM13.5 5.25H12C11.5875 5.25 11.2148 5.41641 10.943 5.68594C11.8875 6.20391 12.5578 7.13906 12.7031 8.25H14.25C14.6648 8.25 15 7.91484 15 7.5V6.75C15 5.92266 14.3273 5.25 13.5 5.25ZM7.5 5.25C8.95078 5.25 10.125 4.07578 10.125 2.625C10.125 1.17422 8.95078 0 7.5 0C6.04922 0 4.875 1.17422 4.875 2.625C4.875 4.07578 6.04922 5.25 7.5 5.25ZM9.3 6H9.10547C8.61797 6.23438 8.07656 6.375 7.5 6.375C6.92344 6.375 6.38438 6.23438 5.89453 6H5.7C4.20937 6 3 7.20938 3 8.7V9.375C3 9.99609 3.50391 10.5 4.125 10.5H10.875C11.4961 10.5 12 9.99609 12 9.375V8.7C12 7.20938 10.7906 6 9.3 6ZM4.05703 5.68594C3.78516 5.41641 3.4125 5.25 3 5.25H1.5C0.672656 5.25 0 5.92266 0 6.75V7.5C0 7.91484 0.335156 8.25 0.75 8.25H2.29453C2.44219 7.13906 3.1125 6.20391 4.05703 5.68594Z"/>
                         </svg>
@@ -91,7 +91,7 @@ const Navbar = () => {
                 <div className={'ml-9 '}>
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button className={'border-none flex border-black p-2 rounded  font-bold hover:opacity-70 transition'} variant="outline">
+                            <Button className={'border-none flex border-black p-2 rounded bg  font-bold hover:opacity-70 transition '} variant="link">
                                 Еще
                                 <svg className={'ml-2 self-center dark:invert'} width="12" height="7" viewBox="0 0 12 7" fill="black" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M1.5 1.125L6 5.875L10.5 1.125"/>
@@ -103,12 +103,10 @@ const Navbar = () => {
                                 <DropdownMenuItem>
                                     <User className="mr-2 h-4 w-4" />
                                     <span>Profile</span>
-                                    <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem>
                                     <CreditCard className="mr-2 h-4 w-4" />
                                     <span>Billing</span>
-                                    <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
                                 </DropdownMenuItem>
                             </DropdownMenuGroup>
                         </DropdownMenuContent>

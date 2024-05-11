@@ -1,62 +1,43 @@
 'use client'
-import React, {useEffect, useState} from 'react';
-import VacancyCard from "@/components/VacancyCard";
+import React, {Suspense, useEffect, useState} from 'react';
+import VacancyCards from "@/components/VacancyCards";
 import {Skeleton} from "@/components/ui/skeleton";
-export interface VacancyInfo {
-    id: number;
-    companyName: string;
-    vacancyName:string;
-    salary?: string;
-    tp?:string;
-    skills:{
-        id:number;
-        skill:string;
-    }[]
-    cities:{
-        id:number;
-        city:string;
-    }[]
-    exp:string;
-}
+import {Button} from "@/components/ui/button";
+import {VacancyInfo} from "@/types/types";
+import VacancyCardSkeleton from "@/components/ui/skeletons/VacancyCardSkeleton";
+import Search from "@/components/search";
+import useFetch from "@/hooks/useFetching";
+import {Pagination} from "@/components/ui/pagination";
 
-const Page = () => {
-    const [data, setData] = useState<VacancyInfo[]>([])
-    const [isLoading, setIsLoading] = useState(false);
-    async function getVacancies() {
-        try {
-            setIsLoading(true);
-            const res = await fetch(`http://127.0.0.1:8000/vacancies`, {
-            })
-            if(res){
-                const jsonData = await res.json();
-                setData(jsonData);
-            }
-        }
-        catch(error){
-            throw new Error('Failed to fetch data')
-        }
-        finally {
-            setIsLoading(false)
-        }
 
-    }
+const Page = ({searchParams,}:{searchParams?:{query?: string; page?:string}}) => {
+    const query = searchParams?.query || '';
+    const currentPage = Number(searchParams?.page) || 1;
 
-    useEffect(() => {
-        getVacancies()
-    }, [])
-    console.log(data)
+    const { data, isLoading, error } = useFetch<VacancyInfo[]>(`http://127.0.0.1:8000/vacancies?query=${query}&page=${currentPage}`, { cache: 'force-cache', next: { revalidate: 900 } });
+
     return (
         <>
-            <div className={'flex flex-col items-center justify-center m-12'}>
-                <div className={'flex self-center m-4 mt-7 h-14 rounded'}>
-                    <input className={'w-96 flex p-2 text-xl rounded-l '}></input>
-                    <button
-                        className={'flex text-white bg-green-600 p-4 gap-1 rounded-r-lg self-center font-bold hover:opacity-70 transition'}>
-                        Найти
-                    </button>
+            <div className={'flex flex-col items-center '}>
+                <div className={'mt-8 h-14 rounded max-w-lg w-full '}>
+                    <Search placeholder="Например: Backend специалист" />
                 </div>
-                <div className={'h-dvh rounded m-4'}>
-                        {!isLoading && data.length > 0 ? <VacancyCard data={data}/> : <Skeleton className=" w-[850px] h-[500px] rounded-2xl"/>}
+                <div className={'rounded-2xl m-2 flex'}>
+                    <div className={'flex justify-center shadow-lg m-4 p-4 border rounded-2xl '}>
+                    {data ?
+                        <VacancyCards query={query} data={data}/>
+                        :
+                        <VacancyCardSkeleton />
+                    }
+                    </div>
+                    <div className={'flex justify-center shadow-lg m-4 p-4 border rounded-2xl w-60 '}>
+                        <div>
+                            <span className={'font-bold'}>Фильтр</span>
+                        </div>
+                        <div>
+
+                        </div>
+                    </div>
                 </div>
             </div>
         </>
