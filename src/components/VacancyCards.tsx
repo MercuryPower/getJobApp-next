@@ -1,3 +1,4 @@
+
 import React, {useEffect, useState} from 'react';
 import {Button} from "@/components/ui/button";
 import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "@/components/ui/carousel";
@@ -10,22 +11,37 @@ import {CircleX} from "lucide-react";
 
 
 
-const VacancyCards = ({data, query}: {data:VacancyInfo[], query:string}) => {
+const VacancyCards = ({data, page, query}: {data:VacancyInfo[], page:number, query:string}) => {
     const [filteredVacancies, setFilteredVacancies] = useState<VacancyInfo[]>(data)
     const [isLoading, setIsLoading] = useState(false);
-
     useEffect(() => {
-        if (data && data.length > 0 && query && query.trim() !== '') {
-            const filteredData = data.filter((vacancy) => {
-                const keywords = query.split(' ').filter(Boolean); // Разбить запрос на отдельные слова и удалить пустые строки
-                const vacancyFields = Object.values(vacancy).join(' ').toLowerCase();
-                return keywords.some(keyword => vacancyFields.includes(keyword.toLowerCase()));
-            });
-            setFilteredVacancies(filteredData);
-        } else {
-            setFilteredVacancies(data);
-        }
-    }, [data, query]);
+        const fetchData = async () => {
+            setIsLoading(true);
+            try {
+                const response = await fetch(`http://127.0.0.1:8000/tests/vacancies_test?page=${page}&query=${query}`);
+                const responseData = await response.json();
+                setFilteredVacancies(responseData);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        void fetchData();
+    }, [query, page]);
+    // useEffect(() => {
+    //     if (data && data.length > 0 && query && query.trim() !== '') {
+    //         const filteredData = data.filter((vacancy) => {
+    //             const keywords = query.split(' ').filter(Boolean); // Разбить запрос на отдельные слова и удалить пустые строки
+    //             const vacancyFields = Object.values(vacancy).join(' ').toLowerCase();
+    //             return keywords.some(keyword => vacancyFields.includes(keyword.toLowerCase()));
+    //         });
+    //         setFilteredVacancies(filteredData);
+    //     } else {
+    //         setFilteredVacancies(data);
+    //     }
+    // }, [data, query]);
     return (
         <>
         {isLoading ? <VacancyCardSkeleton /> : (
@@ -33,7 +49,7 @@ const VacancyCards = ({data, query}: {data:VacancyInfo[], query:string}) => {
                 {filteredVacancies.length > 0 ? filteredVacancies.map((vacancy) => {
                 return (
                 <div key={vacancy.id} className={'flex shadow p-4 m-2 my-6 rounded-2xl  gap-5 border'}>
-                <div  className={'p-2 max-w-lg flex flex-col flex-grow rounded'} >
+                <div  className={'p-2  w-[500px] flex flex-col flex-grow rounded'} >
                     <div className={' flex text-center justify-center p-2'}>
                         <p className={'text-3xl text-ellipsis overflow-hidden font-bold  cursor-pointer'}>{vacancy.exp} {vacancy.vacancyName}</p>
                     </div>

@@ -1,25 +1,31 @@
 'use client'
-import React, {Suspense, useEffect, useState} from 'react';
+import React from 'react';
 import VacancyCards from "@/components/VacancyCards";
 import {Skeleton} from "@/components/ui/skeleton";
 import {Button} from "@/components/ui/button";
 import {VacancyInfo} from "@/types/types";
 import VacancyCardSkeleton from "@/components/ui/skeletons/VacancyCardSkeleton";
-import Search from "@/components/search";
+import Search from "@/components/ui/search";
 import {useApiGet} from "@/hooks/useFetching";
+
+import {ComboboxDemo} from "@/components/ui/combobox";
+import {Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList} from "@/components/ui/command";
+import {Calculator, Calendar, SeparatorHorizontal, SeparatorHorizontalIcon, Smile} from "lucide-react";
 import {
-    Pagination,
-    PaginationContent,
-    PaginationEllipsis, PaginationItem,
-    PaginationLink, PaginationNext,
-    PaginationPrevious
-} from "@/components/ui/pagination";
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue
+} from "@/components/ui/select";
+import PaginationSection from "@/components/sections/PaginationSection";
 
 
-const Page = ({searchParams,}:{searchParams?:{query?: string; page?:string}}) => {
+const Page = ({searchParams,}:{searchParams?:{query?: string; page?:string, perPage?:string}}) => {
     const query = searchParams?.query || '';
     const currentPage = Number(searchParams?.page) || 1;
-
     const { data, error } = useApiGet(`http://127.0.0.1:8000/vacancies`, { cache: 'force-cache', next: { revalidate: 1800 } });
     return (
         <>
@@ -30,42 +36,39 @@ const Page = ({searchParams,}:{searchParams?:{query?: string; page?:string}}) =>
                 <div className={'rounded-2xl m-2 flex'}>
                     <div className={'flex flex-col  justify-center shadow-lg m-4 p-4 border rounded-2xl '}>
                     {data ?
-                        <VacancyCards query={query} data={data}/>
+                        <VacancyCards page={currentPage} query={query} data={data}/>
                         :
                         <VacancyCardSkeleton />
                     }
-                        <Pagination>
-                            <PaginationContent className={'text-lg'}>
-                                <PaginationItem>
-                                    <PaginationPrevious href="#" />
-                                </PaginationItem>
-                                <PaginationItem>
-                                    <PaginationLink href="vacancies?page=1" isActive>1</PaginationLink>
-                                </PaginationItem>
-                                <PaginationItem>
-                                    <PaginationLink href="vacancies?page=2" >
-                                        2
-                                    </PaginationLink>
-                                </PaginationItem>
-                                <PaginationItem>
-                                    <PaginationLink href="#">3</PaginationLink>
-                                </PaginationItem>
-                                <PaginationItem>
-                                    <PaginationEllipsis />
-                                </PaginationItem>
-                                <PaginationItem>
-                                    <PaginationNext href="#" />
-                                </PaginationItem>
-                            </PaginationContent>
-                        </Pagination>
+                    <PaginationSection currentPage={currentPage}/>
                     </div>
-                    <div className={'flex justify-center shadow-lg m-4 p-4 border rounded-2xl w-60 '}>
-                        <div>
-                            <span className={'font-bold'}>Фильтр</span>
+                    <div className={'flex flex-col justify-items-center shadow-lg m-4 p-4 border text-center  rounded-2xl space-y-2 w-60 '}>
+                        <h2 className={'font-bold text-xl'}>Фильтр</h2>
+                        <div className={'space-y-4 pt-6'}>
+                            <div className={'space-y-2'}>
+                                <h3 className={'text-lg'}>Город:</h3>
+                                <ComboboxDemo  />
+                            </div>
+                            <div className={'space-y-2'}>
+                                <h3 className={'text-lg'}>Тип занятости</h3>
+                                <Select>
+                                    <SelectTrigger className="w-[200px]">
+                                        <SelectValue placeholder="Выберите тип занятости" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectGroup>
+                                            <SelectLabel>Fruits</SelectLabel>
+                                            <SelectItem value="apple">Apple</SelectItem>
+                                            <SelectItem value="banana">Banana</SelectItem>
+                                            <SelectItem value="blueberry">Blueberry</SelectItem>
+                                            <SelectItem value="grapes">Grapes</SelectItem>
+                                            <SelectItem value="pineapple">Pineapple</SelectItem>
+                                        </SelectGroup>
+                                    </SelectContent>
+                                </Select>
+                            </div>
                         </div>
-                        <div>
 
-                        </div>
                     </div>
                 </div>
             </div>

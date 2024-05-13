@@ -10,7 +10,7 @@ import {
     CommandEmpty,
     CommandGroup,
     CommandInput,
-    CommandItem,
+    CommandItem, CommandList,
 } from "@/components/ui/command"
 import {
     Popover,
@@ -18,7 +18,7 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 
-const frameworks = [
+const cities = [
     {
         value: "next.js",
         label: "Next.js",
@@ -55,20 +55,20 @@ export function ComboboxDemo() {
                     className="w-[200px] justify-between"
                 >
                     {value
-                        ? frameworks.find((framework) => framework.value === value)?.label
-                        : "Select framework..."}
+                        ? cities.find((framework) => framework.value === value)?.label
+                        : "Выберите город   "}
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-[200px] p-0">
                 <Command>
-                    <CommandInput placeholder="Search framework..." />
+                    <CommandInput placeholder="Выберите город" />
                     <CommandEmpty>No framework found.</CommandEmpty>
-                    <CommandGroup>
-                        {frameworks.map((framework) => (
+                    <CommandList>
+                        {cities.map((city) => (
                             <CommandItem
-                                key={framework.value}
-                                value={framework.value}
+                                key={city.value}
+                                value={city.value}
                                 onSelect={(currentValue) => {
                                     setValue(currentValue === value ? "" : currentValue)
                                     setOpen(false)
@@ -77,13 +77,13 @@ export function ComboboxDemo() {
                                 <Check
                                     className={cn(
                                         "mr-2 h-4 w-4",
-                                        value === framework.value ? "opacity-100" : "opacity-0"
+                                        value === city.value ? "opacity-100" : "opacity-0"
                                     )}
                                 />
-                                {framework.label}
+                                {city.label}
                             </CommandItem>
                         ))}
-                    </CommandGroup>
+                    </CommandList>
                 </Command>
             </PopoverContent>
         </Popover>
