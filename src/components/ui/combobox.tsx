@@ -18,6 +18,7 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 import {useEffect, useState} from "react";
+import {GET_CITIES} from "@/url/urls";
 
 
 
@@ -29,7 +30,7 @@ export function ComboboxCity() {
     useEffect(() => {
         const fetchCities = async () => {
             try {
-                const response = await fetch('https://jsonplaceholder.typicode.com/comments');
+                const response = await fetch(GET_CITIES);
                 if (response.ok) {
                     const data = await response.json();
                     setCities(data);

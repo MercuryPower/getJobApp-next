@@ -7,9 +7,11 @@ import {
     PaginationPrevious
 } from "@/components/ui/pagination";
 import {usePathname, useRouter, useSearchParams} from "next/navigation";
+import {GET_TOTAL_PAGES} from "@/url/urls";
 
 
 const PaginationSection = ({currentPage}:{currentPage:number}) => {
+    const [totalPages, setTotalPages] = useState<number>(1); // Используем состояние для хранения totalPages
     // const pathname = usePathname();
     // const searchParams = useSearchParams();
     // const currentPage = Number(searchParams.get('page')) || 1;
@@ -23,34 +25,15 @@ const PaginationSection = ({currentPage}:{currentPage:number}) => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const page = searchParams.get('page') ?? '1'
-    const totalPages = 5;
     const navigateToPage = (pageNumber: number) => {
-        router.push(`/vacancies?page=${pageNumber}&query=${searchParams.get('query') || ''}`);
+        if (pageNumber >= 1 && pageNumber <= totalPages) {
+            router.push(`/vacancies?page=${pageNumber}${searchParams.get('query') || ''}`);
+        }
+
     };
+
     const renderPages = () => {
         const pagesToShow = [];
-        const [totalPages, setTotalPages] = useState<number>(1); // Используем состояние для хранения totalPages
-
-        useEffect(() => {
-            void fetchTotalPages();
-        }, []);
-
-        const fetchTotalPages = async () => {
-            try {
-                // Отправляем запрос на сервер
-                const response = await fetch('/api/getTotalPages'); // Замените '/api/getTotalPages' на ваш эндпоинт на сервере
-                if (response.ok) {
-                    const data = await response.json();
-                    setTotalPages(data.totalPages);
-                } else {
-                    console.error('Failed to fetch total pages');
-                }
-            } catch (error) {
-                console.error('Error fetching total pages:', error);
-            }
-        };
-
-
         pagesToShow.push(currentPage);
 
         for (let i = currentPage - 1; i >= Math.max(currentPage - 2, 1); i--) {
@@ -70,6 +53,22 @@ const PaginationSection = ({currentPage}:{currentPage:number}) => {
             </PaginationItem>
         ));
     };
+    useEffect(() => {
+        const fetchTotalPages = async () => {
+            try {
+                const response = await fetch(GET_TOTAL_PAGES);
+                if (response.ok) {
+                    const data = parseInt(await response.text(), 10);
+                    setTotalPages(data);
+                } else {
+                    console.error('Failed to fetch total pages');
+                }
+            } catch (error) {
+                console.error('Error fetching total pages:', error);
+            }
+        };
+        void fetchTotalPages();
+    }, []);
     return (
         <Pagination >
             <PaginationContent>

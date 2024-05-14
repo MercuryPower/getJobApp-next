@@ -15,12 +15,13 @@ import {
     SelectValue
 } from "@/components/ui/select";
 import PaginationSection from "@/components/sections/PaginationSection";
+import {GET_VACANCIES} from "@/url/urls";
 
 
 const Page = ({searchParams,}:{searchParams?:{query?: string; page?:string, perPage?:string}}) => {
     const query = searchParams?.query || '';
     const currentPage = Number(searchParams?.page) || 1;
-    const { data, error } = useApiGet(`http://127.0.0.1:8000/vacancies`, { cache: 'force-cache', next: { revalidate: 1800 } });
+    const { data, error } = useApiGet(GET_VACANCIES, { cache: 'force-cache', next: { revalidate: 1800 } });
     return (
         <>
             <div className={'flex flex-col items-center '}>
