@@ -6,11 +6,11 @@ export interface VacancyInfo {
     tp?:string;
     skills:{
         id:number;
-        skill:string;
+        name:string;
     }[]
     cities:{
         id:number;
-        city:string;
+        name:string;
     }[]
     exp:string;
     [key: string]: any;

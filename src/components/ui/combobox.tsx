@@ -17,34 +17,32 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
+import {useEffect, useState} from "react";
 
-const cities = [
-    {
-        value: "next.js",
-        label: "Next.js",
-    },
-    {
-        value: "sveltekit",
-        label: "SvelteKit",
-    },
-    {
-        value: "nuxt.js",
-        label: "Nuxt.js",
-    },
-    {
-        value: "remix",
-        label: "Remix",
-    },
-    {
-        value: "astro",
-        label: "Astro",
-    },
-]
 
-export function ComboboxDemo() {
+
+
+export function ComboboxCity() {
     const [open, setOpen] = React.useState(false)
     const [value, setValue] = React.useState("")
+    const [cities, setCities] = useState<Array<{id:number; name:string}>>([])
+    useEffect(() => {
+        const fetchCities = async () => {
+            try {
+                const response = await fetch('https://jsonplaceholder.typicode.com/comments');
+                if (response.ok) {
+                    const data = await response.json();
+                    setCities(data);
+                } else {
+                    console.error('Failed to fetch cities');
+                }
+            } catch (error) {
+                console.error('Error fetching cities:', error);
+            }
+        };
 
+        void fetchCities();
+    }, []);
     return (
         <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
@@ -52,10 +50,10 @@ export function ComboboxDemo() {
                     variant="outline"
                     role="combobox"
                     aria-expanded={open}
-                    className="w-[200px] justify-between"
+                    className="w-[200px] overflow-hidden justify-between max-w-xs"
                 >
                     {value
-                        ? cities.find((framework) => framework.value === value)?.label
+                        ? cities.find((city) => city.name  === value)?.name
                         : "Выберите город   "}
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
@@ -63,12 +61,12 @@ export function ComboboxDemo() {
             <PopoverContent className="w-[200px] p-0">
                 <Command>
                     <CommandInput placeholder="Выберите город" />
-                    <CommandEmpty>No framework found.</CommandEmpty>
+                    <CommandEmpty>Город не найден</CommandEmpty>
                     <CommandList>
                         {cities.map((city) => (
                             <CommandItem
-                                key={city.value}
-                                value={city.value}
+                                key={city.id}
+                                value={city.name}
                                 onSelect={(currentValue) => {
                                     setValue(currentValue === value ? "" : currentValue)
                                     setOpen(false)
@@ -77,10 +75,10 @@ export function ComboboxDemo() {
                                 <Check
                                     className={cn(
                                         "mr-2 h-4 w-4",
-                                        value === city.value ? "opacity-100" : "opacity-0"
+                                        value === city.name ? "opacity-100" : "opacity-0"
                                     )}
                                 />
-                                {city.label}
+                                {city.name}
                             </CommandItem>
                         ))}
                     </CommandList>

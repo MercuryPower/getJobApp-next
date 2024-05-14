@@ -1,16 +1,10 @@
 'use client'
 import React from 'react';
 import VacancyCards from "@/components/VacancyCards";
-import {Skeleton} from "@/components/ui/skeleton";
-import {Button} from "@/components/ui/button";
-import {VacancyInfo} from "@/types/types";
 import VacancyCardSkeleton from "@/components/ui/skeletons/VacancyCardSkeleton";
 import Search from "@/components/ui/search";
 import {useApiGet} from "@/hooks/useFetching";
-
-import {ComboboxDemo} from "@/components/ui/combobox";
-import {Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList} from "@/components/ui/command";
-import {Calculator, Calendar, SeparatorHorizontal, SeparatorHorizontalIcon, Smile} from "lucide-react";
+import {ComboboxCity} from "@/components/ui/combobox";
 import {
     Select,
     SelectContent,
@@ -47,7 +41,7 @@ const Page = ({searchParams,}:{searchParams?:{query?: string; page?:string, perP
                         <div className={'space-y-4 pt-6'}>
                             <div className={'space-y-2'}>
                                 <h3 className={'text-lg'}>Город:</h3>
-                                <ComboboxDemo  />
+                                <ComboboxCity  />
                             </div>
                             <div className={'space-y-2'}>
                                 <h3 className={'text-lg'}>Тип занятости</h3>
@@ -58,7 +52,7 @@ const Page = ({searchParams,}:{searchParams?:{query?: string; page?:string, perP
                                     <SelectContent>
                                         <SelectGroup>
                                             <SelectLabel>Fruits</SelectLabel>
-                                            <SelectItem value="apple">Apple</SelectItem>
+                                            <SelectItem value="apple"></SelectItem>
                                             <SelectItem value="banana">Banana</SelectItem>
                                             <SelectItem value="blueberry">Blueberry</SelectItem>
                                             <SelectItem value="grapes">Grapes</SelectItem>

@@ -88,7 +88,7 @@ const VacancyCards = ({data, page, query}: {data:VacancyInfo[], page:number, que
                     </div>
                     <div className={'flex justify-center'}>
                         {vacancy.skills.map((skill, index) => {
-                            return <p key={skill.skill} className={'text-ellipsis overflow-hidden m-1 text-xl border font-bold hover:bg-gray-400 p-2 rounded-2xl'}>{skill.skill}</p>
+                            return <p key={skill.name} className={'text-ellipsis overflow-hidden m-1 text-xl border font-bold hover:bg-gray-400 p-2 rounded-2xl'}>{skill.name}</p>
                         })}
                     </div>
                     <p>Тип занятости: {vacancy.tp}</p>
@@ -97,11 +97,11 @@ const VacancyCards = ({data, page, query}: {data:VacancyInfo[], page:number, que
                         <Carousel opts={{align:'start',dragFree: true, }} className="w- max-w-md  ">
                             <CarouselContent className={'-ml-4'}>
                                 {vacancy.cities.map((city) => (
-                                    <CarouselItem className={`basis-${vacancy.cities.length === 1 ? 'full' : (vacancy.cities.length > 3 ? 2 : 3)}  hover:opacity-75 pl-4 `} key={city.city}>
+                                    <CarouselItem className={`basis-${vacancy.cities.length === 1 ? 'full' : (vacancy.cities.length > 3 ? 2 : 3)}  hover:opacity-75 pl-4 `} key={city.name}>
                                         <div className="p-1">
                                             <Card>
                                                 <CardContent className="m-1  p-2 rounded-2xl">
-                                                    <span className="font-semibold">{city.city}</span>
+                                                    <span className="font-semibold">{city.name}</span>
                                                 </CardContent>
                                             </Card>
                                         </div>
