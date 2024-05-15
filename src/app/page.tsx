@@ -4,7 +4,7 @@ import AnimatedNumbers from "react-animated-numbers";
 import Image from "next/image";
 import {FormControl, InputLabel, MenuItem, Select, SelectChangeEvent} from "@mui/material";
 import SearchMainSection from "@/components/sections/SearchMainSection";
-import VacancyForm from "@/components/VacancyForm";
+import VacancyForm from "@/components/forms/VacancyForm";
 import KeyFeaturesSection from "@/components/sections/KeyFeaturesSection";
 export default function Home() {
   return (

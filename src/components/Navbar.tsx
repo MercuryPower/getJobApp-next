@@ -1,5 +1,5 @@
 'use client'
-import React from 'react';
+import React, {useState} from 'react';
 import Image from "next/image";
 import {useRouter} from "next/navigation";
 import ThemeSwitch from "@/components/ui/ThemeSwitch";
@@ -14,6 +14,12 @@ import {CreditCard, User} from "lucide-react";
 import LoginSection from "@/components/sections/LoginSection";
 
 const Navbar = () => {
+    // const [userType, setUserType] = useState('employer')
+    //
+    // const handleTypeChange = (type: string) => {
+    //     setUserType(type)
+    // }
+
     const router = useRouter();
     return (
         <nav className={'flex justify-around  drop-shadow border-b'}>

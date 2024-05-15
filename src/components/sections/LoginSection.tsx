@@ -14,6 +14,8 @@ import {
     DialogTitle,
     DialogTrigger
 } from "@/components/ui/dialog";
+import CompanyForm from "@/components/forms/CompanyForm";
+import UserForm from "@/components/forms/UserForm";
 
 const LoginSection = () => {
     const router = useRouter()
@@ -41,17 +43,28 @@ const LoginSection = () => {
     async function onSubmit(values: z.infer<typeof formSchema>) {
         console.log(values);
         const { email, password } = values;
-        const response = await fetch('/api/auth/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password }),
-        });
-
-        if (response.ok) {
-            router.push('/profile');
-        } else {
-            // Handle errors
+        const token = localStorage.getItem('token');
+        try {
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({email, password}),
+            });
+            if (response.ok) {
+                const data = await response.json();
+                const token = data.token;
+                localStorage.setItem('token', token);
+                router.push('/profile');
+                console.log(data, token)
+            }
         }
+        catch(error: any){
+            throw new Error((error as Error).message)
+        }
+
     }
     const [userType, setUserType] = useState('')
     return (
@@ -70,113 +83,19 @@ const LoginSection = () => {
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 flex flex-col p-8">
                         {userType !== 'company' &&
                         <Button onClick={() => setUserType('company')}>
-                            <span>Компания</span>
+                            <span>Я ищу работника</span>
                         </Button>
                         }
                         {userType !== 'user' &&
                         <Button onClick={() => setUserType('user')}>
-                            <span>Пользователь</span>
+                            <span>Я ищу работу</span>
                         </Button>
                         }
                         {userType === 'user' && (
-                            <>
-                            <FormLabel className={'flex justify-center p-4 underline'}>Пользователь</FormLabel>
-                            <FormField
-                                control={form.control}
-                                name="username"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Имя пользователя</FormLabel>
-                                        <FormControl>
-                                            <Input type={'text'} placeholder="Имя" {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="email"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Email</FormLabel>
-                                        <FormControl>
-                                            <Input type={'email'} placeholder="example@gmail.com" {...field} />
-                                        </FormControl>
-                                        <FormDescription>
-                                            Введите адрес электронной почты
-                                        </FormDescription>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="password"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Пароль</FormLabel>
-                                        <FormControl>
-                                            <Input type={'password'} placeholder="Пароль" {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <Button type={'submit'} size={"lg"}  className={'h-12 p-4 border-black bg-green-600 rounded  font-bold  transition'} >
-                                <span>Войти</span>
-                            </Button>
-                        </>
+                            <UserForm />
                         )}
                         {userType === 'company' && (
-                            <>
-                                <FormLabel className={'flex justify-center p-4 underline m-2'}>Компания</FormLabel>
-                                <FormField
-                                    control={form.control}
-                                    name="username"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Имя организации</FormLabel>
-                                            <FormControl>
-                                                <Input type={'text'} placeholder="Имя" {...field} />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={form.control}
-                                    name="email"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Email</FormLabel>
-                                            <FormControl>
-                                                <Input type={'email'} placeholder="example@gmail.com" {...field} />
-                                            </FormControl>
-                                            <FormDescription>
-                                                Введите адрес электронной почты
-                                            </FormDescription>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={form.control}
-                                    name="password"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Пароль</FormLabel>
-                                            <FormControl>
-                                                <Input type={'password'} placeholder="Пароль" {...field} />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <Button type={'submit'} size={"lg"}  className={'h-12 p-4 border-black bg-green-600 rounded  font-bold  transition'} >
-                                    <span>Войти</span>
-                                </Button>
-                            </>
+                            <CompanyForm />
                         )}
                     </form>
                  </DialogContent>

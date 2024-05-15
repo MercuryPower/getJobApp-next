@@ -4,7 +4,7 @@ import VacancyCards from "@/components/VacancyCards";
 import VacancyCardSkeleton from "@/components/ui/skeletons/VacancyCardSkeleton";
 import Search from "@/components/ui/search";
 import {useApiGet} from "@/hooks/useFetching";
-import {ComboboxCity} from "@/components/ui/combobox";
+import {ComboboxCity} from "@/components/ui/comboboxCities";
 import {
     Select,
     SelectContent,
@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/select";
 import PaginationSection from "@/components/sections/PaginationSection";
 import {GET_VACANCIES} from "@/url/urls";
+import SelectTypeOfEmploy from "@/components/ui/SelectTypeOfEmploy";
 
 
 const Page = ({searchParams,}:{searchParams?:{query?: string; page?:string, perPage?:string}}) => {
@@ -39,31 +40,18 @@ const Page = ({searchParams,}:{searchParams?:{query?: string; page?:string, perP
                     </div>
                     <div className={'flex flex-col justify-items-center shadow-lg m-4 p-4 border text-center  rounded-2xl space-y-2 w-60 '}>
                         <h2 className={'font-bold text-xl'}>Фильтр</h2>
-                        <div className={'space-y-4 pt-6'}>
-                            <div className={'space-y-2'}>
-                                <h3 className={'text-lg'}>Город:</h3>
-                                <ComboboxCity  />
+                        <form>
+                            <div className={'space-y-4 pt-6'}>
+                                <div className={'space-y-2'}>
+                                    <h3 className={'text-lg'}>Город:</h3>
+                                    <ComboboxCity  />
+                                </div>
+                                <div className={'space-y-2'}>
+                                    <h3 className={'text-lg'}>Тип занятости</h3>
+                                    <SelectTypeOfEmploy />
+                                </div>
                             </div>
-                            <div className={'space-y-2'}>
-                                <h3 className={'text-lg'}>Тип занятости</h3>
-                                <Select>
-                                    <SelectTrigger className="w-[200px]">
-                                        <SelectValue placeholder="Выберите тип занятости" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectGroup>
-                                            <SelectLabel>Fruits</SelectLabel>
-                                            <SelectItem value="apple"></SelectItem>
-                                            <SelectItem value="banana">Banana</SelectItem>
-                                            <SelectItem value="blueberry">Blueberry</SelectItem>
-                                            <SelectItem value="grapes">Grapes</SelectItem>
-                                            <SelectItem value="pineapple">Pineapple</SelectItem>
-                                        </SelectGroup>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                        </div>
-
+                        </form>
                     </div>
                 </div>
             </div>
