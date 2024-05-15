@@ -4,19 +4,11 @@ import VacancyCards from "@/components/VacancyCards";
 import VacancyCardSkeleton from "@/components/ui/skeletons/VacancyCardSkeleton";
 import Search from "@/components/ui/search";
 import {useApiGet} from "@/hooks/useFetching";
-import {ComboboxCity} from "@/components/ui/comboboxCities";
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectLabel,
-    SelectTrigger,
-    SelectValue
-} from "@/components/ui/select";
+import {ComboboxCity} from "@/components/filter/ComboboxCities";
 import PaginationSection from "@/components/sections/PaginationSection";
 import {GET_VACANCIES} from "@/url/urls";
-import SelectTypeOfEmploy from "@/components/ui/SelectTypeOfEmploy";
+import SelectTypeOfEmploy from "@/components/filter/SelectTypeOfEmploy";
+import MultiselectSkills from "@/components/filter/MultiselectSkills";
 
 
 const Page = ({searchParams,}:{searchParams?:{query?: string; page?:string, perPage?:string}}) => {
@@ -38,17 +30,25 @@ const Page = ({searchParams,}:{searchParams?:{query?: string; page?:string, perP
                     }
                     <PaginationSection currentPage={currentPage}/>
                     </div>
-                    <div className={'flex flex-col justify-items-center shadow-lg m-4 p-4 border text-center  rounded-2xl space-y-2 w-60 '}>
+                    <div className={'flex flex-col justify-items-center shadow-lg m-4 p-4 border text-center  rounded-2xl space-y-2 w-72 h-fit '}>
                         <h2 className={'font-bold text-xl'}>Фильтр</h2>
                         <form>
                             <div className={'space-y-4 pt-6'}>
                                 <div className={'space-y-2'}>
-                                    <h3 className={'text-lg'}>Город:</h3>
+                                    <h3 className={'text-lg'}>Город</h3>
                                     <ComboboxCity  />
                                 </div>
-                                <div className={'space-y-2'}>
+                                <div className={'space-y-2' }>
                                     <h3 className={'text-lg'}>Тип занятости</h3>
                                     <SelectTypeOfEmploy />
+                                </div>
+                                <div className={'space-y-2'}>
+                                    <h3 className={'text-lg'}>Навыки</h3>
+                                    <MultiselectSkills />
+                                </div>
+                                <div className={'space-y-2'}>
+                                    <h3 className={'text-lg'}>Желаемая зарплата</h3>
+                                    <MultiselectSkills />
                                 </div>
                             </div>
                         </form>

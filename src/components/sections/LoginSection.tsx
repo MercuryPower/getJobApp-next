@@ -9,15 +9,13 @@ import {z} from "zod";
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
     DialogTrigger
 } from "@/components/ui/dialog";
 import CompanyForm from "@/components/forms/CompanyForm";
 import UserForm from "@/components/forms/UserForm";
 
 const LoginSection = () => {
+    const [profile, setProfile] = useState()
     const router = useRouter()
     const formSchema = z.object({
         username: z.string().min(2, {

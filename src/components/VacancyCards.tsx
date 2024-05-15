@@ -18,7 +18,7 @@ const VacancyCards = ({data, page, query}: {data:VacancyInfo[], page:number, que
         const fetchData = async () => {
             setIsLoading(true);
             try {
-                const response = await fetch(`http://127.0.0.1:8000/tests/vacancies_test?page=${page}&query=${query}`);
+                const response = await fetch(`http://127.0.0.1:8000/tests/vacancies?page=${page}&query=${query}`);
                 const responseData = await response.json();
                 setFilteredVacancies(responseData);
             } catch (error) {
