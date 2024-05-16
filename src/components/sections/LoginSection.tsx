@@ -1,4 +1,5 @@
-import React, {FormEvent, useState} from 'react';
+'use client'
+import React, {FormEvent, useState, useTransition} from 'react';
 import {Button} from "@/components/ui/button";
 import {useRouter} from "next/navigation";
 import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
@@ -13,58 +14,48 @@ import {
 } from "@/components/ui/dialog";
 import CompanyForm from "@/components/forms/CompanyForm";
 import UserForm from "@/components/forms/UserForm";
+import {login} from "@/actions/login";
+import RegistrationForm from "@/components/RegistrationForm";
+import {LoginSchema} from "@/schemas";
+import FormSuccess from "@/components/forms/form-success";
+import FormError from "@/components/forms/form-error";
 
 const LoginSection = () => {
     const [profile, setProfile] = useState()
+    const [isPending, startTransition] = useTransition()
+    const [error, setError] = useState<string | undefined>('')
+    const [success, setSuccess] = useState<string | undefined>('')
     const router = useRouter()
-    const formSchema = z.object({
-        username: z.string().min(2, {
-            message: "Username must be at least 2 characters.",
-        }),
-        password: z.string().min(8, {
-            message: "Password must be at least 8 characters.",
-        }),
-        email: z.string().email({
-            message: "Invalid email address.",
-        }),
-    })
 
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+    const form = useForm<z.infer<typeof LoginSchema>>({
+        resolver: zodResolver(LoginSchema),
         defaultValues: {
-            username: "",
             password:'',
             email:'',
         },
     })
 
-    async function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values);
-        const { email, password } = values;
-        const token = localStorage.getItem('token');
-        try {
-            const response = await fetch('/api/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({email, password}),
-            });
-            if (response.ok) {
-                const data = await response.json();
-                const token = data.token;
-                localStorage.setItem('token', token);
-                router.push('/profile');
-                console.log(data, token)
+    function onSubmit(values: z.infer<typeof LoginSchema>) {
+        setSuccess('')
+        setError('')
+
+        startTransition(() =>{
+            try {
+                login(values).then((data) => {
+                    if (data && 'error' in data) {
+                        setError(data.error);
+                    } else if (data && 'success' in data) {
+                        setSuccess(data.success);
+                    }
+                });
+            } catch (error) {
+                console.error(error);
             }
-        }
-        catch(error: any){
-            throw new Error((error as Error).message)
-        }
+        })
 
     }
     const [userType, setUserType] = useState('')
+
     return (
         <Form {...form}>
             <Dialog>
@@ -90,11 +81,15 @@ const LoginSection = () => {
                         </Button>
                         }
                         {userType === 'user' && (
-                            <UserForm />
+                            <UserForm success={success} error={error} isPending={isPending}/>
                         )}
                         {userType === 'company' && (
-                            <CompanyForm />
+                            <CompanyForm success={success} error={error} isPending={isPending} />
                         )}
+                        <FormSuccess />
+                        <Button onClick={() => router.push('/registration')} size={'sm'} variant={'link'}>
+                            <span>Нет аккаунта?</span>
+                        </Button>
                     </form>
                  </DialogContent>
              </Dialog>

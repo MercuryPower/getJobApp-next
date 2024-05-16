@@ -7,6 +7,7 @@ import Providers from "../components/providers";
 import {cn} from "@/lib/utils";
 import { Rubik as FontSans } from "next/font/google"
 import {ThemeProvider} from "next-themes";
+import {SessionContext, SessionProvider} from "next-auth/react";
 
   const inter = Rubik({ subsets: ["latin"] });
 
@@ -30,7 +31,7 @@ export default function RootLayout({
       <body className={cn(
           "min-h-screen bg-background font-sans antialiased",
           fontSans.variable)}>
-          <>
+          <SessionProvider>
               <ThemeProvider
                   attribute="class"
                   defaultTheme="system"
@@ -40,7 +41,7 @@ export default function RootLayout({
                   <Navbar />
                   {children}
               </ThemeProvider>
-          </>
+          </SessionProvider>
       </body>
     </html>
   );

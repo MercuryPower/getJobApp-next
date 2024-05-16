@@ -1,27 +1,34 @@
 import React from 'react';
-import {FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
+import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 import {useFormContext} from "react-hook-form";
+import FormSuccess from "@/components/forms/form-success";
+import FormError from "@/components/forms/form-error";
 
-const UserForm = () => {
+interface UserFormProps{
+    isPending?:boolean;
+    error?:string;
+    success?:string;
+}
+const UserForm = ({ isPending, error, success }: UserFormProps) => {
     const form = useFormContext();
     return (
-        <>
+        <Form {...form}>
             <FormLabel className={'flex justify-center p-4 underline'}>Пользователь</FormLabel>
-            <FormField
-                control={form.control}
-                name="username"
-                render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>Имя пользователя</FormLabel>
-                        <FormControl>
-                            <Input autoComplete={'username'} type={'text'} placeholder="Имя" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                )}
-            />
+            {/*<FormField*/}
+            {/*    control={form.control}*/}
+            {/*    name="username"*/}
+            {/*    render={({ field }) => (*/}
+            {/*        <FormItem>*/}
+            {/*            <FormLabel>Имя пользователя</FormLabel>*/}
+            {/*            <FormControl>*/}
+            {/*                <Input autoComplete={'username'} type={'text'} placeholder="Имя" {...field} />*/}
+            {/*            </FormControl>*/}
+            {/*            <FormMessage />*/}
+            {/*        </FormItem>*/}
+            {/*    )}*/}
+            {/*/>*/}
             <FormField
                 control={form.control}
                 name="email"
@@ -29,7 +36,7 @@ const UserForm = () => {
                     <FormItem>
                         <FormLabel>Email</FormLabel>
                         <FormControl>
-                            <Input autoComplete={'email'} type={'email'} placeholder="example@gmail.com" {...field} />
+                            <Input autoComplete={'email'} disabled={isPending} type={'email'} placeholder="example@gmail.com" {...field} />
                         </FormControl>
                         <FormDescription>
                             Введите адрес электронной почты
@@ -45,16 +52,18 @@ const UserForm = () => {
                     <FormItem>
                         <FormLabel>Пароль</FormLabel>
                         <FormControl>
-                            <Input autoComplete={'current-password'} type={'password'} placeholder="Пароль" {...field} />
+                            <Input autoComplete={'current-password'} disabled={isPending} type={'password'} placeholder="Пароль" {...field} />
                         </FormControl>
                         <FormMessage />
                     </FormItem>
                 )}
             />
-            <Button type={'submit'} size={"lg"} className={'h-12 p-4 border-black bg-green-600 rounded  font-bold  transition'} >
+            <FormError message={error} />
+            <FormSuccess message={success} />
+            <Button  disabled={isPending} type={'submit'} size={"lg"} className={'h-12 p-4 border-black bg-green-600 rounded  font-bold  transition'} >
                 <span>Войти</span>
             </Button>
-        </>
+        </Form>
     );
 };
 
