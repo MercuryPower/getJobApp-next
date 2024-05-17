@@ -1,4 +1,4 @@
-'use server';
+
 
 import {TypeOf, z} from "zod";
 import {LoginSchema, RegistrationSchema} from "@/schemas";
@@ -6,38 +6,41 @@ import {LoginSchema, RegistrationSchema} from "@/schemas";
 
 
 export const register = async (values: TypeOf<typeof RegistrationSchema>, type: string) => {
-    const validatedFields = RegistrationSchema.safeParse(values)
-    if(!validatedFields.success){
-        return {error: 'Ошибка при регистрации'};
+    const validatedFields = RegistrationSchema.safeParse(values);
+    if (!validatedFields.success) {
+        return { error: 'Ошибка при регистрации' };
     }
-    console.log(values)
+    console.log(values);
 
     try {
-        const {username ,email, password} = values;
-        const formData = new URLSearchParams();
-        formData.append('username', username);
-        formData.append('email', email);
-        formData.append('password', password);
+        'use server'
+        const { username, email, password } = values;
+        const payload = {
+            username,
+            email,
+            password,
+            type
+        };
+
         const response = await fetch('http://127.0.0.1:8000/auth/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({username: username,email: email, password, type}),
+            body: JSON.stringify(payload)
         });
+
         if (response.ok) {
-            const data = await response.json();
-            const token = data.token;
-            localStorage.setItem('token', token);
-            console.log(data, token)
+            await response.json();
+            console.log("Response is OK, reloading page...");
             setTimeout(() => {
                 window.location.reload();
             }, 100);
-            return { success: 'Успешная авторизация' };
+            return { success: 'Успешная регистрация' };
+        } else {
+            console.log("Response is not OK, not reloading page.");
         }
+    } catch (error: any) {
+        throw new Error(error.message);
     }
-    catch(error: any){
-        throw new Error((error as Error).message)
-    }
-
-}
+};

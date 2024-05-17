@@ -28,7 +28,7 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
             localStorage.setItem('token', token);
             setTimeout(() => {
                 window.location.reload();
-            }, 100);
+            }, 300);
             return { success: 'Успешная авторизация' };
         } else {
             throw new Error('Ошибка при авторизации');

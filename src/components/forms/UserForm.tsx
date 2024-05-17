@@ -50,8 +50,6 @@ const UserForm = ({ isPending, error, success }: UserFormProps) => {
                 <Button  disabled={isPending} type={'submit'} size={"lg"} className={'h-12 p-4 border-black bg-green-600 rounded  font-bold  transition'} >
                     <span>Войти</span>
                 </Button>
-
-
         </Form>
     );
 };

@@ -17,7 +17,7 @@ export const RegistrationSchema = z.object({
     }),
     password: z.string().min(6,{
         message:'Пароль должен быть больше 6 символов'
-    })
+    }),
 })
 export const userSchema = z.object({
     email: z.string().email({ message: 'Неправильный адрес электронной почты' }),

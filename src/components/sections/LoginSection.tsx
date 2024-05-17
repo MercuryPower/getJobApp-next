@@ -5,7 +5,7 @@ import {useRouter} from "next/navigation";
 import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {useForm} from "react-hook-form";
+import {FormProvider, useForm} from "react-hook-form";
 import {z} from "zod";
 import {
     Dialog,
@@ -15,7 +15,7 @@ import {
 import CompanyForm from "@/components/forms/CompanyForm";
 import UserForm from "@/components/forms/UserForm";
 import {login} from "@/actions/login";
-import RegistrationForm from "@/components/RegistrationForm";
+import RegistrationForm from "@/components/forms/RegistrationForm";
 import {LoginSchema, RegistrationSchema} from "@/schemas";
 import FormSuccess from "@/components/forms/form-success";
 import FormError from "@/components/forms/form-error";
@@ -45,6 +45,7 @@ const LoginSection = () => {
         setError('')
         startTransition(() =>{
             try {
+                console.log(isRegistration)
                 if (isRegistration) {
                     register(values as z.infer<typeof  RegistrationSchema>, userType).then((data) =>{
                         if (data?.error) {
@@ -54,6 +55,18 @@ const LoginSection = () => {
                             setSuccess(data.success);
                             console.log(data)
                         }
+                        login({ email: values.email, password: values.password }).then((loginData) => {
+                            if (loginData?.error) {
+                                setError(loginData.error);
+                                console.log(loginData);
+                            } else if (loginData?.success) {
+                                setSuccess(loginData.success);
+                                console.log(loginData);
+                                setTimeout(() => {
+                                    window.location.reload();
+                                }, 100);
+                            }
+                        });
                     })
                 } else {
                     login(values as z.infer<typeof LoginSchema>).then((data) => {
@@ -74,7 +87,7 @@ const LoginSection = () => {
 
     }
     return (
-        <Form {...form}>
+        <FormProvider {...form}>
             <Dialog>
                 <DialogTrigger asChild>
                     <Button size={"lg"}  className={'h-12 p-4 flex justify-center self-center border-black bg-green-600 rounded  font-bold  transition'} >
@@ -86,8 +99,9 @@ const LoginSection = () => {
                     </Button>
                 </DialogTrigger>
                 <DialogContent>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 flex flex-col p-8">
                     {!isRegistration ? (
-                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 flex flex-col p-8">
+                        <>
                             {userType !== 'company' && (
                                 <Button onClick={() => setUserType('company')}>
                                     <span>Я ищу работника</span>
@@ -108,13 +122,14 @@ const LoginSection = () => {
                             <Button type={'button'} onClick={() => setIsRegistration(true)} size={'sm'} variant={'link'}>
                                 <span>Нет аккаунта?</span>
                             </Button>
-                        </form>
+                        </>
                     ) : (
                         <RegistrationForm error={error} success={success} toggleRegistration={() => setIsRegistration(false)} />
                     )}
+                    </form>
                  </DialogContent>
              </Dialog>
-         </Form>
+         </FormProvider>
     );
 };
 
