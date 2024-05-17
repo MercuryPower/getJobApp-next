@@ -16,46 +16,55 @@ import CompanyForm from "@/components/forms/CompanyForm";
 import UserForm from "@/components/forms/UserForm";
 import {login} from "@/actions/login";
 import RegistrationForm from "@/components/RegistrationForm";
-import {LoginSchema} from "@/schemas";
+import {LoginSchema, RegistrationSchema} from "@/schemas";
 import FormSuccess from "@/components/forms/form-success";
 import FormError from "@/components/forms/form-error";
+import {register} from "@/actions/registration";
 
 const LoginSection = () => {
-    const [profile, setProfile] = useState()
+    const [userType, setUserType] = useState('')
+    const [isRegistration, setIsRegistration] = useState(false)
     const [isPending, startTransition] = useTransition()
     const [error, setError] = useState<string | undefined>('')
     const [success, setSuccess] = useState<string | undefined>('')
-    const router = useRouter()
+    const formSchema = isRegistration ? RegistrationSchema : LoginSchema;
+        const form = useForm<z.infer<typeof LoginSchema | typeof RegistrationSchema>>({
+            resolver: zodResolver(formSchema),
+            defaultValues: isRegistration ? {
+                email: '',
+                password: '',
+                username: '',
+            } : {
+                email: '',
+                password: '',
+            },
+        })
 
-    const form = useForm<z.infer<typeof LoginSchema>>({
-        resolver: zodResolver(LoginSchema),
-        defaultValues: {
-            password:'',
-            email:'',
-        },
-    })
-
-    function onSubmit(values: z.infer<typeof LoginSchema>) {
+    function onSubmit(values: z.infer<typeof LoginSchema> | z.infer<typeof RegistrationSchema>) {
         setSuccess('')
         setError('')
 
         startTransition(() =>{
             try {
-                login(values).then((data) => {
-                    if (data && 'error' in data) {
-                        setError(data.error);
-                    } else if (data && 'success' in data) {
-                        setSuccess(data.success);
-                    }
-                });
+                if (isRegistration) {
+                    register(values as z.infer<typeof  RegistrationSchema>).then((data) => {
+                        console.log(data)
+                    })
+                } else {
+                    login(values as z.infer<typeof LoginSchema>).then((data) => {
+                        if (data && 'error' in data) {
+                            setError(data.error);
+                        } else if (data && 'success' in data) {
+                            setSuccess(data.success);
+                        }
+                    });
+                }
             } catch (error) {
                 console.error(error);
             }
         })
 
     }
-    const [userType, setUserType] = useState('')
-
     return (
         <Form {...form}>
             <Dialog>
@@ -69,28 +78,32 @@ const LoginSection = () => {
                     </Button>
                 </DialogTrigger>
                 <DialogContent>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 flex flex-col p-8">
-                        {userType !== 'company' &&
-                        <Button onClick={() => setUserType('company')}>
-                            <span>Я ищу работника</span>
-                        </Button>
-                        }
-                        {userType !== 'user' &&
-                        <Button onClick={() => setUserType('user')}>
-                            <span>Я ищу работу</span>
-                        </Button>
-                        }
-                        {userType === 'user' && (
-                            <UserForm success={success} error={error} isPending={isPending}/>
-                        )}
-                        {userType === 'company' && (
-                            <CompanyForm success={success} error={error} isPending={isPending} />
-                        )}
-                        <FormSuccess />
-                        <Button onClick={() => router.push('/registration')} size={'sm'} variant={'link'}>
-                            <span>Нет аккаунта?</span>
-                        </Button>
-                    </form>
+                    {!isRegistration ? (
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 flex flex-col p-8">
+                            {userType !== 'company' && (
+                                <Button onClick={() => setUserType('company')}>
+                                    <span>Я ищу работника</span>
+                                </Button>
+                            )}
+                            {userType !== 'user' && (
+                                <Button onClick={() => setUserType('user')}>
+                                    <span>Я ищу работу</span>
+                                </Button>
+                            )}
+                            {userType === 'user' && (
+                                <UserForm success={success} error={error} isPending={isPending} />
+                            )}
+                            {userType === 'company' && (
+                                <CompanyForm success={success} error={error} isPending={isPending} />
+                            )}
+                            <FormSuccess />
+                            <Button type={'button'} onClick={() => setIsRegistration(true)} size={'sm'} variant={'link'}>
+                                <span>Нет аккаунта?</span>
+                            </Button>
+                        </form>
+                    ) : (
+                        <RegistrationForm toggleRegistration={() => setIsRegistration(false)} />
+                    )}
                  </DialogContent>
              </Dialog>
          </Form>

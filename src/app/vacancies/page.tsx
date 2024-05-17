@@ -9,6 +9,8 @@ import PaginationSection from "@/components/sections/PaginationSection";
 import {GET_VACANCIES} from "@/url/urls";
 import SelectTypeOfEmploy from "@/components/filter/SelectTypeOfEmploy";
 import MultiselectSkills from "@/components/filter/MultiselectSkills";
+import SalarySlider from "@/components/filter/SalarySlider";
+import {Button} from "@/components/ui/button";
 
 
 const Page = ({searchParams,}:{searchParams?:{query?: string; page?:string, perPage?:string}}) => {
@@ -48,9 +50,10 @@ const Page = ({searchParams,}:{searchParams?:{query?: string; page?:string, perP
                                 </div>
                                 <div className={'space-y-2'}>
                                     <h3 className={'text-lg'}>Желаемая зарплата</h3>
-                                    <MultiselectSkills />
+                                    <SalarySlider />
                                 </div>
                             </div>
+                            <Button type={'submit'} className={'m-2'}>Поиск</Button>
                         </form>
                     </div>
                 </div>

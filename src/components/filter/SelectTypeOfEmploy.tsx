@@ -27,7 +27,7 @@ const SelectTypeOfEmploy = () => {
     return (
         <div>
             {typesOfEmploy.map((type, index) => (
-                <div className={'flex'  }>
+                <div key={index} className={'flex'}>
                     <Checkbox
                         key={type.id}
                     />

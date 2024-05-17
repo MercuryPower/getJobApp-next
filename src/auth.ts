@@ -2,7 +2,6 @@ import NextAuth from "next-auth"
 import GoogleProvider from "next-auth/providers/google";
 import GithubProvider, {GitHubProfile} from "next-auth/providers/github";
 import Credentials from "next-auth/providers/credentials";
-import {authConfig} from "@/configs/auth";
 
 export const { handlers: {GET, POST}, signIn, signOut, auth } = NextAuth({
     providers: [
@@ -37,7 +36,7 @@ export const { handlers: {GET, POST}, signIn, signOut, auth } = NextAuth({
                     password: { label: 'Password', type: 'password' },
                 },
                 authorize: async (credentials) => {
-                    const response = await fetch('http://your-fastapi-url/api/auth/login', {
+                    const response = await fetch('', {
                         method: 'POST',
                         headers: {'Content-Type': 'application/json'},
                         body: JSON.stringify(credentials),
@@ -53,10 +52,32 @@ export const { handlers: {GET, POST}, signIn, signOut, auth } = NextAuth({
                 }
             }
         ),
-    ],
 
-    session: {strategy:'jwt'},
-    ...authConfig
+    ],
+    callbacks:{
+        async signIn({ user, account, profile, email, credentials }) {
+            return true
+        },
+        async redirect({ url, baseUrl }) {
+            return baseUrl
+        },
+        session({ session, token, user }) {
+            return session;
+        },
+        async jwt({ token, user, account, profile, isNewUser }) {
+            if (account && profile && profile.id) {
+                return {
+                    ...token,
+                    accessToken: account.access_token,
+                    id: profile.id.toString()
+                };
+            }
+            return token;
+        }
+
+    }
+    // session: {strategy:'jwt'},
+    // ...authConfig
 
 
 })

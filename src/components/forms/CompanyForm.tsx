@@ -12,6 +12,7 @@ interface CompanyFormProps{
     success?:string;
 }
 const CompanyForm = ({ isPending, error, success }: CompanyFormProps) => {
+
     const form = useFormContext();
     error = ''
     success = ''
