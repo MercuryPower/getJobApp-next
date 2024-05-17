@@ -1,11 +1,11 @@
 'use server';
 
-import {z} from "zod";
+import {TypeOf, z} from "zod";
 import {LoginSchema, RegistrationSchema} from "@/schemas";
 
 
 
-export const register = async (values: z.infer<typeof RegistrationSchema>, type: 'vacancy') => {
+export const register = async (values: TypeOf<typeof RegistrationSchema>, type: string) => {
     const validatedFields = RegistrationSchema.safeParse(values)
     // if(!validatedFields.success){
     //     return {error: 'Ошибка при авторизации'};
@@ -16,7 +16,7 @@ export const register = async (values: z.infer<typeof RegistrationSchema>, type:
     console.log(values)
     const {username ,email, password} = values;
     try {
-        const response = await fetch('/api/auth/login', {
+        const response = await fetch('http://127.0.0.1:8000/auth/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

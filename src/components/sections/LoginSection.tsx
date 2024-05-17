@@ -46,9 +46,7 @@ const LoginSection = () => {
         startTransition(() =>{
             try {
                 if (isRegistration) {
-                    register(values as z.infer<typeof  RegistrationSchema>).then((data) => {
-                        console.log(data)
-                    })
+                    register(values as z.infer<typeof  RegistrationSchema>, userType)
                 } else {
                     login(values as z.infer<typeof LoginSchema>).then((data) => {
                         console.log(data)

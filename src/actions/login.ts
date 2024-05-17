@@ -1,4 +1,3 @@
-'use server';
 
 import {z} from "zod";
 import {LoginSchema} from "@/schemas";
@@ -6,33 +5,36 @@ import {LoginSchema} from "@/schemas";
 
 
 export const login = async (values: z.infer<typeof LoginSchema>) => {
-    const validatedFields = LoginSchema.safeParse(values)
+    // const validatedFields = LoginSchema.safeParse(values)
     // if(!validatedFields.success){
     //     return {error: 'Ошибка при авторизации'};
     // }
     // if(validatedFields.success){
     //     return {success: 'Успешная авторизация'};
     // }
-    console.log(values)
-    const {email, password} = values;
     try {
-        const response = await fetch('/api/auth/login', {
+        const { email, password } = values;
+        const formData = new URLSearchParams();
+        formData.append('username', email); // Передаем 'username' вместо 'email'
+        formData.append('password', password);
+
+        const response = await fetch('http://127.0.0.1:8000/auth/jwt/login', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
+            headers: {'Content-Type': 'application/x-www-form-urlencoded' // Устанавливаем заголовок для формата x-www-form-urlencoded
             },
-            body: JSON.stringify({username: email, password}),
+            body: formData, // Передаем данные в формате x-www-form-urlencoded
         });
         if (response.ok) {
             const data = await response.json();
-            const token = data.token;
+            const token = data.access_token;
             localStorage.setItem('token', token);
-            // router.push('/profile');
-            console.log(data, token)
-        }
-    }
-    catch(error: any){
-        throw new Error((error as Error).message)
-    }
+            console.log(data, token);
+            return { success: 'Успешная авторизация' };
 
+        } else {
+            throw new Error('Ошибка при авторизации');
+        }
+    } catch (error) {
+        throw new Error((error as Error).message);
+    }
 }

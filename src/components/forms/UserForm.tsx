@@ -15,7 +15,7 @@ const UserForm = ({ isPending, error, success }: UserFormProps) => {
     const form = useFormContext();
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(() => {})}>
+
                 <FormLabel className={'flex justify-center p-4 underline'}>Пользователь</FormLabel>
                 <FormField
                     control={form.control}
@@ -51,7 +51,7 @@ const UserForm = ({ isPending, error, success }: UserFormProps) => {
                 <Button  disabled={isPending} type={'submit'} size={"lg"} className={'h-12 p-4 border-black bg-green-600 rounded  font-bold  transition'} >
                     <span>Войти</span>
                 </Button>
-            </form>
+
 
         </Form>
     );

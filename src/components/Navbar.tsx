@@ -1,5 +1,5 @@
 'use client'
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Image from "next/image";
 import {useRouter} from "next/navigation";
 import ThemeSwitch from "@/components/ui/ThemeSwitch";
@@ -23,6 +23,46 @@ const Navbar = () => {
     // }
 
     const router = useRouter();
+    const [isLoggedIn, setIsLoggedIn] = useState(false)
+    const [user, setUser] = useState<any>()
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const user_response = await fetch('http://127.0.0.1:8000/users/me', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    next:{revalidate:60}
+                });
+                const responseData = await user_response.json();
+
+                // Проверка успешности аутентификации
+                if (user_response.ok) {
+                    setIsLoggedIn(true);
+                    setUser(responseData); // Предположим, что имя пользователя находится в свойстве "name" объекта responseData
+                } else {
+                    setIsLoggedIn(false);
+                    setUser(null);
+                }
+            } catch (error) {
+                setIsLoggedIn(false);
+                setUser(null);
+                throw new Error((error as Error).message);
+            }
+        };
+
+        fetchData(); // Вызов асинхронной функции внутри эффекта
+
+        // Функция "деструктор" (cleanup function) может быть возвращена из этого эффекта,
+        // если необходимо выполнить очистку при размонтировании компонента или при повторном запуске эффекта
+        return () => {
+            // Например, здесь вы можете выполнить очистку, если это необходимо
+        };
+    }, []); // Пустой массив зависимостей указывает, что эффект будет выполнен только один раз при монтировании компонента
+
     return (
         <nav className={'flex justify-around  drop-shadow border-b'}>
             <div className={'flex'}>
@@ -145,7 +185,8 @@ const Navbar = () => {
                 {/*{session ?*/}
                 {/*    <p>Welcome, {session.user?.name}</p> : <LoginSection/>*/}
                 {/*}*/}
-                <LoginSection />
+                {isLoggedIn ? <p>{user.username}</p>:
+                <LoginSection />}
             </div>
         </nav>
     );
