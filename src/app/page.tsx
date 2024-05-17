@@ -11,40 +11,42 @@ import {auth} from "@/auth";
 import LoginSection from "@/components/sections/LoginSection";
 import {useRouter} from "next/navigation";
 import {useEffect, useState} from "react";
+import {useAuth} from "@/components/providers";
 export default function Home() {
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
-    const [user, setUser] = useState<any>()
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const user_response = await fetch('http://127.0.0.1:8000/users/me', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    },
-                    next:{revalidate:3600}
-                });
-                const responseData = await user_response.json();
-
-                // Проверка успешности аутентификации
-                if (user_response.ok) {
-                    setIsLoggedIn(true);
-                    setUser(responseData); // Предположим, что имя пользователя находится в свойстве "name" объекта responseData
-                } else {
-                    setIsLoggedIn(false);
-                    setUser(null);
-                }
-            } catch (error) {
-                setIsLoggedIn(false);
-                setUser(null);
-                throw new Error((error as Error).message);
-            }
-        };
-        fetchData();
-        return () => {
-        };
-    }, []);
+    const { isLoggedIn } = useAuth();
+    // const [isLoggedIn, setIsLoggedIn] = useState(false)
+    // const [user, setUser] = useState<any>()
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             const user_response = await fetch('http://127.0.0.1:8000/users/me', {
+    //                 method: 'GET',
+    //                 headers: {
+    //                     'Content-Type': 'application/json',
+    //                     'Authorization': `Bearer ${localStorage.getItem('token')}`
+    //                 },
+    //                 next:{revalidate:3600}
+    //             });
+    //             const responseData = await user_response.json();
+    //
+    //             // Проверка успешности аутентификации
+    //             if (user_response.ok) {
+    //                 setIsLoggedIn(true);
+    //                 setUser(responseData); // Предположим, что имя пользователя находится в свойстве "name" объекта responseData
+    //             } else {
+    //                 setIsLoggedIn(false);
+    //                 setUser(null);
+    //             }
+    //         } catch (error) {
+    //             setIsLoggedIn(false);
+    //             setUser(null);
+    //             throw new Error((error as Error).message);
+    //         }
+    //     };
+    //     fetchData();
+    //     return () => {
+    //     };
+    // }, []);
 
     return (
         <main>

@@ -7,9 +7,12 @@ import FormSuccess from "@/components/forms/form-success";
 import {Button} from "@/components/ui/button";
 
 interface RegistrationFormProps {
+    isPending?:boolean;
+    error?:string;
+    success?:string;
     toggleRegistration: () => void;
 }
-const RegistrationForm = ({toggleRegistration}: RegistrationFormProps ) => {
+const RegistrationForm = ({toggleRegistration,isPending,error,success}: RegistrationFormProps ) => {
     const form = useFormContext();
     return (
         <>
@@ -21,7 +24,7 @@ const RegistrationForm = ({toggleRegistration}: RegistrationFormProps ) => {
                     <FormItem>
                         <FormLabel>Имя пользователя</FormLabel>
                         <FormControl>
-                            <Input autoComplete={'username'} type={'text'} placeholder="Имя" {...field} />
+                            <Input disabled={isPending} autoComplete={'username'} type={'text'} placeholder="Имя" {...field} />
                         </FormControl>
                         <FormMessage />
                     </FormItem>
@@ -34,7 +37,7 @@ const RegistrationForm = ({toggleRegistration}: RegistrationFormProps ) => {
                     <FormItem>
                         <FormLabel>Email</FormLabel>
                         <FormControl>
-                            <Input  autoComplete={'email'} type={'email'} placeholder="example@gmail.com" {...field} />
+                            <Input disabled={isPending}   autoComplete={'email'} type={'email'} placeholder="example@gmail.com" {...field} />
                         </FormControl>
                         <FormDescription>
                             Введите адрес электронной почты
@@ -50,14 +53,14 @@ const RegistrationForm = ({toggleRegistration}: RegistrationFormProps ) => {
                     <FormItem>
                         <FormLabel>Пароль</FormLabel>
                         <FormControl>
-                            <Input  autoComplete={'current-password'}  type={'password'} placeholder="Пароль" {...field} />
+                            <Input disabled={isPending}  autoComplete={'current-password'}  type={'password'} placeholder="Пароль" {...field} />
                         </FormControl>
                         <FormMessage />
                     </FormItem>
                 )}
             />
-            {/*<FormError message={error} />*/}
-            {/*<FormSuccess message={success} />*/}
+            <FormError message={error} />
+            <FormSuccess message={success} />
             <Button type={'submit'} size={"lg"}  className={'h-12 p-4 border-black bg-green-600 rounded  font-bold  transition'} >
                 <span>Регистрация</span>
             </Button>

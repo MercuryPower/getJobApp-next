@@ -7,12 +7,9 @@ import {LoginSchema, RegistrationSchema} from "@/schemas";
 
 export const register = async (values: TypeOf<typeof RegistrationSchema>, type: string) => {
     const validatedFields = RegistrationSchema.safeParse(values)
-    // if(!validatedFields.success){
-    //     return {error: 'Ошибка при авторизации'};
-    // }
-    // if(validatedFields.success){
-    //     return {success: 'Успешная авторизация'};
-    // }
+    if(!validatedFields.success){
+        return {error: 'Ошибка при регистрации'};
+    }
     console.log(values)
     const {username ,email, password} = values;
     try {
@@ -27,8 +24,9 @@ export const register = async (values: TypeOf<typeof RegistrationSchema>, type: 
             const data = await response.json();
             const token = data.token;
             localStorage.setItem('token', token);
-            // router.push('/profile');
             console.log(data, token)
+            data.success = 'Успешная регистрация'
+            window.location.reload()
         }
     }
     catch(error: any){

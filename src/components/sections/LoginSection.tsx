@@ -46,17 +46,25 @@ const LoginSection = () => {
         startTransition(() =>{
             try {
                 if (isRegistration) {
-                    register(values as z.infer<typeof  RegistrationSchema>, userType)
-                } else {
-                    login(values as z.infer<typeof LoginSchema>).then((data) => {
-                        console.log(data)
-                        // if (data && 'error' in data) {
+                    register(values as z.infer<typeof  RegistrationSchema>, userType).then((data) =>{
+                        // if (data.error) {
                         //     setError(data.error);
                         //     console.log(data)
                         // } else if (data && 'success' in data) {
                         //     setSuccess(data.success);
                         //     console.log(data)
                         // }
+                    })
+                } else {
+                    login(values as z.infer<typeof LoginSchema>).then((data) => {
+                        console.log(data)
+                        if (data && 'error' in data) {
+                            setError(data.error);
+                            console.log(data)
+                        } else if (data && 'success' in data) {
+                            setSuccess(data.success);
+                            console.log(data)
+                        }
                     });
                 }
             } catch (error) {
@@ -102,7 +110,7 @@ const LoginSection = () => {
                             </Button>
                         </form>
                     ) : (
-                        <RegistrationForm toggleRegistration={() => setIsRegistration(false)} />
+                        <RegistrationForm error={error} success={success} toggleRegistration={() => setIsRegistration(false)} />
                     )}
                  </DialogContent>
              </Dialog>

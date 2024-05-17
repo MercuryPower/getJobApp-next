@@ -16,6 +16,7 @@ import {useSession} from "next-auth/react";
 import {auth} from "@/auth";
 import {getToken} from "@auth/core/jwt";
 import LogOutButton from "@/components/LogOutButton";
+import {useAuth} from "@/components/providers";
 
 const Navbar = () => {
     // const [userType, setUserType] = useState('employer')
@@ -23,42 +24,42 @@ const Navbar = () => {
     // const handleTypeChange = (type: string) => {
     //     setUserType(type)
     // }
-
     const router = useRouter();
-    const secret = process.env.AUTH_SECRET;
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
-    const [user, setUser] = useState<any>()
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const user_response = await fetch('http://127.0.0.1:8000/users/me', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    },
-                    next:{revalidate:3600}
-                });
-                const responseData = await user_response.json();
-
-                // Проверка успешности аутентификации
-                if (user_response.ok) {
-                    setIsLoggedIn(true);
-                    setUser(responseData); // Предположим, что имя пользователя находится в свойстве "name" объекта responseData
-                } else {
-                    setIsLoggedIn(false);
-                    setUser(null);
-                }
-            } catch (error) {
-                setIsLoggedIn(false);
-                setUser(null);
-                throw new Error((error as Error).message);
-            }
-        };
-        fetchData();
-        return () => {
-        };
-    }, []);
+    // const secret = process.env.AUTH_SECRET;
+    const {isLoggedIn, user} = useAuth();
+    // const [isLoggedIn, setIsLoggedIn] = useState(false)
+    // const [user, setUser] = useState<any>()
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             const user_response = await fetch('http://127.0.0.1:8000/users/me', {
+    //                 method: 'GET',
+    //                 headers: {
+    //                     'Content-Type': 'application/json',
+    //                     'Authorization': `Bearer ${localStorage.getItem('token')}`
+    //                 },
+    //                 next:{revalidate:3600}
+    //             });
+    //             const responseData = await user_response.json();
+    //
+    //             // Проверка успешности аутентификации
+    //             if (user_response.ok) {
+    //                 setIsLoggedIn(true);
+    //                 setUser(responseData); // Предположим, что имя пользователя находится в свойстве "name" объекта responseData
+    //             } else {
+    //                 setIsLoggedIn(false);
+    //                 setUser(null);
+    //             }
+    //         } catch (error) {
+    //             setIsLoggedIn(false);
+    //             setUser(null);
+    //             throw new Error((error as Error).message);
+    //         }
+    //     };
+    //     fetchData();
+    //     return () => {
+    //     };
+    // }, []);
 
     return (
         <nav className={'flex justify-around  drop-shadow border-b'}>
@@ -179,18 +180,15 @@ const Navbar = () => {
                     className={'flex self-center hover:bg-gray-300 dark:hover:bg-gray-600 rounded-full transition-all p-2'}>
                     <ThemeSwitch/>
                 </div>
-                {/*{session ?*/}
-                {/*    <p>Welcome, {session.user?.name}</p> : <LoginSection/>*/}
-                {/*}*/}
                 {isLoggedIn ?
                     (<>
-                        <p className={'self-center'}>{user.username}</p>
+                        <p className={'self-center'}>{user?.username}</p>
                         <LogOutButton />
                     </>)
                     :
                     <LoginSection />
                 }
-
+                {/*<LoginSection />*/}
             </div>
         </nav>
     );
