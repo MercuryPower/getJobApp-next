@@ -15,7 +15,6 @@ const UserForm = ({ isPending, error, success }: UserFormProps) => {
     const form = useFormContext();
     return (
         <Form {...form}>
-
                 <FormLabel className={'flex justify-center p-4 underline'}>Пользователь</FormLabel>
                 <FormField
                     control={form.control}

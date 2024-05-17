@@ -14,6 +14,8 @@ import {CreditCard, User} from "lucide-react";
 import LoginSection from "@/components/sections/LoginSection";
 import {useSession} from "next-auth/react";
 import {auth} from "@/auth";
+import {getToken} from "@auth/core/jwt";
+import LogOutButton from "@/components/LogOutButton";
 
 const Navbar = () => {
     // const [userType, setUserType] = useState('employer')
@@ -23,9 +25,9 @@ const Navbar = () => {
     // }
 
     const router = useRouter();
+    const secret = process.env.AUTH_SECRET;
     const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [user, setUser] = useState<any>()
-
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -35,7 +37,7 @@ const Navbar = () => {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${localStorage.getItem('token')}`
                     },
-                    next:{revalidate:60}
+                    next:{revalidate:3600}
                 });
                 const responseData = await user_response.json();
 
@@ -53,15 +55,10 @@ const Navbar = () => {
                 throw new Error((error as Error).message);
             }
         };
-
-        fetchData(); // Вызов асинхронной функции внутри эффекта
-
-        // Функция "деструктор" (cleanup function) может быть возвращена из этого эффекта,
-        // если необходимо выполнить очистку при размонтировании компонента или при повторном запуске эффекта
+        fetchData();
         return () => {
-            // Например, здесь вы можете выполнить очистку, если это необходимо
         };
-    }, []); // Пустой массив зависимостей указывает, что эффект будет выполнен только один раз при монтировании компонента
+    }, []);
 
     return (
         <nav className={'flex justify-around  drop-shadow border-b'}>
@@ -185,8 +182,15 @@ const Navbar = () => {
                 {/*{session ?*/}
                 {/*    <p>Welcome, {session.user?.name}</p> : <LoginSection/>*/}
                 {/*}*/}
-                {isLoggedIn ? <p>{user.username}</p>:
-                <LoginSection />}
+                {isLoggedIn ?
+                    (<>
+                        <p className={'self-center'}>{user.username}</p>
+                        <LogOutButton />
+                    </>)
+                    :
+                    <LoginSection />
+                }
+
             </div>
         </nav>
     );

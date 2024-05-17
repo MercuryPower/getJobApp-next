@@ -54,29 +54,21 @@ export const { handlers: {GET, POST}, signIn, signOut, auth } = NextAuth({
         ),
 
     ],
-    callbacks:{
-        async signIn({ user, account, profile, email, credentials }) {
-            return true
-        },
-        async redirect({ url, baseUrl }) {
-            return baseUrl
-        },
-        session({ session, token, user }) {
-            return session;
-        },
-        async jwt({ token, user, account, profile, isNewUser }) {
-            if (account && profile && profile.id) {
-                return {
-                    ...token,
-                    accessToken: account.access_token,
-                    id: profile.id.toString()
-                };
+    callbacks: {
+        async jwt({ token, account }) {
+            if (account) {
+                token.accessToken = account.access_token;
             }
             return token;
-        }
-
-    }
-    // session: {strategy:'jwt'},
+        },
+        async session({ session, token, user }) {
+            session.accessToken = token.accessToken;
+            return session;
+        },
+    },
+    session: {
+        strategy: 'jwt',
+    },
     // ...authConfig
 
 
