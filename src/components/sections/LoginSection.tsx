@@ -43,7 +43,6 @@ const LoginSection = () => {
     function onSubmit(values: z.infer<typeof LoginSchema> | z.infer<typeof RegistrationSchema>) {
         setSuccess('')
         setError('')
-
         startTransition(() =>{
             try {
                 if (isRegistration) {
@@ -52,11 +51,14 @@ const LoginSection = () => {
                     })
                 } else {
                     login(values as z.infer<typeof LoginSchema>).then((data) => {
-                        if (data && 'error' in data) {
-                            setError(data.error);
-                        } else if (data && 'success' in data) {
-                            setSuccess(data.success);
-                        }
+                        console.log(data)
+                        // if (data && 'error' in data) {
+                        //     setError(data.error);
+                        //     console.log(data)
+                        // } else if (data && 'success' in data) {
+                        //     setSuccess(data.success);
+                        //     console.log(data)
+                        // }
                     });
                 }
             } catch (error) {

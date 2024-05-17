@@ -15,54 +15,44 @@ const UserForm = ({ isPending, error, success }: UserFormProps) => {
     const form = useFormContext();
     return (
         <Form {...form}>
-            <FormLabel className={'flex justify-center p-4 underline'}>Пользователь</FormLabel>
-            {/*<FormField*/}
-            {/*    control={form.control}*/}
-            {/*    name="username"*/}
-            {/*    render={({ field }) => (*/}
-            {/*        <FormItem>*/}
-            {/*            <FormLabel>Имя пользователя</FormLabel>*/}
-            {/*            <FormControl>*/}
-            {/*                <Input autoComplete={'username'} type={'text'} placeholder="Имя" {...field} />*/}
-            {/*            </FormControl>*/}
-            {/*            <FormMessage />*/}
-            {/*        </FormItem>*/}
-            {/*    )}*/}
-            {/*/>*/}
-            <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>Email</FormLabel>
-                        <FormControl>
-                            <Input autoComplete={'email'} disabled={isPending} type={'email'} placeholder="example@gmail.com" {...field} />
-                        </FormControl>
-                        <FormDescription>
-                            Введите адрес электронной почты
-                        </FormDescription>
-                        <FormMessage />
-                    </FormItem>
-                )}
-            />
-            <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>Пароль</FormLabel>
-                        <FormControl>
-                            <Input autoComplete={'current-password'} disabled={isPending} type={'password'} placeholder="Пароль" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                )}
-            />
-            <FormError message={error} />
-            <FormSuccess message={success} />
-            <Button  disabled={isPending} type={'submit'} size={"lg"} className={'h-12 p-4 border-black bg-green-600 rounded  font-bold  transition'} >
-                <span>Войти</span>
-            </Button>
+            <form onSubmit={form.handleSubmit(() => {})}>
+                <FormLabel className={'flex justify-center p-4 underline'}>Пользователь</FormLabel>
+                <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Email</FormLabel>
+                            <FormControl>
+                                <Input autoComplete={'email'} disabled={isPending} type={'email'} placeholder="example@gmail.com" {...field} />
+                            </FormControl>
+                            <FormDescription>
+                                Введите адрес электронной почты
+                            </FormDescription>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Пароль</FormLabel>
+                            <FormControl>
+                                <Input autoComplete={'current-password'} disabled={isPending} type={'password'} placeholder="Пароль" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormError message={error} />
+                <FormSuccess message={success} />
+                <Button  disabled={isPending} type={'submit'} size={"lg"} className={'h-12 p-4 border-black bg-green-600 rounded  font-bold  transition'} >
+                    <span>Войти</span>
+                </Button>
+            </form>
+
         </Form>
     );
 };

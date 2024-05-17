@@ -7,12 +7,12 @@ import {LoginSchema} from "@/schemas";
 
 export const login = async (values: z.infer<typeof LoginSchema>) => {
     const validatedFields = LoginSchema.safeParse(values)
-    if(!validatedFields.success){
-        return {error: 'Ошибка при авторизации'};
-    }
-    if(validatedFields.success){
-        return {success: 'Успешная авторизация'};
-    }
+    // if(!validatedFields.success){
+    //     return {error: 'Ошибка при авторизации'};
+    // }
+    // if(validatedFields.success){
+    //     return {success: 'Успешная авторизация'};
+    // }
     console.log(values)
     const {email, password} = values;
     try {
