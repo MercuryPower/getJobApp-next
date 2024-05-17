@@ -47,21 +47,21 @@ const LoginSection = () => {
             try {
                 if (isRegistration) {
                     register(values as z.infer<typeof  RegistrationSchema>, userType).then((data) =>{
-                        // if (data.error) {
-                        //     setError(data.error);
-                        //     console.log(data)
-                        // } else if (data && 'success' in data) {
-                        //     setSuccess(data.success);
-                        //     console.log(data)
-                        // }
+                        if (data?.error) {
+                            setError(data.error);
+                            console.log(data)
+                        } else if(data?.success){
+                            setSuccess(data.success);
+                            console.log(data)
+                        }
                     })
                 } else {
                     login(values as z.infer<typeof LoginSchema>).then((data) => {
                         console.log(data)
-                        if (data && 'error' in data) {
+                        if (data?.error) {
                             setError(data.error);
                             console.log(data)
-                        } else if (data && 'success' in data) {
+                        } else if(data?.success){
                             setSuccess(data.success);
                             console.log(data)
                         }

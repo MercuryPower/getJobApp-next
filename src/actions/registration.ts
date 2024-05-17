@@ -11,22 +11,29 @@ export const register = async (values: TypeOf<typeof RegistrationSchema>, type: 
         return {error: 'Ошибка при регистрации'};
     }
     console.log(values)
-    const {username ,email, password} = values;
+
     try {
+        const {username ,email, password} = values;
+        const formData = new URLSearchParams();
+        formData.append('username', username);
+        formData.append('email', email);
+        formData.append('password', password);
         const response = await fetch('http://127.0.0.1:8000/auth/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({username: username,email:email, password, type}),
+            body: JSON.stringify({username: username,email: email, password, type}),
         });
         if (response.ok) {
             const data = await response.json();
             const token = data.token;
             localStorage.setItem('token', token);
             console.log(data, token)
-            data.success = 'Успешная регистрация'
-            window.location.reload()
+            setTimeout(() => {
+                window.location.reload();
+            }, 100);
+            return { success: 'Успешная авторизация' };
         }
     }
     catch(error: any){

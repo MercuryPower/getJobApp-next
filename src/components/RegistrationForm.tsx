@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useFormContext} from "react-hook-form";
-import {FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
+import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
 import FormError from "@/components/forms/form-error";
 import FormSuccess from "@/components/forms/form-success";
@@ -15,7 +15,7 @@ interface RegistrationFormProps {
 const RegistrationForm = ({toggleRegistration,isPending,error,success}: RegistrationFormProps ) => {
     const form = useFormContext();
     return (
-        <>
+        <Form {...form}>
             <FormLabel className={'flex justify-center p-4 underline m-2'}>Регистрация</FormLabel>
             <FormField
                 control={form.control}
@@ -61,13 +61,13 @@ const RegistrationForm = ({toggleRegistration,isPending,error,success}: Registra
             />
             <FormError message={error} />
             <FormSuccess message={success} />
-            <Button type={'submit'} size={"lg"}  className={'h-12 p-4 border-black bg-green-600 rounded  font-bold  transition'} >
+            <Button disabled={isPending} type={'submit'} size={"lg"}  className={'h-12 p-4 border-black bg-green-600 rounded  font-bold  transition'} >
                 <span>Регистрация</span>
             </Button>
             <Button type={'button'} onClick={toggleRegistration} size={'sm'} variant={'link'}>
                 <span>Уже есть аккаунт?</span>
             </Button>
-        </>
+        </Form>
     );
 };
 
