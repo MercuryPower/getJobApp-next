@@ -3,7 +3,7 @@ import {GET_CITIES} from "@/url/urls";
 import MultipleSelector, {Option} from "@/components/multiselect";
 import {Select} from "@/components/ui/select";
 
-const MultiselectSkills = () => {
+const MultiselectSkills = ({ onChange }: { onChange: (selectedSkills: string[]) => void}) => {
     const [skills, setSkills] = useState<Option[]>()
     useEffect(() => {
         const fetchSkills = async () => {
@@ -26,9 +26,13 @@ const MultiselectSkills = () => {
 
         void fetchSkills();
     }, []);
+    const handleChange = (selected: Option[]) => {
+        const selectedValues = selected.map(option => option.value);
+        onChange(selectedValues);
+    };
     return (
         <div>
-            <MultipleSelector className={'max-h-40 w-full overflow-y-auto overflow-x-hidden'} hidePlaceholderWhenSelected={true}  placeholder="Выберите навыки"  options={skills} emptyIndicator={
+            <MultipleSelector onChange={handleChange}  className={'max-h-40 w-full overflow-y-auto overflow-x-hidden'} hidePlaceholderWhenSelected={true}  placeholder="Выберите навыки"  options={skills} emptyIndicator={
                 `Данных не найдено.`
             }
             />

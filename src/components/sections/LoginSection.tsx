@@ -22,7 +22,6 @@ import FormError from "@/components/forms/form-error";
 import {register} from "@/actions/registration";
 
 const LoginSection = () => {
-    const router = useRouter();
     const [userType, setUserType] = useState('')
     const [isRegistration, setIsRegistration] = useState(false)
     const [isPending, startTransition] = useTransition()
@@ -126,7 +125,6 @@ const LoginSection = () => {
                         ) : (
                             <>
                                 <UserForm success={success} error={error} isPending={isPending}/>
-                                <FormSuccess/>
                                 <Button type={'button'} onClick={() => setIsRegistration(true)} size={'sm'}
                                         variant={'link'}>
                                     <span>Нет аккаунта?</span>

@@ -15,7 +15,7 @@ import LoginSection from "@/components/sections/LoginSection";
 import {useSession} from "next-auth/react";
 import {auth} from "@/auth";
 import {getToken} from "@auth/core/jwt";
-import LogOutButton from "@/components/ui/LogOutButton";
+import LogOutSection from "@/components/sections/LogOutSection";
 import {useAuth, useIsEmployer} from "@/components/providers";
 
 const Navbar = () => {
@@ -188,7 +188,7 @@ const Navbar = () => {
                             <p className={'self-center text-xs'}>{user?.email}</p>
                         </div>
                         <div>
-                            <LogOutButton/>
+                            <LogOutSection/>
                         </div>
 
                     </div>)

@@ -1,9 +1,7 @@
 import React, {useState} from 'react';
 import {Slider} from "@/components/ui/slider";
 import {cn} from "@/lib/utils";
-import {max} from "@floating-ui/utils";
-import {Input} from "@/components/ui/input";
-import {FormField, FormItem} from "@/components/ui/form";
+import {FormItem} from "@/components/ui/form";
 type SliderProps = React.ComponentProps<typeof Slider>
 const SalarySlider = ({ className, ...props }: SliderProps) => {
     const [range, setRange] = useState([0, 500000]);

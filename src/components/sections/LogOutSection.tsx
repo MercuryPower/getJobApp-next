@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {Button} from "@/components/ui/button";
 
-const LogOutButton = () => {
+const LogOutSection = () => {
     const logOut = async () => {
         try {
             const response = await fetch(`http://127.0.0.1:8000/auth/jwt/logout`,{
@@ -34,4 +34,4 @@ const LogOutButton = () => {
     );
 };
 
-export default LogOutButton;
+export default LogOutSection;

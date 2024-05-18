@@ -23,14 +23,14 @@ import {GET_CITIES} from "@/url/urls";
 
 
 
-export function ComboboxCity() {
+export function ComboboxCity({ onSelect }: { onSelect: (city: string) => void }) {
     const [open, setOpen] = React.useState(false)
     const [value, setValue] = React.useState("")
     const [cities, setCities] = useState<Array<{id:number; name:string}>>([])
     useEffect(() => {
         const fetchCities = async () => {
             try {
-                const response = await fetch(GET_CITIES);
+                const response = await fetch('https://jsonplaceholder.typicode.com/users');
                 if (response.ok) {
                     const data = await response.json();
                     setCities(data);
@@ -44,6 +44,12 @@ export function ComboboxCity() {
 
         void fetchCities();
     }, []);
+    const handleSelect = (currentValue: string) => {
+        const selectedCity = currentValue === value ? "" : currentValue
+        setValue(selectedCity)
+        setOpen(false)
+        onSelect(selectedCity) // Communicate the selected city to the parent
+    }
     return (
         <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
@@ -68,10 +74,7 @@ export function ComboboxCity() {
                             <CommandItem
                                 key={city.id}
                                 value={city.name}
-                                onSelect={(currentValue) => {
-                                    setValue(currentValue === value ? "" : currentValue)
-                                    setOpen(false)
-                                }}
+                                onSelect={handleSelect}
                             >
                                 <Check
                                     className={cn(
@@ -88,3 +91,4 @@ export function ComboboxCity() {
         </Popover>
     )
 }
+export default ComboboxCity

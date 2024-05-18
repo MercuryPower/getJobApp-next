@@ -1,5 +1,5 @@
 'use client'
-import React from 'react';
+import React, {useEffect} from 'react';
 import VacancyCards from "@/components/VacancyCards";
 import VacancyCardSkeleton from "@/components/ui/skeletons/VacancyCardSkeleton";
 import Search from "@/components/ui/search";
@@ -13,9 +13,11 @@ import SalarySlider from "@/components/filter/SalarySlider";
 import {Button} from "@/components/ui/button";
 import {Form} from "@/components/ui/form";
 import VacancyFilter from "@/components/filter/VacancyFilter";
+import {useRouter} from "next/navigation";
 
 
 const Page = ({searchParams,}:{searchParams?:{query?: string; page?:string, perPage?:string}}) => {
+    const router = useRouter();
     const query = searchParams?.query || '';
     const currentPage = Number(searchParams?.page) || 1;
     const { data, error } = useApiGet(GET_VACANCIES, { cache: 'force-cache', next: { revalidate: 1800 } });
