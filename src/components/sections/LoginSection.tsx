@@ -35,7 +35,7 @@ const LoginSection = () => {
             defaultValues: {
                 email: '',
                 password: '',
-                username: ''
+                username: '',
             }
         })
 
@@ -46,7 +46,7 @@ const LoginSection = () => {
             try {
                 console.log(isRegistration)
                 if (isRegistration) {
-                    register(values as z.infer<typeof  RegistrationSchema>, userType, router)
+                    register(values as z.infer<typeof  RegistrationSchema>, userType)
                         .then((data) =>{
                         if (data?.error) {
                             setError(data.error);
@@ -55,24 +55,7 @@ const LoginSection = () => {
                             setSuccess(data.success);
                             console.log(data)
                         }
-                        // router.refresh()
-
-                        login({ email: values.email, password: values.password })
-                            .then((loginData) => {
-                            if (loginData?.error) {
-                                setError(loginData.error);
-                                console.log(loginData);
-                                setTimeout(() => {
-                                    window.location.reload()
-                                }, 100);
-                            } else if (loginData?.success) {
-                                setSuccess(loginData.success);
-                                console.log(loginData);
-                                setTimeout(() => {
-                                    window.location.reload()
-                                }, 100);
-                            }
-                        });
+                        void login({email: values.email, password: values.password})
                     })
                 } else {
                     login(values as z.infer<typeof LoginSchema>).then((data) => {
@@ -106,36 +89,54 @@ const LoginSection = () => {
                 </DialogTrigger>
                 <DialogContent>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 flex flex-col p-8">
-                    {!isRegistration ? (
-                        <>
-                            {userType !== 'company' && (
-                                <Button onClick={() => setUserType('company')}>
-                                    <span>Я ищу работника</span>
+                        {isRegistration ? (
+                            userType ? (
+                                userType === 'company' ? (
+                                    <>
+                                        <Button onClick={() => setUserType('user')}>
+                                            <span>Я ищу работу</span>
+                                        </Button>
+                                        <RegistrationForm userType={userType} isPending={isPending} error={error}
+                                                          success={success}
+                                                          toggleRegistration={() => setIsRegistration(false)}/>
+                                    </>
+                                    )
+                                    :
+                                    (
+                                        <>
+                                            <Button onClick={() => setUserType('company')}>
+                                                <span>Я ищу работника</span>
+                                            </Button>
+                                            <RegistrationForm userType={userType} isPending={isPending} error={error}
+                                                              success={success}
+                                                              toggleRegistration={() => setIsRegistration(false)}/>
+                                        </>
+                                    )
+                            )
+                                : (
+                                <>
+                                    <Button onClick={() => setUserType('company')}>
+                                        <span>Я ищу работника</span>
+                                    </Button>
+                                    <Button onClick={() => setUserType('user')}>
+                                        <span>Я ищу работу</span>
+                                    </Button>
+                                </>
+                            )
+                        ) : (
+                            <>
+                                <UserForm success={success} error={error} isPending={isPending}/>
+                                <FormSuccess/>
+                                <Button type={'button'} onClick={() => setIsRegistration(true)} size={'sm'}
+                                        variant={'link'}>
+                                    <span>Нет аккаунта?</span>
                                 </Button>
-                            )}
-                            {userType !== 'user' && (
-                                <Button onClick={() => setUserType('user')}>
-                                    <span>Я ищу работу</span>
-                                </Button>
-                            )}
-                            {userType === 'user' && (
-                                <UserForm success={success} error={error} isPending={isPending} />
-                            )}
-                            {userType === 'company' && (
-                                <CompanyForm success={success} error={error} isPending={isPending} />
-                            )}
-                            <FormSuccess />
-                            <Button type={'button'} onClick={() => setIsRegistration(true)} size={'sm'} variant={'link'}>
-                                <span>Нет аккаунта?</span>
-                            </Button>
-                        </>
-                    ) : (
-                        <RegistrationForm error={error} success={success} toggleRegistration={() => setIsRegistration(false)} />
-                    )}
+                            </>
+                        )}
                     </form>
-                 </DialogContent>
-             </Dialog>
-         </FormProvider>
+                </DialogContent>
+            </Dialog>
+        </FormProvider>
     );
 };
 

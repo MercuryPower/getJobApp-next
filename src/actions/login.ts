@@ -1,4 +1,3 @@
-'use server'
 import {z} from "zod";
 import {LoginSchema} from "@/schemas";
 import {cookies} from "next/headers";
@@ -26,7 +25,7 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
         if (response.ok) {
             const data = await response.json();
             const token = data.access_token;
-            cookies().set(token)
+            localStorage.setItem('token', token);
             setTimeout(() => {
                 window.location.reload();
             }, 300);

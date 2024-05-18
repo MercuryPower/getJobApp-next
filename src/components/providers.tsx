@@ -6,7 +6,7 @@ import {IsEmployerContextProps} from "@/types/types";
 export const AuthContext = createContext<{
     isLoggedIn: boolean;
     setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-    user: {id: number, username:string, email: string}| null;
+    user: {id: number, username:string, email: string,  type:string;}| null;
 }>({
     isLoggedIn: false,
     setIsLoggedIn: () => {},
@@ -16,7 +16,7 @@ const IsEmployerContext = createContext<IsEmployerContextProps | undefined>(unde
 export default function Providers({children}:{children:React.ReactNode}){
     const [isEmployer, setIsEmployer] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [user ,setUser] = useState<{id: number, username:string, email: string;} | null >(null)
+    const [user ,setUser] = useState<{id: number, username:string, email: string,  type:string;} | null >(null)
     useEffect(() => {
         const fetchData = async () => {
             try {

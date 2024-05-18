@@ -11,8 +11,9 @@ interface RegistrationFormProps {
     error?:string;
     success?:string;
     toggleRegistration: () => void;
+    userType:string;
 }
-const RegistrationForm = ({toggleRegistration,isPending,error,success}: RegistrationFormProps ) => {
+const RegistrationForm = ({toggleRegistration,isPending,error,success, userType}: RegistrationFormProps ) => {
     const form = useFormContext();
     return (
         <Form {...form}>

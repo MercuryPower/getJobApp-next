@@ -12,8 +12,9 @@ import LoginSection from "@/components/sections/LoginSection";
 import {useRouter} from "next/navigation";
 import {useEffect, useState} from "react";
 import {useAuth} from "@/components/providers";
+import JobSeekerForm from "@/components/forms/JobSeekerForm";
 export default function Home() {
-    const { isLoggedIn } = useAuth();
+    const { isLoggedIn, user } = useAuth();
     // const [isLoggedIn, setIsLoggedIn] = useState(false)
     // const [user, setUser] = useState<any>()
     // useEffect(() => {
@@ -56,8 +57,14 @@ export default function Home() {
                 <div className={'flex flex-col m-24 p-2 '}>
                     <h1 className={'text-4xl font-light'}>| 01 <span className={' p-2 font-bold text-3xl '}>Создайте необходимую вакансию</span>
                     </h1>
-                    {isLoggedIn ?
-                        <VacancyForm/> :
+                    {isLoggedIn  ?
+                        user?.type === 'company' ?(
+                            <VacancyForm/>
+                            ):
+                            (
+                            <JobSeekerForm/>
+                            )
+                            :
                         <div className={'flex h-96 justify-center flex-grow flex-col self-center min-w-4 w-1/2  m-6 shadow rounded border p-4 space-y-4'}>
                             <span className={'self-center '}>Чтобы создать вакансию - авторизуйтесь</span>
                             <LoginSection />
