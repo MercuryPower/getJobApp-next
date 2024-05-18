@@ -22,22 +22,21 @@ import FormError from "@/components/forms/form-error";
 import {register} from "@/actions/registration";
 
 const LoginSection = () => {
+    const router = useRouter();
     const [userType, setUserType] = useState('')
     const [isRegistration, setIsRegistration] = useState(false)
     const [isPending, startTransition] = useTransition()
     const [error, setError] = useState<string | undefined>('')
     const [success, setSuccess] = useState<string | undefined>('')
+
     const formSchema = isRegistration ? RegistrationSchema : LoginSchema;
         const form = useForm<z.infer<typeof LoginSchema | typeof RegistrationSchema>>({
             resolver: zodResolver(formSchema),
-            defaultValues: isRegistration ? {
+            defaultValues: {
                 email: '',
                 password: '',
-                username: '',
-            } : {
-                email: '',
-                password: '',
-            },
+                username: ''
+            }
         })
 
     function onSubmit(values: z.infer<typeof LoginSchema> | z.infer<typeof RegistrationSchema>) {
@@ -47,7 +46,8 @@ const LoginSection = () => {
             try {
                 console.log(isRegistration)
                 if (isRegistration) {
-                    register(values as z.infer<typeof  RegistrationSchema>, userType).then((data) =>{
+                    register(values as z.infer<typeof  RegistrationSchema>, userType, router)
+                        .then((data) =>{
                         if (data?.error) {
                             setError(data.error);
                             console.log(data)
@@ -55,15 +55,21 @@ const LoginSection = () => {
                             setSuccess(data.success);
                             console.log(data)
                         }
-                        login({ email: values.email, password: values.password }).then((loginData) => {
+                        // router.refresh()
+
+                        login({ email: values.email, password: values.password })
+                            .then((loginData) => {
                             if (loginData?.error) {
                                 setError(loginData.error);
                                 console.log(loginData);
+                                setTimeout(() => {
+                                    window.location.reload()
+                                }, 100);
                             } else if (loginData?.success) {
                                 setSuccess(loginData.success);
                                 console.log(loginData);
                                 setTimeout(() => {
-                                    window.location.reload();
+                                    window.location.reload()
                                 }, 100);
                             }
                         });

@@ -1,3 +1,5 @@
+import React, {createContext} from "react";
+
 export interface VacancyInfo {
     id: number;
     companyName: string;
@@ -14,4 +16,9 @@ export interface VacancyInfo {
     }[]
     exp:string;
     [key: string]: any;
+}
+
+export interface IsEmployerContextProps {
+    isEmployer: boolean;
+    setIsEmployer: (value: boolean) => void;
 }

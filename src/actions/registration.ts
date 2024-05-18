@@ -2,10 +2,13 @@
 
 import {TypeOf, z} from "zod";
 import {LoginSchema, RegistrationSchema} from "@/schemas";
+import {useRouter} from "next/navigation";
+import {Router} from "next/router";
+import {AppRouterInstance} from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 
+export const register = async (values: TypeOf<typeof RegistrationSchema>, type: string, router: AppRouterInstance) => {
 
-export const register = async (values: TypeOf<typeof RegistrationSchema>, type: string) => {
     const validatedFields = RegistrationSchema.safeParse(values);
     if (!validatedFields.success) {
         return { error: 'Ошибка при регистрации' };
@@ -32,13 +35,10 @@ export const register = async (values: TypeOf<typeof RegistrationSchema>, type: 
 
         if (response.ok) {
             await response.json();
-            console.log("Response is OK, reloading page...");
             setTimeout(() => {
-                window.location.reload();
+               window.location.reload()
             }, 100);
             return { success: 'Успешная регистрация' };
-        } else {
-            console.log("Response is not OK, not reloading page.");
         }
     } catch (error: any) {
         throw new Error(error.message);

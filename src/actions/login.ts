@@ -1,6 +1,7 @@
-
+'use server'
 import {z} from "zod";
 import {LoginSchema} from "@/schemas";
+import {cookies} from "next/headers";
 
 
 
@@ -25,16 +26,14 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
         if (response.ok) {
             const data = await response.json();
             const token = data.access_token;
-            localStorage.setItem('token', token);
+            cookies().set(token)
             setTimeout(() => {
                 window.location.reload();
             }, 300);
             return { success: 'Успешная авторизация' };
-        } else {
-            throw new Error('Ошибка при авторизации');
         }
     } catch (error) {
-        throw new Error((error as Error).message);
+        throw new Error('Ошибка при авторизации');
     }
 
 }

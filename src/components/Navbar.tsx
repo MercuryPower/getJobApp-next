@@ -15,8 +15,8 @@ import LoginSection from "@/components/sections/LoginSection";
 import {useSession} from "next-auth/react";
 import {auth} from "@/auth";
 import {getToken} from "@auth/core/jwt";
-import LogOutButton from "@/components/LogOutButton";
-import {useAuth} from "@/components/providers";
+import LogOutButton from "@/components/ui/LogOutButton";
+import {useAuth, useIsEmployer} from "@/components/providers";
 
 const Navbar = () => {
     // const [userType, setUserType] = useState('employer')
@@ -24,6 +24,7 @@ const Navbar = () => {
     // const handleTypeChange = (type: string) => {
     //     setUserType(type)
     // }
+    const {isEmployer, setIsEmployer} = useIsEmployer()
     const router = useRouter();
     // const secret = process.env.AUTH_SECRET;
     const {isLoggedIn, user} = useAuth();
@@ -66,12 +67,12 @@ const Navbar = () => {
             <div className={'flex'}>
                 <div className={'w-159 flex ml-4 self-center flex-col p-1   '}>
                     <div className={'flex m-2 '}>
-                        <Button onClick={() => router.push('/')}
-                                className={'w-48 text-center rounded  border-2 p-2  transition'}>Соискателям</Button>
+                        <Button  onClick={() => setIsEmployer(false)}
+                                className={`w-48 font-light text-center ${!isEmployer && `bg-green-600 font-bold outline hover:bg-green-600`}   p-2  transition`}>Соискателям</Button>
                     </div>
                     <div className={'flex justify-center'}>
-                        <Button className={'w-48 border-black bg-green-600 p-2 rounded font-bold transition'}
-                                onClick={() => router.push('/employer')}>Работодателям</Button>
+                        <Button className={`w-48 text-center  font-light  ${isEmployer && `bg-green-600 outline font-bold hover:bg-green-600`} p-2 rounded transition`}
+                                onClick={() => setIsEmployer(true)}>Работодателям</Button>
                     </div>
                 </div>
                 <button onClick={() => router.push('/')}>
@@ -181,10 +182,11 @@ const Navbar = () => {
                     <ThemeSwitch/>
                 </div>
                 {isLoggedIn ?
-                    (<>
+                    (<div className={'max-w-md text-ellipsis overflow-hidden'}>
                         <p className={'self-center'}>{user?.username}</p>
+                        <p className={'self-center text-xs'}>{user?.email}</p>
                         <LogOutButton />
-                    </>)
+                    </div>)
                     :
                     <LoginSection />
                 }

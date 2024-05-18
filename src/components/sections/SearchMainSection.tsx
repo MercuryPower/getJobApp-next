@@ -1,11 +1,13 @@
 'use client'
 import React, {memo, useCallback, useEffect, useState} from 'react';
 import dynamic from "next/dynamic";
+import {useIsEmployer} from "@/components/providers";
 
 const AnimatedNumbers = dynamic(() => import('react-animated-numbers'), {
     ssr: false
 });
 const SearchMainSection = () => {
+    const {isEmployer} = useIsEmployer();
     const [jobsList, setJobList] = useState([
         'DevOps',
         'Frontend',
@@ -59,7 +61,9 @@ const SearchMainSection = () => {
                 <h1 className={'text-8xl m-2 font-bold'}>Подберем</h1>
                 <div className={'flex gap-10'}>
                     <div className={'flex'}>
-                        <h1  className={'text-8xl font-bold text-green-600 '}>лучших</h1>
+                        {isEmployer ?
+                            <h1  className={'text-8xl font-bold text-green-600 '}>лучших</h1> :
+                            <h1  className={'text-8xl font-bold text-green-600 '}>лучшую</h1> }
                     </div>
                     <div className={'flex self-center m-4 mt-7 h-14 rounded'}>
                         <input className={'w-96 flex p-2 text-xl rounded-l '} placeholder={`${text}`}></input>
@@ -71,7 +75,9 @@ const SearchMainSection = () => {
                         </button>
                     </div>
                 </div>
+                {isEmployer ?
                 <h1 className={'text-8xl font-bold m-2'}>специалистов</h1>
+                    : <h1 className={'text-8xl font-bold m-2'}>компанию</h1> }
             </div>
             <div className={'flex  justify-center gap-12'}>
                 <div className={'w-80  flex justify-center self-end text-center'}>
