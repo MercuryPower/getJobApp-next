@@ -2,32 +2,61 @@ import React, {useState} from 'react';
 import {Slider} from "@/components/ui/slider";
 import {cn} from "@/lib/utils";
 import {FormItem} from "@/components/ui/form";
+import {Input} from "@/components/ui/input";
 type SliderProps = React.ComponentProps<typeof Slider>
 const SalarySlider = ({ className,onChange, ...props }: SliderProps) => {
     const [range, setRange] = useState([0, 500000]);
+    const [minSalary, setMinSalary] = useState<number>(0);
+    const [maxSalary, setMaxSalary] = useState<number>(500000);
 
-    // const handleRangeChange = (value: number[]) => {
-    //     setRange(value);
-    //     if (onChange) {
-    //         onChange(value);
-    //     }
-    // };
+    const handleRangeChange = (value: number[]) => {
+        setRange(value);
+        setMinSalary(value[0]);
+        setMaxSalary(value[1]);
+        // if (onChange) {
+        //     onChange(value);
+        // }
+    };
+
+    const handleMinSalaryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = Number(event.target.value.replace(/\D/g, ''));
+        if (!isNaN(value)) {
+            setMinSalary(value);
+            setRange([value, maxSalary]);
+        }
+    };
+
+    const handleMaxSalaryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = Number(event.target.value.replace(/\D/g, ''));
+        if (!isNaN(value)) {
+            setMaxSalary(value);
+            setRange([minSalary, value]);
+        }
+    };
 
     return (
         <div className={cn("slider-container", className)}>
+            <div className="flex justify-between p-2">
+                <div className={'flex '}>
+                    <span className={'text-sm self-center'}>От</span>
+                    <Input min={0} className={'text-sm w-20 h-10 p-2 '}  type="text" value={minSalary.toLocaleString()} onChange={handleMinSalaryChange} />
+                    <span className={'text-sm self-center'}>₽</span>
+                </div>
+                <div className={'flex'}>
+                    <span className={'text-sm self-center'}>До</span>
+                    <Input className={'text-sm w-20 h-10 p-2'}  type="text" value=  {maxSalary < 500000 ? maxSalary.toLocaleString() : `< 500 000`} onChange={handleMaxSalaryChange} />
+                    <span className={'text-sm self-center'}>₽</span>
+                </div>
+            </div>
             <Slider
                 defaultValue={[0, 500000]}
                 max={500000}
                 min={0}
                 step={500}
                 value={range}
-                // onValueChange={handleRangeChange}
+                onValueChange={handleRangeChange}
                 {...props}
             />
-            <div className="flex p-2 justify-center slider-labels space-x-2">
-                <FormItem>от {range[0].toLocaleString()} ₽</FormItem>
-                <FormItem>до {range[1].toLocaleString()} ₽ {range[1] >= 500000 && String(`и более`) }</FormItem>
-            </div>
         </div>
     );
 };

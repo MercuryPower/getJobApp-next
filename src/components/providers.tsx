@@ -3,6 +3,7 @@
 import {ThemeProvider} from "next-themes";
 import React, {createContext, useContext, useEffect, useState} from "react";
 import {IsEmployerContextProps} from "@/types/types";
+import {router} from "next/client";
 export const AuthContext = createContext<{
     isLoggedIn: boolean;
     setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;

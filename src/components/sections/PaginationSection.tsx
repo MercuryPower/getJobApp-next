@@ -29,7 +29,6 @@ const PaginationSection = ({currentPage}:{currentPage:number}) => {
         if (pageNumber >= 1 && pageNumber <= totalPages) {
             router.push(`/vacancies?page=${pageNumber}${searchParams.get('query') || ''}`);
         }
-
     };
 
     const renderPages = () => {

@@ -6,13 +6,6 @@ import SelectTypeOfEmploy from "@/components/filter/SelectTypeOfEmploy";
 import MultiselectSkills from "@/components/filter/MultiselectSkills";
 import SalarySlider from "@/components/filter/SalarySlider";
 import {Button} from "@/components/ui/button";
-import {LoginSchema, RegistrationSchema} from "@/schemas";
-import {useForm} from "react-hook-form";
-import {z} from "zod";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {register} from "@/actions/registration";
-import {login} from "@/actions/login";
-import {tryParsePattern} from "next/dist/build/webpack/plugins/jsconfig-paths-plugin";
 import {usePathname, useRouter} from "next/navigation";
 
 const VacancyFilter = () => {
@@ -70,7 +63,7 @@ const VacancyFilter = () => {
                     <div className={'space-y-4 pt-6'}>
                         <div className={'space-y-2'}>
                             <h3 className={'text-lg'}>Город</h3>
-                            <ComboboxCity onSelect={(selectedCity) => setSelectedCity(selectedCity)} />
+                            <ComboboxCity setSelectedCity={(selectedCity) => setSelectedCity(selectedCity)} />
                         </div>
                         <div className={'space-y-2' }>
                             <h3 className={'text-lg'}>Тип занятости</h3>
@@ -85,7 +78,7 @@ const VacancyFilter = () => {
                             <SalarySlider  />
                         </div>
                     </div>
-                    <Button type={'submit'} className={'m-2'}>Поиск</Button>
+                    <Button type={'submit'} className={'mt-8'}>Поиск</Button>
                 </form>
             </div>
         </div>

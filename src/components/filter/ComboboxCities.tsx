@@ -23,7 +23,7 @@ import {GET_CITIES} from "@/url/urls";
 
 
 
-export function ComboboxCity({ onSelect }: { onSelect: (city: string) => void }) {
+export function ComboboxCity({ setSelectedCity }: { setSelectedCity: (city: string) => void }) {
     const [open, setOpen] = React.useState(false)
     const [value, setValue] = React.useState("")
     const [cities, setCities] = useState<Array<{id:number; name:string}>>([])
@@ -48,7 +48,7 @@ export function ComboboxCity({ onSelect }: { onSelect: (city: string) => void })
         const selectedCity = currentValue === value ? "" : currentValue
         setValue(selectedCity)
         setOpen(false)
-        onSelect(selectedCity) // Communicate the selected city to the parent
+        setSelectedCity(selectedCity) // Communicate the selected city to the parent
     }
     return (
         <Popover open={open} onOpenChange={setOpen}>
