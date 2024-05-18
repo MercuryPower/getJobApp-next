@@ -19,12 +19,16 @@ export const RegistrationSchema = z.object({
         message:'Пароль должен быть больше 6 символов'
     }),
 })
-export const userSchema = z.object({
-    email: z.string().email({ message: 'Неправильный адрес электронной почты' }),
-    password: z.string().min(6, { message: 'Пароль должен быть больше 6 символов' }),
-    username: z.string({ message: 'Username is required' }),
-});
-export const companySchema = z.object({
-    companyName: z.string({ message: 'Имя организации должно быть' }),
-    companyEmail: z.string().email({ message: 'Неправильный адрес электронной почты' }),
-});
+
+export const VacancyCreateSchema = z.object({
+    vacancyName: z.string().min(2,{
+        message: 'Название вакансии должно состоять из больше чем 2 символов'
+    }),
+    fixedSalary: z.number(),
+    minSalary: z.number(),
+    maxSalary: z.number(),
+    vacancyDescription: z.string(),
+    contacts: z.string(),
+    resume:z.string(),
+    exp: z.string(),
+})

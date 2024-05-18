@@ -17,7 +17,6 @@ import {usePathname, useRouter} from "next/navigation";
 
 const VacancyFilter = () => {
     const pathname = usePathname();
-
     const [selectedCity, setSelectedCity] = useState<string>("");
     const [selectedTypeOfEmploy, setSelectedTypeOfEmploy] = useState<string[]>([]);
     const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
