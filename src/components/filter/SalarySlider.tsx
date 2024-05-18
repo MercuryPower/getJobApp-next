@@ -5,9 +5,9 @@ import {FormItem} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
 type SliderProps = React.ComponentProps<typeof Slider>
 const SalarySlider = ({ className,onChange, ...props }: SliderProps) => {
-    const [range, setRange] = useState([0, 500000]);
+    const [range, setRange] = useState([0, 300000]);
     const [minSalary, setMinSalary] = useState<number>(0);
-    const [maxSalary, setMaxSalary] = useState<number>(500000);
+    const [maxSalary, setMaxSalary] = useState<number>(300000);
 
     const handleRangeChange = (value: number[]) => {
         setRange(value);
@@ -43,13 +43,15 @@ const SalarySlider = ({ className,onChange, ...props }: SliderProps) => {
                     <span className={'text-sm self-center'}>₽</span>
                 </div>
                 <div className={'flex'}>
-                    <span className={'text-sm self-center'}>До</span>
-                    <Input className={'text-sm w-20 h-10 p-2'}  type="text" value=  {maxSalary < 500000 ? maxSalary.toLocaleString() : `< 500 000`} onChange={handleMaxSalaryChange} />
+                    {maxSalary >= 500000 ? <span className={'text-sm self-center'}>{`< `}</span> :
+                        <span className={'text-sm self-center'}>До</span>
+                    }
+                    <Input className={'text-sm w-20 h-10 p-2'}  type="text" value={maxSalary.toLocaleString()} onChange={handleMaxSalaryChange} />
                     <span className={'text-sm self-center'}>₽</span>
                 </div>
             </div>
             <Slider
-                defaultValue={[0, 500000]}
+                defaultValue={[0, 300000]}
                 max={500000}
                 min={0}
                 step={500}
