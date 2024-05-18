@@ -3,12 +3,15 @@ import {Slider} from "@/components/ui/slider";
 import {cn} from "@/lib/utils";
 import {FormItem} from "@/components/ui/form";
 type SliderProps = React.ComponentProps<typeof Slider>
-const SalarySlider = ({ className, ...props }: SliderProps) => {
+const SalarySlider = ({ className,onChange, ...props }: SliderProps) => {
     const [range, setRange] = useState([0, 500000]);
 
-    const handleRangeChange = (value: number[]) => {
-        setRange(value);
-    };
+    // const handleRangeChange = (value: number[]) => {
+    //     setRange(value);
+    //     if (onChange) {
+    //         onChange(value);
+    //     }
+    // };
 
     return (
         <div className={cn("slider-container", className)}>
@@ -18,7 +21,7 @@ const SalarySlider = ({ className, ...props }: SliderProps) => {
                 min={0}
                 step={500}
                 value={range}
-                onValueChange={handleRangeChange}
+                // onValueChange={handleRangeChange}
                 {...props}
             />
             <div className="flex p-2 justify-center slider-labels space-x-2">

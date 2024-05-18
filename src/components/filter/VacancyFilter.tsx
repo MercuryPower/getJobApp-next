@@ -21,7 +21,7 @@ const VacancyFilter = () => {
     const [selectedCity, setSelectedCity] = useState<string>("");
     const [selectedTypeOfEmploy, setSelectedTypeOfEmploy] = useState<string[]>([]);
     const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
-    const [selectedSalaryRange, setSelectedSalaryRange] = useState<number[]>([0, 500000]);
+    const [selectedSalaryRange, setSelectedSalaryRange] = useState<number[]>([]);
     const router = useRouter();
     const onSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
