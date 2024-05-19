@@ -52,9 +52,8 @@ const VacancyFilter = () => {
             } else {
                 console.error('Failed to fetch vacancies');
             }
-        } catch (error) {
-            const errorText = await response.text();
-            console.error('Failed to fetch vacancies:', response.status, errorText);
+        } catch (error:any) {
+            throw new Error((error as Error).message)
         }
     };
     return (

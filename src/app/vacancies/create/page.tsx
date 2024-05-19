@@ -23,8 +23,12 @@ import {Switch} from "@/components/ui/switch";
 import {cn} from "@/lib/utils";
 import SalarySlider from "@/components/filter/SalarySlider";
 import {useAuth} from "@/components/providers";
+import {Text} from "lucide-react";
+import {Textarea} from "@/components/ui/textarea";
+import MultipleSelector, {Option} from "@/components/multiselect";
 const Page = () => {
     const {user} = useAuth();
+    const [skills, setSkills] = useState<Option[]>()
     const [isRefresh, setIsRefresh] = useState(false)
     const [range, setRange] = useState([0, 500000]);
     const [isFixedSalary, setIsFixedSalary] = useState(true)
@@ -39,12 +43,14 @@ const Page = () => {
             vacancyDescription:'',
             contacts:'',
             resume:'',
-            exp:''
+            exp:'',
+            skills:[],
+            cities:[],
         }
     })
-    if(user?.type !== 'company'){
-        return router.push('/')
-    }
+    // if(user?.type !== 'company'){
+    //     return router.push('/')
+    // }
     function onSubmit(values: z.infer<typeof VacancyCreateSchema>) {
         return values;
     }
@@ -119,7 +125,11 @@ const Page = () => {
                             <FormItem>
                                 <FormLabel>Описании вакансии</FormLabel>
                                 <FormControl>
-                                    <Input className={'h-96 text-start'} type={'text'} placeholder="Опишите вашу вакансию" {...field} />
+                                    <Textarea
+                                        className={''}
+                                        placeholder="Опишите вашу вакансию"
+                                        {...field}
+                                    />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -132,7 +142,7 @@ const Page = () => {
                             <FormItem>
                                 <FormLabel>Контакты</FormLabel>
                                 <FormControl>
-                                    <Input autoComplete={'current-password'} type={'text'} placeholder="GitHub, ВКонтакте, Telegram, или иные ссылки" {...field} />
+                                    <Input type={'text'} placeholder="GitHub, ВКонтакте, Telegram, или иные ссылки" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -145,11 +155,7 @@ const Page = () => {
                             <FormItem>
                                 <FormLabel>Резюме</FormLabel>
                                 <FormControl>
-                                    <>
-                                        <Input autoComplete={'current-password'} type={'file'} placeholder="10 000 ₽" {...field} />
-                                        <Input autoComplete={'current-password'} type={'text'} placeholder="Портфолио: GitHub или что-то подобное" {...field} />
-                                    </>
-
+                                    <Input type={'text'} placeholder="Портфолио: GitHub или что-то подобное" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -163,7 +169,7 @@ const Page = () => {
                                 <FormLabel>Уровень навыка</FormLabel>
                                 <FormControl>
                                     <Select >
-                                        <SelectTrigger className="w-full text-xl">
+                                        <SelectTrigger className="w-full h-16 text-xl">
                                             <SelectValue className="w-full text-xl" placeholder="Middle, Junior, Senior и т.д" />
                                         </SelectTrigger>
                                         <SelectContent>
@@ -177,6 +183,22 @@ const Page = () => {
                                             </SelectGroup>
                                         </SelectContent>
                                     </Select>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="skills"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Уровень навыка</FormLabel>
+                                <FormControl>
+                                    <div className={'flex flex-col justify-center self-center w-96'}>
+                                        <MultipleSelector   creatable className={'self-center max-h-40 h-16 w-full overflow-y-auto overflow-x-hidden'}   placeholder="Выберите навыки"  options={skills}
+                                        />
+                                    </div>
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>

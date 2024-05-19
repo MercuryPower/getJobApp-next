@@ -39,8 +39,6 @@ const Page = ({searchParams,}:{searchParams?:{query?: string; page?:string, perP
                                 </Button>
                             </div>
                         }
-
-
                     {data ?
                         <VacancyCards page={currentPage} query={query} data={data}/>
                         :

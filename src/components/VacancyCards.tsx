@@ -90,14 +90,14 @@ const VacancyCards = ({data, page, query}: {data:VacancyInfo[], page:number, que
                             </p>
                         </div>
                         <div className={'flex justify-center'}>
-                            {vacancy.skills.map((skill, index) => {
+                            {vacancy.skills?.map((skill, index) => {
                                 return <p key={skill.name}
                                           className={'text-ellipsis overflow-hidden m-1 text-xl border font-bold hover:bg-gray-400 p-2 rounded-2xl'}>{skill.name}</p>
                             })}
                         </div>
                         <p>Тип занятости:</p>
                         <div className={'flex justify-center'}>
-                            {vacancy.types_of_employ.map((type, index) => {
+                            {vacancy.types_of_employ?.map((type, index) => {
                                 return <p key={type.name}
                                           className={'text-ellipsis overflow-hidden m-1 hover:bg-gray-400 p-2'}>{type.name}</p>
                             })}
@@ -106,7 +106,7 @@ const VacancyCards = ({data, page, query}: {data:VacancyInfo[], page:number, que
                         <div className={'flex justify-center w-full  '}>
                             <Carousel opts={{align: 'start', dragFree: true,}} className="w- max-w-md  ">
                                 <CarouselContent className={'-ml-4'}>
-                                    {vacancy.cities.map((city) => (
+                                    {vacancy.cities?.map((city) => (
                                         <CarouselItem
                                             className={`basis-${vacancy.cities.length === 1 ? 'full' : (vacancy.cities.length > 3 ? 2 : 3)}  hover:opacity-75 pl-4 `}
                                             key={city.name}>
