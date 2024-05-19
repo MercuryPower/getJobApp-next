@@ -4,7 +4,11 @@ import {cn} from "@/lib/utils";
 import {FormItem} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
 type SliderProps = React.ComponentProps<typeof Slider>
-const SalarySlider = ({ className,onChange, ...props }: SliderProps) => {
+interface SalarySliderProps extends SliderProps {
+    onChangeMinSalary: (value: number) => void;
+    onChangeMaxSalary: (value: number) => void;
+}
+const SalarySlider = ({ className,onChangeMinSalary, onChangeMaxSalary, ...props }: SalarySliderProps) => {
     const [range, setRange] = useState([0, 300000]);
     const [minSalary, setMinSalary] = useState<number>(0);
     const [maxSalary, setMaxSalary] = useState<number>(300000);
@@ -13,13 +17,15 @@ const SalarySlider = ({ className,onChange, ...props }: SliderProps) => {
         setRange(value);
         setMinSalary(value[0]);
         setMaxSalary(value[1]);
-        // if (onChange) {
-        //     onChange(value);
-        // }
+        if (onChangeMinSalary && onChangeMaxSalary) {
+            onChangeMinSalary(value[0]);
+            onChangeMaxSalary(value[1]);
+        }
     };
 
     const handleMinSalaryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const value = Number(event.target.value.replace(/\D/g, ''));
+        let value = Number(event.target.value.replace(/\D/g, ''));
+        value = Math.min(value, 500000);
         if (!isNaN(value)) {
             setMinSalary(value);
             setRange([value, maxSalary]);
@@ -27,7 +33,8 @@ const SalarySlider = ({ className,onChange, ...props }: SliderProps) => {
     };
 
     const handleMaxSalaryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const value = Number(event.target.value.replace(/\D/g, ''));
+        let value = Number(event.target.value.replace(/\D/g, ''));
+        value = Math.min(value, 500000);
         if (!isNaN(value)) {
             setMaxSalary(value);
             setRange([minSalary, value]);

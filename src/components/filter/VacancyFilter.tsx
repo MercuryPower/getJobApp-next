@@ -1,6 +1,5 @@
 'use client'
 import React, {useState} from 'react';
-import {Form} from "@/components/ui/form";
 import {ComboboxCity} from "@/components/filter/ComboboxCities";
 import SelectTypeOfEmploy from "@/components/filter/SelectTypeOfEmploy";
 import MultiselectSkills from "@/components/filter/MultiselectSkills";
@@ -9,12 +8,12 @@ import {Button} from "@/components/ui/button";
 import {usePathname, useRouter} from "next/navigation";
 
 const VacancyFilter = ({ onQueryChange }: { onQueryChange: (query: string) => void }) => {
-    const [query, setQuery] = useState('');
     const pathname = usePathname();
     const [selectedCity, setSelectedCity] = useState<string>("");
     const [selectedTypeOfEmploy, setSelectedTypeOfEmploy] = useState<string[]>([]);
     const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
-    const [selectedSalaryRange, setSelectedSalaryRange] = useState<number[]>([]);
+    const [minSalary, setMinSalary] = useState<number>(0);
+    const [maxSalary, setMaxSalary] = useState<number>(500001);
     const router = useRouter();
     const onSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -30,8 +29,12 @@ const VacancyFilter = ({ onQueryChange }: { onQueryChange: (query: string) => vo
         if (selectedSkills.length > 0) {
             queryParams.set('skills', selectedSkills.join(','));
         }
-        if (selectedSalaryRange.length > 0) {
-            queryParams.set('salary', selectedSalaryRange.join(','));
+        if (minSalary !== 0) {
+            queryParams.set('minSalary', minSalary.toString());
+        }
+        if(maxSalary >= 500000)
+        {
+            queryParams.set('maxSalary', maxSalary.toString());
         }
 
         const queryString = queryParams.toString();
@@ -60,6 +63,14 @@ const VacancyFilter = ({ onQueryChange }: { onQueryChange: (query: string) => vo
         //     throw new Error((error as Error).message)
         // }
     };
+
+    const handleMinSalaryChange = (minSalary:number) => {
+        setMinSalary(minSalary)
+    }
+    const handleMaxSalaryChange = (maxSalary:number) => {
+        setMaxSalary(maxSalary)
+    }
+
     return (
         <div className={'flex flex-col justify-items-center shadow-lg m-4 p-4 border text-center  rounded-2xl space-y-2 w-72 h-fit '}>
             <h2 className={'font-bold text-xl'}>Фильтр</h2>
@@ -80,7 +91,7 @@ const VacancyFilter = ({ onQueryChange }: { onQueryChange: (query: string) => vo
                         </div>
                         <div className={'space-y-2'}>
                             <h3 className={'text-lg'}>Желаемая зарплата</h3>
-                            <SalarySlider  />
+                            <SalarySlider onChangeMinSalary={handleMinSalaryChange} onChangeMaxSalary={handleMaxSalaryChange}   />
                         </div>
                     </div>
                     <Button type={'submit'} className={'mt-8'}>Поиск</Button>

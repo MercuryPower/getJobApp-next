@@ -1,13 +1,12 @@
 'use client'
-import React, {useState} from 'react';
-import {Form, FormProvider, useForm} from "react-hook-form";
+import React, {useState, useTransition} from 'react';
+import {FormProvider, useForm} from "react-hook-form";
 import {z} from "zod";
-import {LoginSchema, RegistrationSchema, VacancyCreateSchema} from "@/schemas";
+import {VacancyCreateSchema} from "@/schemas";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
-import {Slider} from "@/components/ui/slider";
 import {
     Select,
     SelectContent,
@@ -20,23 +19,35 @@ import {
 import {useRouter} from "next/navigation";
 import {Label} from "@/components/ui/label";
 import {Switch} from "@/components/ui/switch";
-import {cn} from "@/lib/utils";
 import SalarySlider from "@/components/filter/SalarySlider";
 import {useAuth} from "@/components/providers";
-import {Text} from "lucide-react";
-// import {Textarea} from "@/components/ui/textarea";
+import {Textarea} from "@/components/ui/textarea";
 import MultipleSelector, {Option} from "@/components/multiselect";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle, DialogTrigger
+} from "@/components/ui/dialog";
 const Page = () => {
+    const [isPending, startTransition] = useTransition();
     const {user} = useAuth();
     const [skills, setSkills] = useState<Option[]>()
-    const [isRefresh, setIsRefresh] = useState(false)
+    const [cities, setCities] = useState<Option[]>()
     const [range, setRange] = useState([0, 500000]);
+    const [isByAgreement, setIsByAgreement] = useState(false);
     const [isFixedSalary, setIsFixedSalary] = useState(true)
     const router = useRouter()
+    // if(user?.type !== 'company'){
+    //     return router.push('/')
+    // }
     const form = useForm<z.infer<typeof VacancyCreateSchema>>({
         resolver: zodResolver(VacancyCreateSchema),
         defaultValues: {
             vacancy_name: '',
+            salary_type:'',
             fixed_salary:0,
             min_salary: 0,
             max_salary: 0,
@@ -46,17 +57,44 @@ const Page = () => {
             exp:'',
             skills:[],
             cities:[],
-            is_fixed_salary:isFixedSalary
         }
     })
-    // if(user?.type !== 'company'){
-    //     return router.push('/')
-    // }
+
     function onSubmit(values: z.infer<typeof VacancyCreateSchema>) {
-        // values.fixedSalary = parseInt(values.fixedSalary);
-        // values.minSalary = parseInt(values.minSalary);
-        // values.maxSalary = parseInt(values.maxSalary);
-        console.log(values)
+        if (values.exp === 'Other') {
+            values.exp = '';
+        }
+        if (isByAgreement) {
+            values.salary_type = 'agreement'
+        } else {
+            values.salary_type = isFixedSalary ? 'fixed' : 'range';
+        }
+        startTransition(() => {
+            const payload = JSON.stringify(values);
+
+            fetch('http://127.0.0.1:8000/auth/vacancy_add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: payload
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Success:', data);
+                    // Handle successful response from the server
+                    // Redirect or display a success message
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Handle errors
+                });
+        })
     }
 
     return (
@@ -86,42 +124,58 @@ const Page = () => {
                         )}
                     />
                     <div className="flex items-center space-x-2">
-                        <Switch id="salarySwitch" checked={isFixedSalary}  onCheckedChange={(prev) => setIsFixedSalary(prev)} />
+                        <Switch id="salaryFixedSwitch" checked={isFixedSalary} disabled={isByAgreement}  onCheckedChange={(prev) => setIsFixedSalary(prev)} />
                         <Label htmlFor="salarySwitch">Фиксированная зарплата</Label>
+                        <Switch id="salaryAgreementSwitch" checked={isByAgreement}  onCheckedChange={(prev) => setIsByAgreement(prev)} />
+                        <Label htmlFor="salaryAgreementSwitch">Договоренная зарплата</Label>
                     </div>
-                    {isFixedSalary ?
-                        <FormField
-                            control={form.control}
-                            name="fixed_salary"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Фиксированная зарплата (в месяц), ₽</FormLabel>
-                                    <FormControl>
-                                        {/*<Input type={'number'} placeholder="10 000 ₽" {...field}  />*/}
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        :
-                        <>
-                            <FormField
-                                control={form.control}
-                                name="min_salary"
-                                render={({ field }) => (
-                                    <FormItem  className={'space-y-4'}>
-                                        <FormLabel>Диапазон зарплаты, ₽</FormLabel>
-                                        <FormControl>
-                                            <FormItem>
-                                                <SalarySlider />
+                    {!isByAgreement && (
+                        isFixedSalary ? (
+                                <FormField
+                                    control={form.control}
+                                    name="fixed_salary"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Фиксированная зарплата (в месяц), ₽</FormLabel>
+                                            <FormControl>
+                                                <Input type="number"
+                                                       placeholder="10 000 ₽"
+                                                        {...field}
+                                                       onChange={(e) => field.onChange(Number(e.target.value))}  />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            ) : (
+                                <>
+                                    <FormField
+                                        control={form.control}
+                                        name="min_salary"
+                                        render={() => (
+                                            <FormItem  className=   {'space-y-4'}>
+                                                <FormLabel>Диапазон зарплаты, ₽</FormLabel>
+                                                <FormControl>
+                                                    <FormItem>
+                                                        <SalarySlider
+                                                            onChangeMinSalary={(minSalary) => {
+                                                                setRange([minSalary, range[1]]);
+                                                                form.setValue('min_salary', minSalary)
+                                                            }}
+                                                            onChangeMaxSalary={(maxSalary)=>{
+                                                                setRange([range[0], maxSalary]);
+                                                                form.setValue('max_salary', maxSalary)
+                                                            }}
+                                                        />
+                                                    </FormItem>
+                                                </FormControl>
+                                                <FormMessage />
                                             </FormItem>
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                        </>
-                    }
+                                        )}
+                                    />
+                                </>
+                            )
+                        )}
                     <FormField
                         control={form.control}
                         name="description"
@@ -129,11 +183,11 @@ const Page = () => {
                             <FormItem>
                                 <FormLabel>Описании вакансии</FormLabel>
                                 <FormControl>
-                                    {/*<Textarea*/}
-                                    {/*    className={''}*/}
-                                    {/*    placeholder="Опишите вашу вакансию"*/}
-                                    {/*    {...field}*/}
-                                    {/*/>*/}
+                                    <Textarea
+                                        className={''}
+                                        placeholder="Опишите вашу вакансию"
+                                        {...field}
+                                    />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -154,36 +208,23 @@ const Page = () => {
                     />
                     <FormField
                         control={form.control}
-                        name="resume"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Резюме</FormLabel>
-                                <FormControl>
-                                    <Input type={'text'} placeholder="Портфолио: GitHub или что-то подобное" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
                         name="exp"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Уровень навыка</FormLabel>
                                 <FormControl>
-                                    <Select >
+                                    <Select onValueChange={field.onChange} defaultValue={field.value} >
                                         <SelectTrigger className="w-full h-16 text-xl">
                                             <SelectValue className="w-full text-xl" placeholder="Middle, Junior, Senior и т.д" />
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectGroup className="w-full text-xl">
                                                 <SelectLabel>Уровень опыта</SelectLabel>
-                                                <SelectItem value="intern">Intern</SelectItem>
-                                                <SelectItem value="junior">Junior</SelectItem>
-                                                <SelectItem value="middle">Middle</SelectItem>
-                                                <SelectItem value="senior">Senior</SelectItem>
-                                                <SelectItem value="none">Другое</SelectItem>
+                                                <SelectItem value="Intern">Intern</SelectItem>
+                                                <SelectItem value="Junior">Junior</SelectItem>
+                                                <SelectItem value="Middle">Middle</SelectItem>
+                                                <SelectItem value="Senior">Senior</SelectItem>
+                                                <SelectItem value="Other">Другое</SelectItem>
                                             </SelectGroup>
                                         </SelectContent>
                                     </Select>
@@ -197,11 +238,13 @@ const Page = () => {
                         name="skills"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Уровень навыка</FormLabel>
+                                <FormLabel>Навыки</FormLabel>
                                 <FormControl>
-                                    <div className={'flex flex-col justify-center self-center w-96'}>
+                                    <div className={'flex flex-col justify-center self-center  w-96 '}>
                                         <MultipleSelector
-                                            creatable className={'self-center max-h-40 h-16 w-full overflow-y-auto overflow-x-hidden'}
+                                            badgeClassName={'text-md'}
+                                            creatable
+                                            className={'self-center max-h-44 w-full h-20 overflow-y-auto overflow-x-hidden'}
                                             placeholder="Выберите навыки"
                                             options={skills}
                                             onChange={(selectedSkills) => {
@@ -214,10 +257,47 @@ const Page = () => {
                             </FormItem>
                         )}
                     />
+                    <FormField
+                        control={form.control}
+                        name="cities"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Город</FormLabel>
+                                <FormControl>
+                                    <div className={'flex flex-col justify-center self-center w-96'}>
+                                        <MultipleSelector
+                                            badgeClassName={'text-md'}
+                                            creatable className={'self-center max-h-40 h-16 w-full overflow-y-auto overflow-x-hidden'}
+                                            placeholder="Выберите города"
+                                            options={cities}
+                                            onChange={(selectedCities) => {
+                                                field.onChange(selectedCities.map(city => city.value));
+                                            }}
+                                        />
+                                    </div>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
                     <div className={'flex justify-center mt-12 space-x-4'}>
-                        <Button  type={'submit'} size={"lg"} className={'h-12 border-black bg-green-600 rounded font-bold  transition'} >
-                            <span>Создать резюме</span>
-                        </Button>
+                        <Dialog>
+                            <DialogTrigger asChild>
+                                <Button size={"lg"} className={'h-12 border-black bg-green-600 rounded font-bold  transition'} >
+                                    <span>Создать резюме</span>
+                                </Button>
+                            </DialogTrigger>
+                            <DialogContent className={'flex justify-center flex-col'}>
+                                <DialogHeader>
+                                    <DialogTitle>Хотите подтвердить создание вакансии?</DialogTitle>
+                                    <DialogDescription >
+                                        После нажатия "Подтвердить" вакансия будет создана.
+                                        <br/> Вы уверены, что хотите продолжить?
+                                    </DialogDescription>
+                                </DialogHeader>
+                                <Button className={'flex self-center bg-green-600 font-bo'} type={"submit"} onClick={form.handleSubmit(onSubmit)}>Подтвердить</Button>
+                            </DialogContent>
+                        </Dialog>
                         <Button  type={'button'} onClick={() => router.back()} size={"lg"} className={'h-12 border-black opacity-50 rounded font-bold  transition'} >
                             <span>Отменить</span>
                         </Button>
