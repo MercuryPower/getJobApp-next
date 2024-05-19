@@ -8,11 +8,11 @@ const MultiselectSkills = ({ onChange }: { onChange: (selectedSkills: string[]) 
     useEffect(() => {
         const fetchSkills = async () => {
             try {
-                const response = await fetch(`https://jsonplaceholder.typicode.com/posts`, { cache: 'force-cache', next: { revalidate: 1800 } });
+                const response = await fetch(`http://127.0.0.1:8000/tests/skills`, { cache: 'force-cache', next: { revalidate: 1800 } });
                 if (response.ok) {
                     const data = await response.json();
                     const formattedData: Option[] = data.map((item: any) => ({
-                        label: item.title,
+                        label: item.name,
                         value: item.id,
                     }));
                     setSkills(formattedData);

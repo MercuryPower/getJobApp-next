@@ -8,7 +8,8 @@ import SalarySlider from "@/components/filter/SalarySlider";
 import {Button} from "@/components/ui/button";
 import {usePathname, useRouter} from "next/navigation";
 
-const VacancyFilter = () => {
+const VacancyFilter = ({ onQueryChange }: { onQueryChange: (query: string) => void }) => {
+    const [query, setQuery] = useState('');
     const pathname = usePathname();
     const [selectedCity, setSelectedCity] = useState<string>("");
     const [selectedTypeOfEmploy, setSelectedTypeOfEmploy] = useState<string[]>([]);
@@ -36,25 +37,28 @@ const VacancyFilter = () => {
         const queryString = queryParams.toString();
         const fullPath = `${pathname}?${queryString}`;
 
+
+        onQueryChange(queryString);
+
         router.push(fullPath);
 
-        try {
-            const response = await fetch(`/vacancies?${queryString}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                console.log(data);
-            } else {
-                console.error('Failed to fetch vacancies');
-            }
-        } catch (error:any) {
-            throw new Error((error as Error).message)
-        }
+        // try {
+        //     const response = await fetch(`http://127.0.0.1:8000/tests/company?${queryString}`, {
+        //         method: 'GET',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //     });
+        //
+        //     if (response.ok) {
+        //         const data = await response.json();
+        //         console.log(data);
+        //     } else {
+        //         console.error('Failed to fetch vacancies');
+        //     }
+        // } catch (error:any) {
+        //     throw new Error((error as Error).message)
+        // }
     };
     return (
         <div className={'flex flex-col justify-items-center shadow-lg m-4 p-4 border text-center  rounded-2xl space-y-2 w-72 h-fit '}>

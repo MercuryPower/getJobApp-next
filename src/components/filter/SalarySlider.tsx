@@ -43,7 +43,7 @@ const SalarySlider = ({ className,onChange, ...props }: SliderProps) => {
                     <span className={'text-sm self-center'}>₽</span>
                 </div>
                 <div className={'flex'}>
-                    {maxSalary >= 500000 ? <span className={'text-sm self-center'}>{`< `}</span> :
+                    {maxSalary >= 500000 ? <span className={'text-sm self-center'}>{`> `}</span> :
                         <span className={'text-sm self-center'}>До</span>
                     }
                     <Input className={'text-sm w-20 h-10 p-2'}  type="text" value={maxSalary.toLocaleString()} onChange={handleMaxSalaryChange} />

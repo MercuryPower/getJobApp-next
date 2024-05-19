@@ -10,8 +10,8 @@ import {usePathname, useRouter, useSearchParams} from "next/navigation";
 import {GET_TOTAL_PAGES} from "@/url/urls";
 
 
-const PaginationSection = ({currentPage}:{currentPage:number}) => {
-    const [totalPages, setTotalPages] = useState<number>(1); // Используем состояние для хранения totalPages
+const PaginationSection = ({currentPage,queryString, query}:{currentPage:number, queryString:string, query:string}) => {
+    const [totalPages, setTotalPages] = useState<number>(1);
     // const pathname = usePathname();
     // const searchParams = useSearchParams();
     // const currentPage = Number(searchParams.get('page')) || 1;
@@ -27,7 +27,7 @@ const PaginationSection = ({currentPage}:{currentPage:number}) => {
     const page = searchParams.get('page') ?? '1'
     const navigateToPage = (pageNumber: number) => {
         if (pageNumber >= 1 && pageNumber <= totalPages) {
-            router.push(`/vacancies?page=${pageNumber}${searchParams.get('query') || ''}`);
+            router.push(`/vacancies?page=${pageNumber}${queryString}${query}`);
         }
     };
 
@@ -55,7 +55,7 @@ const PaginationSection = ({currentPage}:{currentPage:number}) => {
     useEffect(() => {
         const fetchTotalPages = async () => {
             try {
-                const response = await fetch(GET_TOTAL_PAGES);
+                const response = await fetch(`http://127.0.0.1:8000/tests/company_count?page=${page}&query=${query}&${queryString}`);
                 if (response.ok) {
                     const data = parseInt(await response.text(), 10);
                     setTotalPages(data);
@@ -67,7 +67,7 @@ const PaginationSection = ({currentPage}:{currentPage:number}) => {
             }
         };
         void fetchTotalPages();
-    }, []);
+    }, [page, query, queryString]);
     return (
         <Pagination >
             <PaginationContent>

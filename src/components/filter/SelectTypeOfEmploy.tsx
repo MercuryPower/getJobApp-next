@@ -4,14 +4,13 @@ import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel} from
 import {Checkbox} from "@/components/ui/checkbox";
 import {CheckedState} from "@radix-ui/react-checkbox";
 const SelectTypeOfEmploy = ({onChecked}: { onChecked: (typeOfEmploy: (prevSelected: string[]) => any) => void }) => {
-    const [typesOfEmploy, setTypesOfEmploy] = useState<Array<{id: number, title: string}>>([])
-    const [selectedTypesOfEmploy, setSelectedTypesOfEmploy] = useState([]);
+    const [typesOfEmploy, setTypesOfEmploy] = useState<Array<{id: number, name: string}>>([])
 
 
     useEffect(() => {
         const fetchTypesOfEmploy = async () => {
             try {
-                const response = await fetch(`https://jsonplaceholder.typicode.com/posts`, { cache: 'force-cache', next: { revalidate: 1800 } });
+                const response = await fetch(`http://127.0.0.1:8000/tests/types_of_employ`, { cache: 'force-cache', next: { revalidate: 1800 } });
                 if (response.ok) {
                     const data = await response.json();
                     setTypesOfEmploy(data);
@@ -36,7 +35,7 @@ const SelectTypeOfEmploy = ({onChecked}: { onChecked: (typeOfEmploy: (prevSelect
         });
     };
     return (
-        <div className={'self-center'}>
+        <div>
             {typesOfEmploy.map((type, index) => (
                 <div key={index} className={'flex space-x-1'}>
                     <Checkbox
@@ -44,10 +43,10 @@ const SelectTypeOfEmploy = ({onChecked}: { onChecked: (typeOfEmploy: (prevSelect
                         key={type.id}
                         onCheckedChange={(checked) => handleCheckboxChange(type.id.toString(), checked)}
                     />
-                    <span className={'max-h-20'}>{type.title}</span>
+                    <span className={'max-h-20 text-start '}>{type.name}</span>
 
                 </div>
-            )).slice(0, 4)}
+            ))}
         </div>
     )
 };

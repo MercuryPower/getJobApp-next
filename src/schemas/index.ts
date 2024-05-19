@@ -1,4 +1,5 @@
 import * as z from 'zod';
+import {boolean} from "zod";
 
 export const LoginSchema = z.object({
     email: z.string().email({
@@ -21,16 +22,17 @@ export const RegistrationSchema = z.object({
 })
 
 export const VacancyCreateSchema = z.object({
-    vacancyName: z.string().min(2,{
+    vacancy_name: z.string().min(2,{
         message: 'Название вакансии должно состоять из больше чем 2 символов'
     }),
-    fixedSalary: z.number(),
-    minSalary: z.number(),
-    maxSalary: z.number(),
-    vacancyDescription: z.string(),
+    fixed_salary: z.number(),
+    min_salary: z.number(),
+    max_salary: z.number(),
+    description: z.string(),
     contacts: z.string(),
     resume:z.string(),
     exp: z.string(),
     skills:z.array(z.string()),
-    cities:z.array(z.string())
+    cities:z.array(z.string()),
+    is_fixed_salary:z.boolean()
 })

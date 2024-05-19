@@ -24,7 +24,7 @@ import {cn} from "@/lib/utils";
 import SalarySlider from "@/components/filter/SalarySlider";
 import {useAuth} from "@/components/providers";
 import {Text} from "lucide-react";
-import {Textarea} from "@/components/ui/textarea";
+// import {Textarea} from "@/components/ui/textarea";
 import MultipleSelector, {Option} from "@/components/multiselect";
 const Page = () => {
     const {user} = useAuth();
@@ -36,23 +36,27 @@ const Page = () => {
     const form = useForm<z.infer<typeof VacancyCreateSchema>>({
         resolver: zodResolver(VacancyCreateSchema),
         defaultValues: {
-            vacancyName: '',
-            fixedSalary:0,
-            minSalary: 0,
-            maxSalary: 0,
-            vacancyDescription:'',
+            vacancy_name: '',
+            fixed_salary:0,
+            min_salary: 0,
+            max_salary: 0,
+            description:'',
             contacts:'',
             resume:'',
             exp:'',
             skills:[],
             cities:[],
+            is_fixed_salary:isFixedSalary
         }
     })
     // if(user?.type !== 'company'){
     //     return router.push('/')
     // }
     function onSubmit(values: z.infer<typeof VacancyCreateSchema>) {
-        return values;
+        // values.fixedSalary = parseInt(values.fixedSalary);
+        // values.minSalary = parseInt(values.minSalary);
+        // values.maxSalary = parseInt(values.maxSalary);
+        console.log(values)
     }
 
     return (
@@ -70,7 +74,7 @@ const Page = () => {
                     </div>
                     <FormField
                         control={form.control}
-                        name="vacancyName"
+                        name="vacancy_name"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Название вакансии</FormLabel>
@@ -88,12 +92,12 @@ const Page = () => {
                     {isFixedSalary ?
                         <FormField
                             control={form.control}
-                            name="fixedSalary"
+                            name="fixed_salary"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Фиксированная зарплата (в месяц), ₽</FormLabel>
                                     <FormControl>
-                                        <Input type={'number'} placeholder="10 000 ₽" {...field}  />
+                                        {/*<Input type={'number'} placeholder="10 000 ₽" {...field}  />*/}
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -103,7 +107,7 @@ const Page = () => {
                         <>
                             <FormField
                                 control={form.control}
-                                name="minSalary"
+                                name="min_salary"
                                 render={({ field }) => (
                                     <FormItem  className={'space-y-4'}>
                                         <FormLabel>Диапазон зарплаты, ₽</FormLabel>
@@ -120,16 +124,16 @@ const Page = () => {
                     }
                     <FormField
                         control={form.control}
-                        name="vacancyDescription"
+                        name="description"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Описании вакансии</FormLabel>
                                 <FormControl>
-                                    <Textarea
-                                        className={''}
-                                        placeholder="Опишите вашу вакансию"
-                                        {...field}
-                                    />
+                                    {/*<Textarea*/}
+                                    {/*    className={''}*/}
+                                    {/*    placeholder="Опишите вашу вакансию"*/}
+                                    {/*    {...field}*/}
+                                    {/*/>*/}
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -196,7 +200,13 @@ const Page = () => {
                                 <FormLabel>Уровень навыка</FormLabel>
                                 <FormControl>
                                     <div className={'flex flex-col justify-center self-center w-96'}>
-                                        <MultipleSelector   creatable className={'self-center max-h-40 h-16 w-full overflow-y-auto overflow-x-hidden'}   placeholder="Выберите навыки"  options={skills}
+                                        <MultipleSelector
+                                            creatable className={'self-center max-h-40 h-16 w-full overflow-y-auto overflow-x-hidden'}
+                                            placeholder="Выберите навыки"
+                                            options={skills}
+                                            onChange={(selectedSkills) => {
+                                                field.onChange(selectedSkills.map(skill => skill.value));
+                                            }}
                                         />
                                     </div>
                                 </FormControl>

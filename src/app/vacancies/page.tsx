@@ -1,5 +1,5 @@
 'use client'
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import VacancyCards from "@/components/VacancyCards";
 import VacancyCardSkeleton from "@/components/ui/skeletons/VacancyCardSkeleton";
 import Search from "@/components/ui/search";
@@ -17,7 +17,13 @@ import {useRouter} from "next/navigation";
 import {useAuth} from "@/components/providers";
 
 
-const Page = ({searchParams,}:{searchParams?:{query?: string; page?:string, perPage?:string}}) => {
+const Page = ({searchParams}:{searchParams?:{query?: string; page?:string, perPage?:string}}) => {
+    const [queryString, setQueryString] = useState('');
+
+    const handleQueryChange = (query: string) => {
+        setQueryString(query);
+        console.log(query)
+    };
     const {user} = useAuth();
     const router = useRouter();
     const query = searchParams?.query || '';
@@ -30,7 +36,7 @@ const Page = ({searchParams,}:{searchParams?:{query?: string; page?:string, perP
                     <Search placeholder="Например: Backend специалист" />
                 </div>
                 <div className={'rounded-2xl m-2 flex'}>
-                    <div className={'flex flex-col  justify-center shadow-lg m-4 p-4 border rounded-2xl '}>
+                    <div className={'flex flex-col  shadow-lg m-4 p-4 border rounded-2xl '}>
                         {user?.type === 'company' &&
                             <div className={'flex justify-end'}>
                                 <Button onClick={() => router.push('vacancies/create')}  type={'button'} size={"lg"} className={"h-12 border-black bg-green-600 rounded font-bold transition flex items-center justify-center space-x-2"} >
@@ -40,13 +46,13 @@ const Page = ({searchParams,}:{searchParams?:{query?: string; page?:string, perP
                             </div>
                         }
                     {data ?
-                        <VacancyCards page={currentPage} query={query} data={data}/>
+                        <VacancyCards queryString={queryString} page={currentPage} query={query} data={data}/>
                         :
                         <VacancyCardSkeleton />
                     }
-                    <PaginationSection currentPage={currentPage}/>
+                    <PaginationSection queryString={queryString} query={query} currentPage={currentPage}/>
                     </div>
-                    <VacancyFilter />
+                    <VacancyFilter onQueryChange={handleQueryChange} />
                 </div>
             </div>
         </>
