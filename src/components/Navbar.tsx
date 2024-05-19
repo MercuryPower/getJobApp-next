@@ -185,7 +185,6 @@ const Navbar = () => {
                     (<div className={'flex space-x-4 max-w-md text-ellipsis overflow-hidden'}>
                         <div className={'flex flex-col self-center '}>
                             <p className={'self-center'}>{user?.username}</p>
-                            <p className={'self-center text-xs'}>{user?.email}</p>
                         </div>
                         <div>
                             <LogOutSection/>

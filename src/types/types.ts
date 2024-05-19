@@ -3,9 +3,12 @@ import React, {createContext} from "react";
 export interface VacancyInfo {
     id: number;
     companyName: string;
-    vacancyName:string;
+    vacancy_name:string;
     salary?: string;
-    tp?:string;
+    types_of_employ?:{
+        id:number;
+        name:string;
+    }[];
     skills:{
         id:number;
         name:string;

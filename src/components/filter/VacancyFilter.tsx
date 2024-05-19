@@ -48,11 +48,13 @@ const VacancyFilter = () => {
 
             if (response.ok) {
                 const data = await response.json();
+                console.log(data);
             } else {
                 console.error('Failed to fetch vacancies');
             }
         } catch (error) {
-            console.error('Error fetching vacancies:', error);
+            const errorText = await response.text();
+            console.error('Failed to fetch vacancies:', response.status, errorText);
         }
     };
     return (

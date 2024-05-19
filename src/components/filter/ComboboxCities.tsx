@@ -30,7 +30,7 @@ export function ComboboxCity({ setSelectedCity }: { setSelectedCity: (city: stri
     useEffect(() => {
         const fetchCities = async () => {
             try {
-                const response = await fetch('https://jsonplaceholder.typicode.com/users');
+                const response = await fetch(GET_CITIES);
                 if (response.ok) {
                     const data = await response.json();
                     setCities(data);
