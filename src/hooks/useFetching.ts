@@ -19,7 +19,9 @@ export const useApiGet = (url: string, options?:RequestInit): TApiResponse => {
     const getAPIData = async () => {
         setLoading(true);
         try {
-            const apiResponse = await fetch(url);
+            const apiResponse = await fetch(url, {
+                cache:'force-cache'
+            });
             const json = await apiResponse.json();
             setStatus(apiResponse.status);
             setStatusText(apiResponse.statusText);

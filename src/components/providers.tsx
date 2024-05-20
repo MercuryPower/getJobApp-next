@@ -27,6 +27,7 @@ export default function Providers({children}:{children:React.ReactNode}){
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${localStorage.getItem('token')}`
                     },
+                    cache:'force-cache',
                     next:{revalidate:3600}
                 });
                 const responseData = await user_response.json();

@@ -13,7 +13,7 @@ const VacancyFilter = ({ onQueryChange }: { onQueryChange: (query: string) => vo
     const [selectedTypeOfEmploy, setSelectedTypeOfEmploy] = useState<string[]>([]);
     const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
     const [minSalary, setMinSalary] = useState<number>(0);
-    const [maxSalary, setMaxSalary] = useState<number>(500001);
+    const [maxSalary, setMaxSalary] = useState<number>(300000);
     const router = useRouter();
     const onSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -32,7 +32,7 @@ const VacancyFilter = ({ onQueryChange }: { onQueryChange: (query: string) => vo
         if (minSalary !== 0) {
             queryParams.set('minSalary', minSalary.toString());
         }
-        if(maxSalary >= 500000)
+        if(maxSalary < 500000)
         {
             queryParams.set('maxSalary', maxSalary.toString());
         }
@@ -83,7 +83,14 @@ const VacancyFilter = ({ onQueryChange }: { onQueryChange: (query: string) => vo
                         </div>
                         <div className={'space-y-2' }>
                             <h3 className={'text-lg'}>Тип занятости</h3>
-                            <SelectTypeOfEmploy onChecked={(selectedEmploymentType) => setSelectedTypeOfEmploy(selectedEmploymentType)} />
+                            {selectedTypeOfEmploy ?
+                                <div>
+                                    <span className={'m-4 text-xs max-h-20 p-2 border text-start '}>Данных не найдено</span>
+                                </div>
+                                :
+                                <SelectTypeOfEmploy onChecked={(selectedEmploymentType) => setSelectedTypeOfEmploy(selectedEmploymentType)} />
+                            }
+
                         </div>
                         <div className={'space-y-2'}>
                             <h3 className={'text-lg'}>Навыки</h3>

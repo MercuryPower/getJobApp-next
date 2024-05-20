@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+'use client'
+import React, {useEffect, useState} from 'react';
 import {Slider} from "@/components/ui/slider";
 import {cn} from "@/lib/utils";
 import {FormItem} from "@/components/ui/form";
@@ -41,6 +42,9 @@ const SalarySlider = ({ className,onChangeMinSalary, onChangeMaxSalary, ...props
         }
     };
 
+    useEffect(() => {
+        handleRangeChange(range);
+    }, [minSalary, maxSalary]);
     return (
         <div className={cn("slider-container", className)}>
             <div className="flex justify-between p-2">
@@ -61,7 +65,7 @@ const SalarySlider = ({ className,onChangeMinSalary, onChangeMaxSalary, ...props
                 defaultValue={[0, 300000]}
                 max={500000}
                 min={0}
-                step={500}
+                step={5000}
                 value={range}
                 onValueChange={handleRangeChange}
                 {...props}

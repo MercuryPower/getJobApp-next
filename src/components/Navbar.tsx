@@ -93,46 +93,36 @@ const Navbar = () => {
             <div className={'flex  self-center justify-center'}>
                 {/*<NavbarItem itemName={'Вакансия'} ></NavbarItem>*/}
                 <div>
-                    <button type={'button'} onClick={() => router.push('/vacancies')}
-                            className={'flex border-black p-2 rounded  font-bold hover:opacity-70 transition'}>
+                    <Button variant={'link'} type={'button'} onClick={() => router.push('/vacancies')}
+                            className={'flex border-black p-2 hover:no-underline rounded  font-bold hover:opacity-70 transition'}>
                         <svg className={'mr-2 self-center dark:invert'} width="15" height="14" viewBox="0 0 15 14"
                              fill="black" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M9.375 8.90625C9.375 9.16524 9.16523 9.375 8.90625 9.375H6.09375C5.83477 9.375 5.625 9.16524 5.625 8.90625V7.5H0V11.7188C0 12.4688 0.65625 13.125 1.40625 13.125H13.5938C14.3438 13.125 15 12.4688 15 11.7188V7.5H9.375V8.90625ZM13.5938 2.8125H11.25V1.40625C11.25 0.65625 10.5938 0 9.84375 0H5.15625C4.40625 0 3.75 0.65625 3.75 1.40625V2.8125H1.40625C0.65625 2.8125 0 3.46875 0 4.21875V6.5625H15V4.21875C15 3.46875 14.3438 2.8125 13.5938 2.8125ZM9.375 2.8125H5.625V1.875H9.375V2.8125Z"/>
                         </svg>
                         Вакансии
-                    </button>
+                    </Button>
                 </div>
                 <div className={'ml-9'}>
-                    <button type={'button'} onClick={() => router.push('/jobseekers')}
-                            className={'flex border-black p-2 rounded font-bold hover:opacity-70 transition'}>
+                    <Button variant={'link'} type={'button'} onClick={() => router.push('/jobseekers')}
+                            className={'flex border-black p-2 hover:no-underline rounded font-bold hover:opacity-70 transition'}>
                         <svg className={'mr-2 self-center dark:invert '} width="15" height="11" viewBox="0 0 15 11"
                              fill="black" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M2.25 4.5C3.07734 4.5 3.75 3.82734 3.75 3C3.75 2.17266 3.07734 1.5 2.25 1.5C1.42266 1.5 0.75 2.17266 0.75 3C0.75 3.82734 1.42266 4.5 2.25 4.5ZM12.75 4.5C13.5773 4.5 14.25 3.82734 14.25 3C14.25 2.17266 13.5773 1.5 12.75 1.5C11.9227 1.5 11.25 2.17266 11.25 3C11.25 3.82734 11.9227 4.5 12.75 4.5ZM13.5 5.25H12C11.5875 5.25 11.2148 5.41641 10.943 5.68594C11.8875 6.20391 12.5578 7.13906 12.7031 8.25H14.25C14.6648 8.25 15 7.91484 15 7.5V6.75C15 5.92266 14.3273 5.25 13.5 5.25ZM7.5 5.25C8.95078 5.25 10.125 4.07578 10.125 2.625C10.125 1.17422 8.95078 0 7.5 0C6.04922 0 4.875 1.17422 4.875 2.625C4.875 4.07578 6.04922 5.25 7.5 5.25ZM9.3 6H9.10547C8.61797 6.23438 8.07656 6.375 7.5 6.375C6.92344 6.375 6.38438 6.23438 5.89453 6H5.7C4.20937 6 3 7.20938 3 8.7V9.375C3 9.99609 3.50391 10.5 4.125 10.5H10.875C11.4961 10.5 12 9.99609 12 9.375V8.7C12 7.20938 10.7906 6 9.3 6ZM4.05703 5.68594C3.78516 5.41641 3.4125 5.25 3 5.25H1.5C0.672656 5.25 0 5.92266 0 6.75V7.5C0 7.91484 0.335156 8.25 0.75 8.25H2.29453C2.44219 7.13906 3.1125 6.20391 4.05703 5.68594Z"/>
                         </svg>
                         Соискатели
-                    </button>
+                    </Button>
                 </div>
                 <div className={'ml-9'}>
-                    <button className={'flex border-black p-2 rounded font-bold hover:opacity-70 transition'}>
-                        <svg className={'mr-2 self-center dark:invert'} width="15" height="15" viewBox="0 0 15 15"
-                             fill="black" xmlns="http://www.w3.org/2000/svg">
-                            <g clipPath="url(#clip0_128_113)">
-                                <path
-                                    d="M14.5982 14.0625H13.9286V0.703125C13.9286 0.314795 13.5688 0 13.125 0H1.875C1.43119 0 1.07143 0.314795 1.07143 0.703125V14.0625H0.401786C0.1799 14.0625 0 14.2199 0 14.4141V15H15V14.4141C15 14.2199 14.8201 14.0625 14.5982 14.0625ZM4.28571 2.22656C4.28571 2.03241 4.46561 1.875 4.6875 1.875H6.02679C6.24867 1.875 6.42857 2.03241 6.42857 2.22656V3.39844C6.42857 3.59259 6.24867 3.75 6.02679 3.75H4.6875C4.46561 3.75 4.28571 3.59259 4.28571 3.39844V2.22656ZM4.28571 5.03906C4.28571 4.84491 4.46561 4.6875 4.6875 4.6875H6.02679C6.24867 4.6875 6.42857 4.84491 6.42857 5.03906V6.21094C6.42857 6.40509 6.24867 6.5625 6.02679 6.5625H4.6875C4.46561 6.5625 4.28571 6.40509 4.28571 6.21094V5.03906ZM6.02679 9.375H4.6875C4.46561 9.375 4.28571 9.21759 4.28571 9.02344V7.85156C4.28571 7.65741 4.46561 7.5 4.6875 7.5H6.02679C6.24867 7.5 6.42857 7.65741 6.42857 7.85156V9.02344C6.42857 9.21759 6.24867 9.375 6.02679 9.375ZM8.57143 14.0625H6.42857V11.6016C6.42857 11.4074 6.60847 11.25 6.83036 11.25H8.16964C8.39153 11.25 8.57143 11.4074 8.57143 11.6016V14.0625ZM10.7143 9.02344C10.7143 9.21759 10.5344 9.375 10.3125 9.375H8.97321C8.75133 9.375 8.57143 9.21759 8.57143 9.02344V7.85156C8.57143 7.65741 8.75133 7.5 8.97321 7.5H10.3125C10.5344 7.5 10.7143 7.65741 10.7143 7.85156V9.02344ZM10.7143 6.21094C10.7143 6.40509 10.5344 6.5625 10.3125 6.5625H8.97321C8.75133 6.5625 8.57143 6.40509 8.57143 6.21094V5.03906C8.57143 4.84491 8.75133 4.6875 8.97321 4.6875H10.3125C10.5344 4.6875 10.7143 4.84491 10.7143 5.03906V6.21094ZM10.7143 3.39844C10.7143 3.59259 10.5344 3.75 10.3125 3.75H8.97321C8.75133 3.75 8.57143 3.59259 8.57143 3.39844V2.22656C8.57143 2.03241 8.75133 1.875 8.97321 1.875H10.3125C10.5344 1.875 10.7143 2.03241 10.7143 2.22656V3.39844Z"/>
-                            </g>
-                            <defs>
-                                <clipPath id="clip0_128_113">
-                                    <rect width="15" height="15"/>
-                                </clipPath>
-                            </defs>
-                        </svg>
+                    <Button variant={'link'} className={'flex border-black p-2 hover:no-underline rounded font-bold hover:opacity-70 transition'} onClick={() => router.push('/statistics')}>
+                        <svg className={'self-center mr-2'} width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M11.5 1C11.7761 1 12 1.22386 12 1.5V13.5C12 13.7761 11.7761 14 11.5 14C11.2239 14 11 13.7761 11 13.5V1.5C11 1.22386 11.2239 1 11.5 1ZM9.5 3C9.77614 3 10 3.22386 10 3.5V13.5C10 13.7761 9.77614 14 9.5 14C9.22386 14 9 13.7761 9 13.5V3.5C9 3.22386 9.22386 3 9.5 3ZM13.5 3C13.7761 3 14 3.22386 14 3.5V13.5C14 13.7761 13.7761 14 13.5 14C13.2239 14 13 13.7761 13 13.5V3.5C13 3.22386 13.2239 3 13.5 3ZM5.5 4C5.77614 4 6 4.22386 6 4.5V13.5C6 13.7761 5.77614 14 5.5 14C5.22386 14 5 13.7761 5 13.5V4.5C5 4.22386 5.22386 4 5.5 4ZM1.5 5C1.77614 5 2 5.22386 2 5.5V13.5C2 13.7761 1.77614 14 1.5 14C1.22386 14 1 13.7761 1 13.5V5.5C1 5.22386 1.22386 5 1.5 5ZM7.5 5C7.77614 5 8 5.22386 8 5.5V13.5C8 13.7761 7.77614 14 7.5 14C7.22386 14 7 13.7761 7 13.5V5.5C7 5.22386 7.22386 5 7.5 5ZM3.5 7C3.77614 7 4 7.22386 4 7.5V13.5C4 13.7761 3.77614 14 3.5 14C3.22386 14 3 13.7761 3 13.5V7.5C3 7.22386 3.22386 7 3.5 7Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"></path></svg>
                         Статистика
-                    </button>
+                    </Button>
                 </div>
                 <div className={'ml-9'}>
-                    <button className={'flex border-black p-2 rounded  font-bold hover:opacity-70 transition'}>
+                    <Button variant={'link'} className={'flex border-black p-2 hover:no-underline rounded font-bold hover:opacity-70 transition'}>
                         <svg className={'mr-2 self-center dark:invert'} width="15" height="14" viewBox="0 0 15 14"
                              fill="black" xmlns="http://www.w3.org/2000/svg">
                             <g clipPath="url(#clip0_128_115)">
@@ -146,13 +136,13 @@ const Navbar = () => {
                             </defs>
                         </svg>
                         Тренды
-                    </button>
+                    </Button>
                 </div>
                 <div className={'ml-9 '}>
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button
-                                className={'border-none flex border-black p-2 rounded bg  font-bold hover:opacity-70 transition '}
+                                className={'border-none flex border-black p-2 hover:no-underline rounded bg  font-bold hover:opacity-70 transition '}
                                 variant="link">
                                 Еще
                                 <svg className={'ml-2 self-center dark:invert'} width="12" height="7" viewBox="0 0 12 7"

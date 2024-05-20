@@ -31,7 +31,8 @@ export const register = async (values: TypeOf<typeof RegistrationSchema>, type:s
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(payload)
+            body: JSON.stringify(payload),
+            cache:'force-cache'
         });
 
         if (response.ok) {

@@ -21,6 +21,7 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
             headers: {'Content-Type': 'application/x-www-form-urlencoded'
             },
             body: formData,
+            cache:'force-cache'
         });
         if (response.ok) {
             const data = await response.json();

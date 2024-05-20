@@ -70,29 +70,24 @@ const Page = () => {
             values.salary_type = isFixedSalary ? 'fixed' : 'range';
         }
         startTransition(() => {
-            const payload = JSON.stringify(values);
-
-            fetch('http://127.0.0.1:8000/auth/vacancy_add', {
+            fetch('http://127.0.0.1:8000/vacancy_add', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: payload
+                body: JSON.stringify(values)
             })
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error('Network response was not ok');
+                        throw new Error('Ошибка при отправке данных');
                     }
                     return response.json();
                 })
                 .then(data => {
                     console.log('Success:', data);
-                    // Handle successful response from the server
-                    // Redirect or display a success message
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    // Handle errors
                 });
         })
     }
@@ -291,7 +286,7 @@ const Page = () => {
                                 <DialogHeader>
                                     <DialogTitle>Хотите подтвердить создание вакансии?</DialogTitle>
                                     <DialogDescription >
-                                        После нажатия "Подтвердить" вакансия будет создана.
+                                        После нажатия {`Подтвердить`} вакансия будет создана.
                                         <br/> Вы уверены, что хотите продолжить?
                                     </DialogDescription>
                                 </DialogHeader>
