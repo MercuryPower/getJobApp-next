@@ -93,6 +93,9 @@ const Page = () => {
         }
         if (isByAgreement) {
             values.salary_type = 'agreement'
+            values.fixed_salary = 0
+            values.min_salary = 0
+            values.max_salary = 0
         } else {
             values.salary_type = isFixedSalary ? 'fixed' : 'range';
         }
@@ -134,6 +137,7 @@ const Page = () => {
                 })
                 .then(data => {
                     console.log('Success:', data);
+                    router.replace('/vacancies')
                 })
                 .catch(error => {
                     console.error('Error:', error);

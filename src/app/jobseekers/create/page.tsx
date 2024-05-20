@@ -235,7 +235,6 @@ const Page = () => {
                                 <div className={'flex flex-col justify-center self-center  w-96 '}>
                                     <MultipleSelector
                                         badgeClassName={'text-md'}
-                                        creatable
                                         className={'self-center max-h-44 w-full h-20 overflow-y-auto overflow-x-hidden'}
                                         placeholder="Добавьте тип занятости"
                                         options={workTypes}
