@@ -96,8 +96,6 @@ const Page = () => {
                     <CreateVacancyOrResume onConfirm={onSubmit}/>
             </form>
             </FormProvider>
-                {/*<FormError message />*/}
-                {/*<FormSuccess message />*/}
         </div>
     );
 };
