@@ -7,7 +7,6 @@ import {
     PaginationPrevious
 } from "@/components/ui/pagination";
 import {usePathname, useRouter, useSearchParams} from "next/navigation";
-import {GET_TOTAL_PAGES} from "@/url/urls";
 
 
 const PaginationSection = ({currentPage,queryString, query}:{currentPage:number, queryString:string, query:string}) => {
@@ -25,9 +24,12 @@ const PaginationSection = ({currentPage,queryString, query}:{currentPage:number,
     const router = useRouter();
     const searchParams = useSearchParams();
     const page = searchParams.get('page') ?? '1'
+    const pathname = usePathname()
+    const type = pathname.includes('jobseekers') ? 'user' : 'company';
+
     const navigateToPage = (pageNumber: number) => {
         if (pageNumber >= 1 && pageNumber <= totalPages) {
-            router.push(`/vacancies?page=${pageNumber}&${queryString}&${query}`);
+            router.push(`/${pathname}?page=${pageNumber}&${queryString}&${query}`);
         }
     };
 
@@ -38,7 +40,6 @@ const PaginationSection = ({currentPage,queryString, query}:{currentPage:number,
         for (let i = currentPage - 1; i >= Math.max(currentPage - 2, 1); i--) {
             pagesToShow.unshift(i);
         }
-
 
         for (let i = currentPage + 1; i <= Math.min(currentPage + 2, totalPages); i++) {
             pagesToShow.push(i);
@@ -55,7 +56,7 @@ const PaginationSection = ({currentPage,queryString, query}:{currentPage:number,
     useEffect(() => {
         const fetchTotalPages = async () => {
             try {
-                const response = await fetch(`http://127.0.0.1:8000/tests/company_count?page=${page}&query=${query}&${queryString}`);
+                const response = await fetch(`http://127.0.0.1:8000/tests/${type}_count?page=${page}&query=${query}&${queryString}`);
                 if (response.ok) {
                     const data = parseInt(await response.text(), 10);
                     setTotalPages(data);

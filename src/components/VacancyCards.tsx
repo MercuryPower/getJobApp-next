@@ -8,10 +8,13 @@ import {HoverCard, HoverCardContent, HoverCardTrigger} from "@/components/ui/hov
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import VacancyCardSkeleton from "@/components/ui/skeletons/VacancyCardSkeleton";
 import {CircleX} from "lucide-react";
+import {useRouter} from "next/navigation";
+import Link from "next/link";
 
 
 
 const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], page:number, query:string, queryString:string}) => {
+    const router = useRouter();
     const [filteredVacancies, setFilteredVacancies] = useState<VacancyInfo[]>(data)
     const [isLoading, setIsLoading] = useState(false);
 
@@ -53,7 +56,9 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
                 <div key={vacancy.id} className={'flex shadow p-4 m-2 my-6 rounded-2xl  gap-5 border'}>
                     <div className={'p-2  w-[500px] flex flex-col flex-grow rounded'}>
                         <div className={' flex text-center justify-center p-2'}>
-                            <p className={'text-3xl text-ellipsis overflow-hidden font-bold  cursor-pointer'}>{vacancy.exp} {vacancy.vacancy_name}</p>
+                            <Link href={`vacancies/${vacancy.id}`}>
+                                <p className={'text-3xl text-ellipsis overflow-hidden font-bold  cursor-pointer'}>{vacancy.exp} {vacancy.vacancy_name}</p>
+                            </Link>
                         </div>
                         {vacancy.salary_type === 'range' ?
                             <p className={'text-center text-2xl text-ellipsis overflow-hidden '}>{vacancy.min_salary} - {vacancy.max_salary} &#8381; </p>
@@ -133,7 +138,7 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
                         </div>
                     </div>
                     <div className={'flex self-center flex-col '}>
-                        <Button size={'lg'}>Откликнутся</Button>
+                        <Button size={'lg'} type={'button'} onClick={()=> router.push(`vacancies/${vacancy.id}`)}>Посмотреть</Button>
                     </div>
                 </div>
                 )

@@ -23,7 +23,6 @@ export interface VacancyInfo {
     exp:string;
     [key: string]: any;
 }
-
 export interface IsEmployerContextProps {
     isEmployer: boolean;
     setIsEmployer: (value: boolean) => void;
