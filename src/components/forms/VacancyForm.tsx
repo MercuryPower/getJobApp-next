@@ -4,41 +4,37 @@ import {FormControl, InputLabel, ListSubheader, MenuItem, Select, SelectChangeEv
 import VacancyStep1 from "@/components/VacancyStep1";
 import VacancyStep2 from "@/components/VacancyStep2";
 import {Button} from "@/components/ui/button";
+import {useRouter} from "next/navigation";
 
 const VacancyForm = () => {
-    const initialValues = {
-        company: "",
-        position: "",
-        link: "",
-        date: "",
-        workType: "",
-    };
-    const [values, setValues] = useState(initialValues);
-
-    const handleInputChange = (event: SelectChangeEvent<string>) => {
-        const { name, value } = event.target;
-        setValues({
-            ...values,
-            [name]: value,
-        });
-    };
-    const handleContinue = () => {
-        if (step < 3){
-            setStep(step + 1)
-        }
-    }
-    const [step, setStep] = useState(1)
+    const router = useRouter();
+    // const initialValues = {
+    //     company: "",
+    //     position: "",
+    //     link: "",
+    //     date: "",
+    //     workType: "",
+    // };
+    // const [values, setValues] = useState(initialValues);
+    //
+    // const handleInputChange = (event: SelectChangeEvent<string>) => {
+    //     const { name, value } = event.target;
+    //     setValues({
+    //         ...values,
+    //         [name]: value,
+    //     });
+    // };
+    // const handleContinue = () => {
+    //     if (step < 3){
+    //         setStep(step + 1)
+    //     }
+    // }
+    // const [step, setStep] = useState(1)
     return (
         <form className={'flex flex-grow flex-col self-center min-w-4 w-1/2  m-6 shadow rounded border p-4'}>
             <div  className={'flex flex-col justify-center text-2xl font-bold'}>
-                <div className={'flex justify-center'}>
-                    Этап {step}
-                </div>
-                {step === 1 && <VacancyStep1 />}
-                {step === 2 && <VacancyStep2 />}
-                <div className={'flex justify-center m-4 '}>
-                    {step <= 3 && <Button size={'lg'}  type={'button'} onClick={handleContinue} className={'transition-all shadow p-6 h-16 rounded bg-green-600 '}>Продолжить</Button>}
-                </div>
+                    <Button size={'lg'}  type={'button'} onClick={() => router.push('/vacancies/create')} className={'transition-all shadow p-6 h-16 rounded bg-green-600 '}>Создать вакансию</Button>
+            </div>
             {/*    <div className={'flex justify-center'}>*/}
             {/*        <VacancyStep1 />*/}
             {/*    </div>*/}
@@ -90,7 +86,7 @@ const VacancyForm = () => {
             {/*            </Select>*/}
             {/*        </FormControl>*/}
             {/*    </div>*/}
-            </div>
+            {/*</div>*/}
         </form>
     );
 };
