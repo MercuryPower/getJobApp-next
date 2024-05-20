@@ -40,7 +40,7 @@ const Page = () => {
     const [isByAgreement, setIsByAgreement] = useState(false);
     const [isFixedSalary, setIsFixedSalary] = useState(true)
     const router = useRouter()
-    // if(user?.type !== 'company'){
+    // if(user?.type !== 'user'){
     //     return router.push('/')
     // }
     const form = useForm<z.infer<typeof VacancyCreateSchema>>({
@@ -57,6 +57,7 @@ const Page = () => {
             exp:'',
             skills:[],
             cities:[],
+            typeOfEmploy:[]
         }
     })
 
@@ -89,9 +90,9 @@ const Page = () => {
                 new_vacancy: newVacancy,
                 cities: values.cities,
                 skills: values.skills,
-                typeOfEmploy: [], // Можно добавить значение вакансии по типу занятости, если нужно
+                typeOfEmploy: [],
             };
-            fetch('http://127.0.0.1:8000/tests/add_vacancy', {
+            fetch('http://127.0.0.1:8000/tests/add_resume', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -148,51 +149,51 @@ const Page = () => {
                     </div>
                     {!isByAgreement && (
                         isFixedSalary ? (
+                            <FormField
+                                control={form.control}
+                                name="fixed_salary"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Фиксированная зарплата (в месяц), ₽</FormLabel>
+                                        <FormControl>
+                                            <Input type="number"
+                                                   placeholder="10 000 ₽"
+                                                   {...field}
+                                                   onChange={(e) => field.onChange(Number(e.target.value))}  />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        ) : (
+                            <>
                                 <FormField
                                     control={form.control}
-                                    name="fixed_salary"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Фиксированная зарплата (в месяц), ₽</FormLabel>
+                                    name="min_salary"
+                                    render={() => (
+                                        <FormItem  className=   {'space-y-4'}>
+                                            <FormLabel>Диапазон зарплаты, ₽</FormLabel>
                                             <FormControl>
-                                                <Input type="number"
-                                                       placeholder="10 000 ₽"
-                                                        {...field}
-                                                       onChange={(e) => field.onChange(Number(e.target.value))}  />
+                                                <FormItem>
+                                                    <SalarySlider
+                                                        onChangeMinSalary={(minSalary) => {
+                                                            setRange([minSalary, range[1]]);
+                                                            form.setValue('min_salary', minSalary)
+                                                        }}
+                                                        onChangeMaxSalary={(maxSalary)=>{
+                                                            setRange([range[0], maxSalary]);
+                                                            form.setValue('max_salary', maxSalary)
+                                                        }}
+                                                    />
+                                                </FormItem>
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
                                     )}
                                 />
-                            ) : (
-                                <>
-                                    <FormField
-                                        control={form.control}
-                                        name="min_salary"
-                                        render={() => (
-                                            <FormItem  className=   {'space-y-4'}>
-                                                <FormLabel>Диапазон зарплаты, ₽</FormLabel>
-                                                <FormControl>
-                                                    <FormItem>
-                                                        <SalarySlider
-                                                            onChangeMinSalary={(minSalary) => {
-                                                                setRange([minSalary, range[1]]);
-                                                                form.setValue('min_salary', minSalary)
-                                                            }}
-                                                            onChangeMaxSalary={(maxSalary)=>{
-                                                                setRange([range[0], maxSalary]);
-                                                                form.setValue('max_salary', maxSalary)
-                                                            }}
-                                                        />
-                                                    </FormItem>
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                                </>
-                            )
-                        )}
+                            </>
+                        )
+                    )}
                     <FormField
                         control={form.control}
                         name="description"

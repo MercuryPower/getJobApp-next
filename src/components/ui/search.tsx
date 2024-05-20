@@ -13,8 +13,10 @@ export default function Search({ placeholder }: { placeholder: string }) {
         const params = new URLSearchParams(searchParams);
         if (term) {
             params.set('query', term);
+            params.set('page', '1');
         } else {
             params.delete('query');
+            params.set('page', '1');
         }
         replace(`${pathname}?${params.toString()}`);
     }, 600);
