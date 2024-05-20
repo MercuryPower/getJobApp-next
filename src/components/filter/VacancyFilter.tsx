@@ -13,7 +13,7 @@ const VacancyFilter = ({ onQueryChange, query }: { onQueryChange: (query: string
     const [selectedTypeOfEmploy, setSelectedTypeOfEmploy] = useState<string[]>([]);
     const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
     const [minSalary, setMinSalary] = useState<number>(0);
-    const [maxSalary, setMaxSalary] = useState<number>(300000);
+    const [maxSalary, setMaxSalary] = useState<number>(500000);
     const router = useRouter();
     const onSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();

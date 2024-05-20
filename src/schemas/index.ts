@@ -35,4 +35,5 @@ export const VacancyCreateSchema = z.object({
     exp: z.string().optional(),
     skills:z.array(z.string()),
     cities:z.array(z.string()),
+    typeOfEmploy:z.array(z.string()),
 })

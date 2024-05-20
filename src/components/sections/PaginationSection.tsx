@@ -29,7 +29,7 @@ const PaginationSection = ({currentPage,queryString, query}:{currentPage:number,
 
     const navigateToPage = (pageNumber: number) => {
         if (pageNumber >= 1 && pageNumber <= totalPages) {
-            router.push(`${pathname}?page=${pageNumber}&${queryString}&${query}`);
+            router.push(`${pathname}?page=${pageNumber}&${queryString}${query &&`&query=${query}`}`);
         }
     };
 

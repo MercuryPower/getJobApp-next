@@ -1,47 +1,22 @@
 'use client'
 import React, {useState, useTransition} from 'react';
+import CreateVacancyOrResume from "@/components/forms/CreateVacancyOrResume";
 import {FormProvider, useForm} from "react-hook-form";
 import {z} from "zod";
 import {VacancyCreateSchema} from "@/schemas";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
-import {Input} from "@/components/ui/input";
-import {Button} from "@/components/ui/button";
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectLabel,
-    SelectTrigger,
-    SelectValue
-} from "@/components/ui/select";
-import {useRouter} from "next/navigation";
-import {Label} from "@/components/ui/label";
-import {Switch} from "@/components/ui/switch";
-import SalarySlider from "@/components/filter/SalarySlider";
 import {useAuth} from "@/components/providers";
-import {Textarea} from "@/components/ui/textarea";
-import MultipleSelector, {Option} from "@/components/multiselect";
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle, DialogTrigger
-} from "@/components/ui/dialog";
-import CreateVacancyOrResume from "@/components/forms/CreateVacancyOrResume";
+import {Option} from "@/components/multiselect";
+import {useRouter} from "next/navigation";
+
 const Page = () => {
     const [isPending, startTransition] = useTransition();
     const {user} = useAuth();
-    const [skills, setSkills] = useState<Option[]>()
-    const [cities, setCities] = useState<Option[]>()
     const [range, setRange] = useState([0, 500000]);
     const [isByAgreement, setIsByAgreement] = useState(false);
     const [isFixedSalary, setIsFixedSalary] = useState(true)
     const router = useRouter()
-    if(user?.type !== 'company'){
+    if(user?.type !== 'user'){
         return router.replace('/');
     }
     const form = useForm<z.infer<typeof VacancyCreateSchema>>({
@@ -58,10 +33,10 @@ const Page = () => {
             exp:'',
             skills:[],
             cities:[],
+            typeOfEmploy:[]
         }
     })
-
-    function onSubmit (values: z.infer<typeof VacancyCreateSchema>) {
+    function onSubmit(values: z.infer<typeof VacancyCreateSchema>) {
         if (values.exp === 'Other') {
             values.exp = '';
         }
@@ -90,7 +65,7 @@ const Page = () => {
                 new_vacancy: newVacancy,
                 cities: values.cities,
                 skills: values.skills,
-                typeOfEmploy: [], // Можно добавить значение вакансии по типу занятости, если нужно
+                typeOfEmploy: values.typeOfEmploy
             };
             fetch('http://127.0.0.1:8000/tests/add_vacancy', {
                 method: 'POST',
@@ -114,19 +89,16 @@ const Page = () => {
                 });
         })
     }
-
     return (
         <div className={'flex justify-center p-4 m-4'}>
             <FormProvider {...form}>
-                <form className={'space-y-8'} onSubmit={form.handleSubmit(onSubmit)}>
-                    <CreateVacancyOrResume onConfirm={onSubmit}
-                    />
-                </form>
+            <form className={'space-y-8'} onSubmit={form.handleSubmit(onSubmit)}>
+                    <CreateVacancyOrResume onConfirm={onSubmit}/>
+            </form>
+            </FormProvider>
                 {/*<FormError message />*/}
                 {/*<FormSuccess message />*/}
-            </FormProvider>
         </div>
-
     );
 };
 

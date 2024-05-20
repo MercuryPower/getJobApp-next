@@ -10,9 +10,9 @@ interface SalarySliderProps extends SliderProps {
     onChangeMaxSalary: (value: number) => void;
 }
 const SalarySlider = ({ className,onChangeMinSalary, onChangeMaxSalary, ...props }: SalarySliderProps) => {
-    const [range, setRange] = useState([0, 300000]);
+    const [range, setRange] = useState([0, 500000]);
     const [minSalary, setMinSalary] = useState<number>(0);
-    const [maxSalary, setMaxSalary] = useState<number>(300000);
+    const [maxSalary, setMaxSalary] = useState<number>(500000);
 
     const handleRangeChange = (value: number[]) => {
         setRange(value);
@@ -47,8 +47,8 @@ const SalarySlider = ({ className,onChangeMinSalary, onChangeMaxSalary, ...props
     }, [minSalary, maxSalary]);
     return (
         <div className={cn("slider-container", className)}>
-            <div className="flex justify-between p-2">
-                <div className={'flex '}>
+            <div className="flex justify-between  p-2">
+                <div className={'flex  '}>
                     <span className={'text-sm self-center'}>От</span>
                     <Input min={0} className={'text-sm w-20 h-10 p-2 '}  type="text" value={minSalary.toLocaleString()} onChange={handleMinSalaryChange} />
                     <span className={'text-sm self-center'}>₽</span>
@@ -62,7 +62,7 @@ const SalarySlider = ({ className,onChangeMinSalary, onChangeMaxSalary, ...props
                 </div>
             </div>
             <Slider
-                defaultValue={[0, 300000]}
+                defaultValue={[0, 500000]}
                 max={500000}
                 min={0}
                 step={5000}

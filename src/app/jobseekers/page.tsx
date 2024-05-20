@@ -2,7 +2,6 @@
 import React, {useState} from 'react';
 import Search from "@/components/ui/search";
 import {Button} from "@/components/ui/button";
-import VacancyCards from "@/components/VacancyCards";
 import VacancyCardSkeleton from "@/components/ui/skeletons/VacancyCardSkeleton";
 import PaginationSection from "@/components/sections/PaginationSection";
 import VacancyFilter from "@/components/filter/VacancyFilter";
@@ -11,11 +10,9 @@ import {useRouter} from "next/navigation";
 import {useApiGet} from "@/hooks/useFetching";
 import {GET_RESUMES} from "@/url/urls";
 import ResumeCards from "@/components/ResumeCards";
-import ResumeFilter from "@/components/filter/ResumeFilter";
 
 const Page = ({searchParams}:{searchParams?:{query?: string; page?:string, perPage?:string}}) => {
     const [queryString, setQueryString] = useState('');
-
     const handleQueryChange = (query: string) => {
         setQueryString(query);
         console.log(query)
