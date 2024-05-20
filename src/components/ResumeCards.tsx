@@ -90,7 +90,7 @@ const ResumeCards = ({data, page, query, queryString}: {data:ResumeInfo[], page:
                                                             <AvatarFallback>VC</AvatarFallback>
                                                         </Avatar>
                                                         <div className="space-y-2 flex max-w-md flex-col  justify-center self-center ">
-                                                            <h4 className="text-sm text-ellipsis overflow-hidden font-semibold">{"vacancy.companyName"}</h4>
+                                                            {/*<h4 className="text-sm text-ellipsis overflow-hidden font-semibold">{"vacancy.companyName"}</h4>*/}
                                                             <p className="text-sm max-w-32 text-ellipsis overflow-hidden">
                                                                 {`vacancy.descriptionaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa`}
                                                             </p>

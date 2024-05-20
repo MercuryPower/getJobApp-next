@@ -15,10 +15,8 @@ const Page = () => {
     const [range, setRange] = useState([0, 500000]);
     const [isByAgreement, setIsByAgreement] = useState(false);
     const [isFixedSalary, setIsFixedSalary] = useState(true)
+    console.log(isByAgreement, 'я русский')
     const router = useRouter()
-    if(user?.type !== 'user'){
-        return router.replace('/');
-    }
     const form = useForm<z.infer<typeof VacancyCreateSchema>>({
         resolver: zodResolver(VacancyCreateSchema),
         defaultValues: {
@@ -36,12 +34,18 @@ const Page = () => {
             typeOfEmploy:[]
         }
     })
+    if(user?.type !== 'user'){
+        return router.replace('/');
+    }
     function onSubmit(values: z.infer<typeof VacancyCreateSchema>) {
         if (values.exp === 'Other') {
             values.exp = '';
         }
         if (isByAgreement) {
             values.salary_type = 'agreement'
+            values.fixed_salary = 0;
+            values.min_salary = 0
+            values.max_salary = 0
         } else {
             values.salary_type = isFixedSalary ? 'fixed' : 'range';
         }
@@ -83,10 +87,12 @@ const Page = () => {
                 })
                 .then(data => {
                     console.log('Success:', data);
+                    router.replace('/jobseekers')
                 })
                 .catch(error => {
                     console.error('Error:', error);
                 });
+
         })
     }
     return (

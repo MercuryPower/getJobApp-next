@@ -32,6 +32,7 @@ import {
     DialogTitle, DialogTrigger
 } from "@/components/ui/dialog";
 import CreateVacancyOrResume from "@/components/forms/CreateVacancyOrResume";
+import loginSection from "@/components/sections/LoginSection";
 const Page = () => {
     const [isPending, startTransition] = useTransition();
     const {user} = useAuth();
@@ -41,9 +42,8 @@ const Page = () => {
     const [isByAgreement, setIsByAgreement] = useState(false);
     const [isFixedSalary, setIsFixedSalary] = useState(true)
     const router = useRouter()
-    if(user?.type !== 'company'){
-        return router.replace('/');
-    }
+    console.log(isByAgreement, 'я из create/vacancies/page')
+
     const form = useForm<z.infer<typeof VacancyCreateSchema>>({
         resolver: zodResolver(VacancyCreateSchema),
         defaultValues: {
@@ -58,15 +58,19 @@ const Page = () => {
             exp:'',
             skills:[],
             cities:[],
+            typeOfEmploy:[],
         }
     })
-
+    if(user?.type !== 'company'){
+        return router.replace('/');
+    }
     function onSubmit (values: z.infer<typeof VacancyCreateSchema>) {
         if (values.exp === 'Other') {
             values.exp = '';
         }
         if (isByAgreement) {
             values.salary_type = 'agreement'
+
         } else {
             values.salary_type = isFixedSalary ? 'fixed' : 'range';
         }
@@ -108,6 +112,7 @@ const Page = () => {
                 })
                 .then(data => {
                     console.log('Success:', data);
+                    router.push('/vacancies')
                 })
                 .catch(error => {
                     console.error('Error:', error);

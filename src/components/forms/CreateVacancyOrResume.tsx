@@ -69,6 +69,8 @@ const CreateVacancyOrResume = ({onConfirm} : CreateVacancyOrResumeProps) => {
     const [range, setRange] = useState([0, 500000]);
     const [isByAgreement, setIsByAgreement] = useState(false);
     const [isFixedSalary, setIsFixedSalary] = useState(true)
+    console.log(isByAgreement, 'я не из create/vacancies/page')
+
     const router = useRouter()
     const form = useForm<z.infer<typeof VacancyCreateSchema>>({
         resolver: zodResolver(VacancyCreateSchema),
@@ -175,7 +177,6 @@ const CreateVacancyOrResume = ({onConfirm} : CreateVacancyOrResumeProps) => {
                             <div className={'flex flex-col justify-center self-center  w-96 '}>
                                 <MultipleSelector
                                     badgeClassName={'text-md'}
-                                    creatable
                                     className={'self-center max-h-44 w-full h-20 overflow-y-auto overflow-x-hidden'}
                                     placeholder="Добавьте тип занятости"
                                     options={workTypes}
