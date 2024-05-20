@@ -7,7 +7,7 @@ import SalarySlider from "@/components/filter/SalarySlider";
 import {Button} from "@/components/ui/button";
 import {usePathname, useRouter} from "next/navigation";
 
-const VacancyFilter = ({ onQueryChange }: { onQueryChange: (query: string) => void }) => {
+const VacancyFilter = ({ onQueryChange, query }: { onQueryChange: (query: string) => void , query: string}) => {
     const pathname = usePathname();
     const [selectedCity, setSelectedCity] = useState<string>("");
     const [selectedTypeOfEmploy, setSelectedTypeOfEmploy] = useState<string[]>([]);
@@ -38,7 +38,7 @@ const VacancyFilter = ({ onQueryChange }: { onQueryChange: (query: string) => vo
         }
 
         const queryString = queryParams.toString();
-        const fullPath = `${pathname}?${queryString}`;
+        const fullPath = `${pathname}?${queryString}${query &&`&query=${query}`}`;
 
 
         onQueryChange(queryString);

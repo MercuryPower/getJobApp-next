@@ -27,7 +27,7 @@ const PaginationSection = ({currentPage,queryString, query}:{currentPage:number,
     const page = searchParams.get('page') ?? '1'
     const navigateToPage = (pageNumber: number) => {
         if (pageNumber >= 1 && pageNumber <= totalPages) {
-            router.push(`/vacancies?page=${pageNumber}${queryString}${query}`);
+            router.push(`/vacancies?page=${pageNumber}&${queryString}&${query}`);
         }
     };
 

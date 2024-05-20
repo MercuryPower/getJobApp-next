@@ -14,6 +14,7 @@ import {CircleX} from "lucide-react";
 const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], page:number, query:string, queryString:string}) => {
     const [filteredVacancies, setFilteredVacancies] = useState<VacancyInfo[]>(data)
     const [isLoading, setIsLoading] = useState(false);
+
     useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true);
@@ -29,7 +30,7 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
         };
 
         void fetchData();
-    }, [query, page, queryString]);
+    }, [page, query, queryString]);
     // useEffect(() => {
     //     if (data && data.length > 0 && query && query.trim() !== '') {
     //         const filteredData = data.filter((vacancy) => {

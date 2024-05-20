@@ -52,7 +52,7 @@ const Page = ({searchParams}:{searchParams?:{query?: string; page?:string, perPa
                     }
                     <PaginationSection queryString={queryString} query={query} currentPage={currentPage}/>
                     </div>
-                    <VacancyFilter onQueryChange={handleQueryChange} />
+                    <VacancyFilter onQueryChange={handleQueryChange}  query={query}/>
                 </div>
             </div>
         </>
