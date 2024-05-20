@@ -83,7 +83,7 @@ const VacancyFilter = ({ onQueryChange }: { onQueryChange: (query: string) => vo
                         </div>
                         <div className={'space-y-2' }>
                             <h3 className={'text-lg'}>Тип занятости</h3>
-                            {selectedTypeOfEmploy ?
+                            {!selectedTypeOfEmploy ?
                                 <div>
                                     <span className={'m-4 text-xs max-h-20 p-2 border text-start '}>Данных не найдено</span>
                                 </div>

@@ -42,6 +42,7 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
     //         setFilteredVacancies(data);
     //     }
     // }, [data, query]);
+
     return (
         <>
         {isLoading ? <VacancyCardSkeleton /> : (
@@ -53,9 +54,16 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
                         <div className={' flex text-center justify-center p-2'}>
                             <p className={'text-3xl text-ellipsis overflow-hidden font-bold  cursor-pointer'}>{vacancy.exp} {vacancy.vacancy_name}</p>
                         </div>
-                        {vacancy.salary ?
-                            <p className={'text-center text-2xl text-ellipsis overflow-hidden '}>от {vacancy.salary} &#8381; </p>
-                            : <p className={'text-center text-2xl text-ellipsis overflow-hidden '}>не указано </p>}
+                        {vacancy.salary_type === 'range' ?
+                            <p className={'text-center text-2xl text-ellipsis overflow-hidden '}>{vacancy.min_salary} - {vacancy.max_salary} &#8381; </p>
+
+                            :
+                            vacancy.salary_type === 'fixed' ? (
+                            <p className={'text-center text-2xl text-ellipsis overflow-hidden '}>{vacancy.fixed_salary} &#8381;</p>
+                                ): (
+                                <p className={'text-center text-2xl text-ellipsis overflow-hidden '}>по договоренности </p>
+                            )
+                        }
                         <div className={'flex justify-center p-2'}>
                             <Avatar>
                                 <AvatarImage
@@ -99,7 +107,7 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
                         <div className={'flex justify-center'}>
                             {vacancy.types_of_employ?.map((type, index) => {
                                 return <p key={type.name}
-                                          className={'text-ellipsis overflow-hidden m-1 hover:bg-gray-400 p-2'}>{type.name}</p>
+                                          className={'text-ellipsis rounded-2xl overflow-hidden m-1 hover:bg-gray-400 p-2'}>{type.name}</p>
                             })}
                         </div>
                         {/*<p key={city.id} className={'m-1 border  hover:bg-gray-500 p-2 rounded-2xl'}>{city.city}</p>*/}

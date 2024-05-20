@@ -4,7 +4,10 @@ export interface VacancyInfo {
     id: number;
     companyName: string;
     vacancy_name:string;
-    salary?: string;
+    salary_type:string;
+    fixed_salary:number;
+    max_salary:number;
+    min_salary:number;
     types_of_employ?:{
         id:number;
         name:string;

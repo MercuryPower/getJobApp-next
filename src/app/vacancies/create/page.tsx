@@ -70,12 +70,34 @@ const Page = () => {
             values.salary_type = isFixedSalary ? 'fixed' : 'range';
         }
         startTransition(() => {
-            fetch('http://127.0.0.1:8000/vacancy_add', {
+            console.log(values)
+            console.log(JSON.stringify(values))
+            const newVacancy = {
+                vacancy_name: values.vacancy_name,
+                fixed_salary: values.fixed_salary,
+                min_salary: values.min_salary,
+                max_salary: values.max_salary,
+                salary_type: values.salary_type,
+                description: values.description,
+                contacts: values.contacts,
+                resume: values.resume,
+                exp: values.exp,
+                is_reported: false,
+            };
+
+            const requestBody = {
+                new_vacancy: newVacancy,
+                cities: values.cities,
+                skills: values.skills,
+                typeOfEmploy: [], // Можно добавить значение вакансии по типу занятости, если нужно
+            };
+            fetch('http://127.0.0.1:8000/tests/add_vacancy', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
-                body: JSON.stringify(values)
+                body: JSON.stringify(requestBody),
             })
                 .then(response => {
                     if (!response.ok) {
