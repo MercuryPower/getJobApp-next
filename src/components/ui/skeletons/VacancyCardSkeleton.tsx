@@ -4,10 +4,11 @@ import {Card, CardContent} from "@/components/ui/card";
 import {Button} from "@/components/ui/button";
 import {Skeleton} from "@/components/ui/skeleton";
 
-const VacancyCardSkeleton = () => {
+const VacancyCardSkeleton = ({ items = [1, 2, 3] }: { items?: number[] } ) => {
+
     return (
         <div className={'text-center '}>
-                {[1,2,3].map((index) => {
+                {items.map((index) => {
                     return (
                         <div key={index}  className={'flex shadow p-4 m-2 my-6 rounded  gap-5 border'}>
                             <div  className={'p-2 w-screen max-w-lg flex flex-col flex-grow rounded'} >

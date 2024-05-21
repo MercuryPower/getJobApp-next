@@ -8,12 +8,13 @@ import {HoverCard, HoverCardContent, HoverCardTrigger} from "@/components/ui/hov
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import VacancyCardSkeleton from "@/components/ui/skeletons/VacancyCardSkeleton";
 import {CircleX} from "lucide-react";
-import {useRouter} from "next/navigation";
+import {usePathname, useRouter} from "next/navigation";
 import Link from "next/link";
 
 
 
 const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], page:number, query:string, queryString:string}) => {
+    const pathname = usePathname()
     const router = useRouter();
     const [filteredVacancies, setFilteredVacancies] = useState<VacancyInfo[]>(data)
     const [isLoading, setIsLoading] = useState(false);
@@ -56,18 +57,18 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
                 <div key={vacancy.id} className={'flex shadow p-4 m-2 my-6 rounded-2xl  gap-5 border'}>
                     <div className={'p-2  w-[500px] flex flex-col flex-grow rounded'}>
                         <div className={' flex text-center justify-center p-2'}>
-                            <Link href={`vacancies/${vacancy.id}`}>
+                            <Link href={`${pathname}/${vacancy.id}`}>
                                 <p className={'text-3xl text-ellipsis overflow-hidden font-bold  cursor-pointer'}>{vacancy.exp} {vacancy.vacancy_name}</p>
                             </Link>
                         </div>
                         {vacancy.salary_type === 'range' ?
-                            <p className={'text-center text-2xl text-ellipsis overflow-hidden '}>{vacancy.min_salary} - {vacancy.max_salary} &#8381; </p>
+                            <p className={'text-center text-2xl font-light text-ellipsis overflow-hidden '}>{vacancy.min_salary} - {vacancy.max_salary} &#8381; </p>
 
                             :
                             vacancy.salary_type === 'fixed' ? (
-                            <p className={'text-center text-2xl text-ellipsis overflow-hidden '}>{vacancy.fixed_salary} &#8381;</p>
+                            <p className={'text-center text-2xl font-light text-ellipsis overflow-hidden '}>{vacancy.fixed_salary} &#8381;</p>
                                 ): (
-                                <p className={'text-center text-2xl text-ellipsis overflow-hidden '}>по договоренности </p>
+                                <p className={'text-center text-2xl  font-lighttext-ellipsis overflow-hidden '}>по договоренности </p>
                             )
                         }
                         <div className={'flex justify-center p-2'}>
@@ -103,19 +104,41 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
                                 </HoverCard>
                             </p>
                         </div>
-                        <div className={'flex justify-center'}>
-                            {vacancy.skills?.map((skill, index) => {
-                                return <p key={skill.name}
-                                          className={'text-ellipsis overflow-hidden m-1 text-xl border font-bold hover:bg-gray-400 p-2 rounded-2xl'}>{skill.name}</p>
-                            })}
-                        </div>
-                        <p>Тип занятости:</p>
-                        <div className={'flex justify-center'}>
-                            {vacancy.types_of_employ?.map((type, index) => {
-                                return <p key={type.name}
-                                          className={'text-ellipsis rounded-2xl overflow-hidden m-1 hover:bg-gray-400 p-2'}>{type.name}</p>
-                            })}
-                        </div>
+                        {vacancy.skills && vacancy.skills?.length > 0 && (
+                            <div className={'flex justify-center m-2'}>
+                                <Carousel opts={{align: 'start', dragFree: true}} className="w- max-w-md   ">
+                                    <CarouselContent className={'-ml-4'}>
+                                        {vacancy.skills?.map((skill) => (
+                                            <CarouselItem
+                                                className={`basis-${vacancy.skills.length === 1 ? 'full' : (vacancy.skills.length > 3 ? 2 : 3)}  hover:opacity-75 text-xl  `}
+                                                key={skill.name}>
+                                                <div className="p-1  ">
+                                                    <>
+                                                        <CardContent  className="m-1 p-2 ">
+                                                            <span className="font-black">{skill.name}</span>
+                                                        </CardContent>
+                                                    </>
+                                                </div>
+                                            </CarouselItem>
+                                        ))}
+                                    </CarouselContent>
+                                    {vacancy.skills?.length > 3 &&
+                                        <CarouselNext/>
+                                    }
+                                </Carousel>
+                            </div>
+                        )}
+                        {vacancy.types_of_employ && vacancy.types_of_employ?.length > 0 &&
+                            <>
+                                <p>Тип занятости:</p>
+                                <div className={'flex justify-center'}>
+                                    {vacancy.types_of_employ?.map((type, index) => {
+                                        return <p key={type.name}
+                                                  className={'text-ellipsis rounded-2xl overflow-hidden m-1 hover:bg-gray-400 p-2'}>{type.name}</p>
+                                    })}
+                                </div>
+                            </>
+                        }
                         {/*<p key={city.id} className={'m-1 border  hover:bg-gray-500 p-2 rounded-2xl'}>{city.city}</p>*/}
                         <div className={'flex justify-center w-full  '}>
                             <Carousel opts={{align: 'start', dragFree: true,}} className="w- max-w-md  ">
@@ -138,7 +161,7 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
                         </div>
                     </div>
                     <div className={'flex self-center flex-col '}>
-                        <Button size={'lg'} type={'button'} onClick={()=> router.push(`vacancies/${vacancy.id}`)}>Посмотреть</Button>
+                        <Button size={'lg'} type={'button'} onClick={()=> router.push(`${vacancy.id}`)}>Посмотреть</Button>
                     </div>
                 </div>
                 )

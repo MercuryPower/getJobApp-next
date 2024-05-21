@@ -39,12 +39,12 @@ const SelectTypeOfEmploy = ({onChecked}: { onChecked: (typeOfEmploy: (prevSelect
             {typesOfEmploy.map((type, index) => (
                 <div key={index} className={'flex space-x-1'}>
                     <Checkbox
+                        id={`checkbox-${index}`}
                         className={'self-center'}
                         key={type.id}
                         onCheckedChange={(checked) => handleCheckboxChange(type.id.toString(), checked)}
                     />
-                    <span className={'max-h-20 text-start '}>{type.name}</span>
-
+                    <label htmlFor={`checkbox-${index}`} className={'max-h-20 text-start '}>{type.name}</label>
                 </div>
             ))}
         </div>

@@ -6,7 +6,7 @@ import ThemeSwitch from "@/components/ui/ThemeSwitch";
 import {Button} from "@/components/ui/button";
 import {
     DropdownMenu,
-    DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
+    DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator,
     DropdownMenuShortcut,
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
@@ -17,6 +17,7 @@ import {auth} from "@/auth";
 import {getToken} from "@auth/core/jwt";
 import LogOutSection from "@/components/sections/LogOutSection";
 import {useAuth, useIsEmployer} from "@/components/providers";
+import Link from "next/link";
 
 const Navbar = () => {
     // const [userType, setUserType] = useState('employer')
@@ -172,14 +173,38 @@ const Navbar = () => {
                     <ThemeSwitch/>
                 </div>
                 {isLoggedIn ?
-                    (<div className={'flex space-x-4 max-w-md text-ellipsis overflow-hidden'}>
-                        <div className={'flex flex-col self-center '}>
-                            <p className={'self-center'}>{user?.username}</p>
-                        </div>
+                    (<div className={'flex space-x-4 max-w-md text-ellipsis outline-none overflow-hidden '}>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button
+                                    className={'border-none outline-none self-center flex border-black p-2 hover:no-underline rounded bg  hover:opacity-70 transition '}
+                                    variant="link">
+                                    {user?.username}
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="w-56 ">
+                                <DropdownMenuLabel>Привет, {user?.username}!</DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuGroup>
+                                    <DropdownMenuItem className={'font-extrabold'}>
+                                        <User className="mr-2 h-4 w-4"/>
+                                        <span>{user?.email}</span>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem>
+                                        <CreditCard className="mr-2 h-4 w-4"/>
+                                        {user?.type === 'company' ?
+                                            <Link href={'/vacancies/me'}>Мои вакансии</Link>
+                                            :
+                                            <Link href={'/jobseekers/me'}>Мои резюме</Link>
+                                        }
+
+                                    </DropdownMenuItem>
+                                </DropdownMenuGroup>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
                         <div>
                             <LogOutSection/>
                         </div>
-
                     </div>)
                     :
                     <LoginSection />
