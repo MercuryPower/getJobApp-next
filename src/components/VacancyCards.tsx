@@ -161,7 +161,7 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
                         </div>
                     </div>
                     <div className={'flex self-center flex-col '}>
-                        <Button size={'lg'} type={'button'} onClick={()=> router.push(`${vacancy.id}`)}>Посмотреть</Button>
+                        <Button size={'lg'} type={'button'} onClick={()=> router.push(`${pathname}/${vacancy.id}`)}>Посмотреть</Button>
                     </div>
                 </div>
                 )

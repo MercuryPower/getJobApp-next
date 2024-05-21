@@ -369,14 +369,14 @@ const Page = () => {
                     <Dialog>
                         <DialogTrigger asChild>
                             <Button size={"lg"} className={'h-12 border-black bg-green-600 rounded font-bold  transition'} >
-                                <span>Создать вакансию</span>
+                                <span>Создать резюме</span>
                             </Button>
                         </DialogTrigger>
                         <DialogContent className={'flex justify-center flex-col'}>
                             <DialogHeader>
-                                <DialogTitle>Хотите подтвердить создание вакансии?</DialogTitle>
+                                <DialogTitle>Хотите подтвердить создание резюме?</DialogTitle>
                                 <DialogDescription >
-                                    После нажатия {`Подтвердить`} вакансия будет создана.
+                                    После нажатия {`Подтвердить`} резюме будет создано.
                                     <br/> Вы уверены, что хотите продолжить?
                                 </DialogDescription>
                             </DialogHeader>

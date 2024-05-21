@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {HoverCard, HoverCardContent, HoverCardTrigger} from "@/components/ui/hover-card";
 import {Button} from "@/components/ui/button";
-import {useParams} from "next/navigation";
+import {useParams, usePathname, useRouter} from "next/navigation";
 import {VacancyInfo} from "@/types/types";
 import VacancyCardSkeleton from "@/components/ui/skeletons/VacancyCardSkeleton";
 import {cn} from "@/lib/utils";
@@ -17,13 +17,15 @@ import AutoScroll from 'embla-carousel-auto-scroll'
 import {useAuth} from "@/components/providers";
 
 const Page = () => {
+    const pathname = usePathname();
+    console.log(pathname)
     const {user} = useAuth()
     const params = useParams();
+    const router = useRouter();
     const [vacancy, setVacancy] = useState<VacancyInfo>();
     useEffect(() => {
         const fetchVacancy = async () => {
             try {
-                // Отправляем запрос на сервер, используя id из параметров URL
                 const response = await fetch(`http://127.0.0.1:8000/tests/vacancy/${params.vacancy}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch vacancy');
@@ -169,7 +171,7 @@ const Page = () => {
                             {user?.id === vacancy.user_id &&
                                 <>
                                     <div className={'flex gap-x-4'}>
-                                        <Button className={'rounded-full gap-x-2 '}>
+                                        <Button className={'rounded-full gap-x-2 '} onClick={() => router.push(`${pathname}/edit`)}>
                                             Редактировать
                                             <svg width="15" height="15" viewBox="0 0 15 15" fill="none"
                                                  xmlns="http://www.w3.org/2000/svg">

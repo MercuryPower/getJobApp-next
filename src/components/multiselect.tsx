@@ -186,7 +186,6 @@ const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorP
         const inputRef = React.useRef<HTMLInputElement>(null);
         const [open, setOpen] = React.useState(false);
         const [isLoading, setIsLoading] = React.useState(false);
-
         const [selected, setSelected] = React.useState<Option[]>(value || []);
         const [options, setOptions] = React.useState<GroupOption>(
             transToGroupOption(arrayDefaultOptions, groupBy),
@@ -300,7 +299,7 @@ const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorP
                         onChange?.(newOptions);
                     }}
                 >
-                    {`Create "${inputValue}"`}
+                    {`Создать "${inputValue}"`}
                 </CommandItem>
             );
 

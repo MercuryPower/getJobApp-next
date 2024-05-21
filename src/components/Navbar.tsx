@@ -172,7 +172,7 @@ const Navbar = () => {
                     className={'flex self-center hover:bg-gray-300 dark:hover:bg-gray-600 rounded-full transition-all p-2'}>
                     <ThemeSwitch/>
                 </div>
-                {isLoggedIn ?
+                {isLoggedIn && user ?
                     (<div className={'flex space-x-4 max-w-md text-ellipsis outline-none overflow-hidden '}>
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
