@@ -16,7 +16,7 @@ interface ResumeInfo extends VacancyInfo{
 const ResumeCards = ({data, page, query, queryString}: {data:ResumeInfo[], page:number, query:string, queryString:string}) => {
     const pathname = usePathname()
     const router = useRouter();
-    const [filteredVacancies, setFilteredVacancies] = useState<ResumeInfo[]>(data)
+    const [filteredResumes, setFilteredResumes] = useState<ResumeInfo[]>(data)
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
@@ -25,7 +25,7 @@ const ResumeCards = ({data, page, query, queryString}: {data:ResumeInfo[], page:
             try {
                 const response = await fetch(`http://127.0.0.1:8000/tests/user?page=${page}&query=${query}&${queryString}`);
                 const responseData = await response.json();
-                setFilteredVacancies(responseData);
+                setFilteredResumes(responseData);
             } catch (error) {
                 console.error('Error fetching data:', error);
             } finally {
@@ -37,14 +37,14 @@ const ResumeCards = ({data, page, query, queryString}: {data:ResumeInfo[], page:
     }, [page, query, queryString]);
     useEffect(() => {
         if (data && data.length > 0 && query && query.trim() !== '') {
-            const filteredData = data.filter((vacancy) => {
+            const filteredData = data.filter((resume) => {
                 const keywords = query.split(' ').filter(Boolean); // Разбить запрос на отдельные слова и удалить пустые строки
-                const vacancyFields = Object.values(vacancy).join(' ').toLowerCase();
-                return keywords.some(keyword => vacancyFields.includes(keyword.toLowerCase()));
+                const resumeFields = Object.values(resume).join(' ').toLowerCase();
+                return keywords.some(keyword => resumeFields.includes(keyword.toLowerCase()));
             });
-            setFilteredVacancies(filteredData);
+            setFilteredResumes(filteredData);
         } else {
-            setFilteredVacancies(data);
+            setFilteredResumes(data);
         }
     }, [data, query]);
 
@@ -52,21 +52,21 @@ const ResumeCards = ({data, page, query, queryString}: {data:ResumeInfo[], page:
         <>
             {isLoading ? <VacancyCardSkeleton /> : (
                 <div className={'text-center '}>
-                    {filteredVacancies.length > 0 ? filteredVacancies.map((vacancy) => {
+                    {filteredResumes.length > 0 ? filteredResumes.map((resume) => {
                         return (
-                            <div key={vacancy.id} className={'flex shadow p-4 m-2 my-6 rounded-2xl  gap-5 border'}>
-                                <div className={'p-2  w-[500px] flex flex-col flex-grow rounded'}>
+                            <div key={resume.id} className={'flex shadow p-4 m-2 my-6 rounded-2xl gap-5 border'}>
+                                <div className={'p-2  w-[500px] flex flex-col flex-grow justify-center rounded'}>
                                     <div className={' flex text-center justify-center p-2'}>
-                                        <Link href={`vacancies/${vacancy.id}`}>
-                                            <p className={'text-3xl text-ellipsis overflow-hidden font-bold  cursor-pointer'}>{vacancy.exp} {vacancy.vacancy_name}</p>
+                                        <Link href={`${pathname}/${resume.id}`}>
+                                            <p className={'text-3xl text-ellipsis overflow-hidden font-bold  cursor-pointer'}>{resume.exp} {resume.vacancy_name}</p>
                                         </Link>
                                     </div>
-                                    {vacancy.salary_type === 'range' ?
-                                        <p className={'text-center text-2xl text-ellipsis overflow-hidden '}>{vacancy.min_salary} - {vacancy.max_salary} &#8381; </p>
+                                    {resume.salary_type === 'range' ?
+                                        <p className={'text-center text-2xl text-ellipsis overflow-hidden '}>{resume.min_salary} - {resume.max_salary} &#8381; </p>
 
                                         :
-                                        vacancy.salary_type === 'fixed' ? (
-                                            <p className={'text-center text-2xl text-ellipsis overflow-hidden '}>{vacancy.fixed_salary} &#8381;</p>
+                                        resume.salary_type === 'fixed' ? (
+                                            <p className={'text-center text-2xl text-ellipsis overflow-hidden '}>{resume.fixed_salary} &#8381;</p>
                                         ): (
                                             <p className={'text-center text-2xl text-ellipsis overflow-hidden '}>по договоренности </p>
                                         )
@@ -90,7 +90,7 @@ const ResumeCards = ({data, page, query, queryString}: {data:ResumeInfo[], page:
                                                             <AvatarFallback>VC</AvatarFallback>
                                                         </Avatar>
                                                         <div className="space-y-2 flex max-w-md flex-col  justify-center self-center ">
-                                                            <h4 className="text-sm text-ellipsis overflow-hidden font-semibold">{"vacancy.companyName"}</h4>
+                                                            <p className="text-sm text-ellipsis overflow-hidden font-semibold">{"vacancy.companyName"}</p>
                                                             <p className="text-sm max-w-32 text-ellipsis overflow-hidden">
                                                                 {`vacancy.descriptionaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa`}
                                                             </p>
@@ -104,13 +104,13 @@ const ResumeCards = ({data, page, query, queryString}: {data:ResumeInfo[], page:
                                             </HoverCard>
                                         </p>
                                     </div>
-                                    {vacancy.skills && vacancy.skills?.length > 0 && (
+                                    {resume.skills && resume.skills?.length > 0 && (
                                         <div className={'flex justify-center m-2'}>
-                                            <Carousel opts={{align: 'start', dragFree: true}} className="w- max-w-md   ">
+                                            <Carousel opts={{align: 'start', dragFree: true}} className="w-96   ">
                                                 <CarouselContent className={'-ml-4'}>
-                                                    {vacancy.skills?.map((skill) => (
+                                                    {resume.skills?.map((skill) => (
                                                         <CarouselItem
-                                                            className={`basis-${vacancy.skills.length === 1 ? 'full' : (vacancy.skills.length > 3 ? 2 : 3)}  hover:opacity-75 text-xl  `}
+                                                            className={`basis-${resume.skills.length === 1 ? 'full' : (resume.skills.length > 3 ? 2 : 3)}  hover:opacity-75 text-xl  `}
                                                             key={skill.name}>
                                                             <div className="p-1  ">
                                                                 <>
@@ -122,17 +122,17 @@ const ResumeCards = ({data, page, query, queryString}: {data:ResumeInfo[], page:
                                                         </CarouselItem>
                                                     ))}
                                                 </CarouselContent>
-                                                {vacancy.skills?.length > 3 &&
+                                                {resume.skills?.length >= 3 &&
                                                     <CarouselNext/>
                                                 }
                                             </Carousel>
                                         </div>
                                     )}
-                                    {vacancy.types_of_employ && vacancy.types_of_employ?.length > 0 &&
+                                    {resume.types_of_employ && resume.types_of_employ?.length > 0 &&
                                         <>
                                             <p>Тип занятости:</p>
                                             <div className={'flex justify-center'}>
-                                                {vacancy.types_of_employ?.map((type, index) => {
+                                                {resume.types_of_employ?.map((type, index) => {
                                                     return <p key={type.name}
                                                               className={'text-ellipsis rounded-2xl overflow-hidden m-1 hover:bg-gray-400 p-2'}>{type.name}</p>
                                                 })}
@@ -143,9 +143,9 @@ const ResumeCards = ({data, page, query, queryString}: {data:ResumeInfo[], page:
                                     <div className={'flex justify-center w-full  '}>
                                         <Carousel opts={{align: 'start', dragFree: true,}} className="w- max-w-md  ">
                                             <CarouselContent className={'-ml-4'}>
-                                                {vacancy.cities?.map((city) => (
+                                                {resume.cities?.map((city) => (
                                                     <CarouselItem
-                                                        className={`basis-${vacancy.cities.length === 1 ? 'full' : (vacancy.cities.length > 3 ? 2 : 3)}  hover:opacity-75 pl-4 `}
+                                                        className={`basis-${resume.cities.length === 1 ? 'full' : (resume.cities.length > 3 ? 2 : 3)}  hover:opacity-75 pl-4 `}
                                                         key={city.name}>
                                                         <div className="p-1">
                                                             <Card>
@@ -161,7 +161,7 @@ const ResumeCards = ({data, page, query, queryString}: {data:ResumeInfo[], page:
                                     </div>
                                 </div>
                                 <div className={'flex self-center flex-col '}>
-                                    <Button size={'lg'} type={'button'} onClick={()=> router.push(`vacancies/${vacancy.id}`)}>Посмотреть</Button>
+                                    <Button size={'lg'} type={'button'} onClick={()=> router.push(`${pathname}/${resume.id}`)}>Посмотреть</Button>
                                 </div>
                             </div>
                         )

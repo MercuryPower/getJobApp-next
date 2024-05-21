@@ -32,8 +32,11 @@ const VacancyForm = () => {
     // const [step, setStep] = useState(1)
     return (
         <form className={'flex flex-grow flex-col self-center min-w-4 w-1/2  m-6 shadow rounded border p-4'}>
-            <div  className={'flex flex-col justify-center text-2xl font-bold'}>
-                    <Button size={'lg'}  type={'button'} onClick={() => router.push('/vacancies/create')} className={'transition-all shadow p-6 h-16 rounded bg-green-600 '}>Создать вакансию</Button>
+            <div className={'flex flex-col justify-center text-2xl font-bold'}>
+                <p className={'text-center text-lg font-extralight flex justify-center m-12'}>Отлично! Теперь вы можете
+                    создать вакансию </p>
+                <Button size={'lg'} type={'button'} onClick={() => router.push('/vacancies/create')}
+                        className={'transition-all shadow p-6 h-16 rounded bg-green-600 '}>Создать вакансию</Button>
             </div>
             {/*    <div className={'flex justify-center'}>*/}
             {/*        <VacancyStep1 />*/}

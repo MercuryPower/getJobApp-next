@@ -26,6 +26,9 @@ export interface VacancyInfo {
     contacts:string
     [key: string]: any;
 }
+export interface ResumeInfo extends VacancyInfo {
+    resume:string;
+}
 export interface IsEmployerContextProps {
     isEmployer: boolean;
     setIsEmployer: (value: boolean) => void;

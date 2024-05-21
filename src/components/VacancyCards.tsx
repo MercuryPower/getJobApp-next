@@ -54,8 +54,8 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
             <div className={'text-center '}>
                 {filteredVacancies.length > 0 ? filteredVacancies.map((vacancy) => {
                 return (
-                <div key={vacancy.id} className={'flex shadow p-4 m-2 my-6 rounded-2xl  gap-5 border'}>
-                    <div className={'p-2  w-[500px] flex flex-col flex-grow rounded'}>
+                <div key={vacancy.id} className={'flex shadow p-4 m-2 my-6 rounded-2xl h-80 gap-5 border'}>
+                    <div className={'p-2  w-[500px] flex flex-col flex-grow  justify-center rounded'}>
                         <div className={' flex text-center justify-center p-2'}>
                             <Link href={`${pathname}/${vacancy.id}`}>
                                 <p className={'text-3xl text-ellipsis overflow-hidden font-bold  cursor-pointer'}>{vacancy.exp} {vacancy.vacancy_name}</p>
@@ -106,7 +106,7 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
                         </div>
                         {vacancy.skills && vacancy.skills?.length > 0 && (
                             <div className={'flex justify-center m-2'}>
-                                <Carousel opts={{align: 'start', dragFree: true}} className="w- max-w-md   ">
+                                <Carousel opts={{align: 'start', dragFree: true}} className="w-96 max-w-md   ">
                                     <CarouselContent className={'-ml-4'}>
                                         {vacancy.skills?.map((skill) => (
                                             <CarouselItem

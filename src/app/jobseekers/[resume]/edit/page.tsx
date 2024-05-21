@@ -32,66 +32,20 @@ import {useAuth} from "@/components/providers";
 import {usePathname, useRouter} from "next/navigation";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {VacancyInfo} from "@/types/types";
+import {citiesForChoice, skillsForChoice, workTypes} from "@/data/data";
 
 const Page = () => {
-    const workTypes: Option[] = [
-        { value: 'Полный рабочий день', label: 'Полный рабочий день' },
-        { value: 'Сменный график', label: 'Сменный график' },
-        { value: 'Вахтовый метод', label: 'Вахтовый метод' },
-        { value: 'Ненормированный рабочий день', label: 'Ненормированный рабочий день' },
-        { value: 'Гибкий график', label: 'Гибкий график' },
-        { value: 'Неполный рабочий день', label: 'Неполный рабочий день' },
-        { value: 'Удаленная работа', label: 'Удаленная работа' }
-    ];
-    const citiesForChoice: Option[] = [
-        { value: 'Москва', label: 'Москва' },
-        { value: 'Санкт-Петербург', label: 'Санкт-Петербург' },
-        { value: 'Новосибирск', label: 'Новосибирск' },
-        { value: 'Екатеринбург', label: 'Екатеринбург' },
-        { value: 'Казань', label: 'Казань' },
-        { value: 'Нижний Новгород', label: 'Нижний Новгород' },
-        { value: 'Челябинск', label: 'Челябинск' },
-        { value: 'Самара', label: 'Самара' },
-        { value: 'Ростов-на-Дону', label: 'Ростов-на-Дону' },
-        { value: 'Уфа', label: 'Уфа' },
-        { value: 'Красноярск', label: 'Красноярск' },
-        { value: 'Воронеж', label: 'Воронеж' },
-        { value: 'Пермь', label: 'Пермь' },
-        { value: 'Волгоград', label: 'Волгоград' },
-        { value: 'Краснодар', label: 'Краснодар' },
-        { value: 'Саратов', label: 'Саратов' },
-        { value: 'Энгельс', label: 'Энгельс' }
-    ];
-    const skillsForChoice: Option[] = [
-        { value: 'React', label: 'React' },
-        { value: 'Angular', label: 'Angular' },
-        { value: 'Vue', label: 'Vue' },
-        { value: 'Python', label: 'Python' },
-        { value: 'C++', label: 'C++' },
-        { value: 'Java', label: 'Java' },
-        { value: 'JavaScript', label: 'JavaScript' },
-        { value: 'TypeScript', label: 'TypeScript' },
-        { value: 'C#', label: 'C#' },
-        { value: 'Unity', label: 'Unity' },
-        { value: 'Kotlin', label: 'Kotlin' },
-        { value: 'Android', label: 'Android' },
-        { value: 'Swift', label: 'Swift' },
-        { value: 'Коммуникабельность', label: 'Коммуникабельность' },
-        { value: 'Ответственность', label: 'Ответственность' },
-        { value: 'Умение работать в команде', label: 'Умение работать в команде' }
-    ]
-
     const [isPending, startTransition] = useTransition();
     const {user, isLoggedIn} = useAuth();
     const pathname = usePathname();
     const [skills, setSkills] = useState<Option[]>([])
     const [cities, setCities] = useState<Option[]>([])
-    const [range, setRange] = useState([0, 500000]);
     const [typesOfEmploy, setTypesOfEmploy] = useState<Option[]>([])
+    const [range, setRange] = useState([0, 500000]);
     const [isByAgreement, setIsByAgreement] = useState(false);
     const [isFixedSalary, setIsFixedSalary] = useState(true)
     const router = useRouter()
-    const [vacancyData, setVacancyData] = useState<VacancyInfo>();
+    const [resumeData, setResumeData] = useState<VacancyInfo>();
     const id = pathname.split('/')[2];
     const fetchVacancyData = async () => {
         try {
@@ -99,8 +53,8 @@ const Page = () => {
             if (!response.ok) {
                 throw new Error('Failed to fetch vacancy data');
             }
-            const vacancyData = await response.json();
-            setVacancyData(vacancyData)
+            const data = await response.json();
+            setResumeData(data)
         } catch (error) {
             console.error('Error fetching vacancy data:', error);
             return null;
@@ -110,7 +64,7 @@ const Page = () => {
         const fetchData = async () => {
             const data = await fetchVacancyData();
             if (data) {
-                setVacancyData(data);
+                setResumeData(data);
             }
         };
 
@@ -120,52 +74,52 @@ const Page = () => {
     const form = useForm<z.infer<typeof VacancyCreateSchema>>({
         resolver: zodResolver(VacancyCreateSchema),
         defaultValues: {
-            vacancy_name: vacancyData?.vacancy_name || '',
-            salary_type: vacancyData?.salary_type || '',
-            fixed_salary: vacancyData?.fixed_salary || 0,
-            min_salary: vacancyData?.min_salary || 0,
-            max_salary: vacancyData?.max_salary || 0,
-            description: vacancyData?.description || '',
-            contacts: vacancyData?.contacts || '',
-            resume: vacancyData?.resume || '',
-            exp: vacancyData?.exp || '',
-            skills: vacancyData?.skills?.map(skill => skill.name) || [],
-            cities: vacancyData?.cities?.map(city => city.name) || [],
-            typeOfEmploy: vacancyData?.types_of_employ?.map(type => type.name) || [],
+            vacancy_name: resumeData?.vacancy_name || '',
+            salary_type: resumeData?.salary_type || '',
+            fixed_salary: resumeData?.fixed_salary || 0,
+            min_salary: resumeData?.min_salary || 0,
+            max_salary: resumeData?.max_salary || 0,
+            description: resumeData?.description || '',
+            contacts: resumeData?.contacts || '',
+            resume: resumeData?.resume || '',
+            exp: resumeData?.exp || '',
+            skills: resumeData?.skills?.map(skill => skill.name) || [],
+            cities: resumeData?.cities?.map(city => city.name) || [],
+            typeOfEmploy: resumeData?.types_of_employ?.map(type => type.name) || [],
         }
     })
     useEffect(() => {
-        if (vacancyData) {
+        if (resumeData) {
             form.reset({
-                vacancy_name: vacancyData.vacancy_name || '',
-                salary_type: vacancyData.salary_type || '',
-                fixed_salary: vacancyData.fixed_salary || 0,
-                min_salary: vacancyData.min_salary || 0,
-                max_salary: vacancyData.max_salary || 0,
-                description: vacancyData.description || '',
-                contacts: vacancyData.contacts || '',
-                resume: vacancyData.resume || '',
-                exp: vacancyData.exp || '',
-                skills: vacancyData?.skills.map(skill => skill.name) || [],
-                cities: vacancyData?.cities.map(city => city.name) || [],
-                typeOfEmploy: vacancyData?.types_of_employ?.map(type => type.name) || [],
+                vacancy_name: resumeData.vacancy_name || '',
+                salary_type: resumeData.salary_type || '',
+                fixed_salary: resumeData.fixed_salary || 0,
+                min_salary: resumeData.min_salary || 0,
+                max_salary: resumeData.max_salary || 0,
+                description: resumeData.description || '',
+                contacts: resumeData.contacts || '',
+                resume: resumeData.resume || '',
+                exp: resumeData.exp || '',
+                skills: resumeData?.skills.map(skill => skill.name) || [],
+                cities: resumeData?.cities.map(city => city.name) || [],
+                typeOfEmploy: resumeData?.types_of_employ?.map(type => type.name) || [],
             });
-            if (vacancyData.skills) {
-                const skillsFromServer = vacancyData.skills.map(skill => ({
+            if (resumeData.skills) {
+                const skillsFromServer = resumeData.skills.map(skill => ({
                     label: skill.name,
                     value: skill.name
                 }));
                 setSkills(skillsFromServer);
             }
-            if (vacancyData.cities) {
-                const citiesFromServer = vacancyData.cities.map(city => ({
+            if (resumeData.cities) {
+                const citiesFromServer = resumeData.cities.map(city => ({
                     label: city.name,
                     value: city.name
                 }));
                 setCities(citiesFromServer);
             }
-            if (vacancyData.types_of_employ && vacancyData.types_of_employ?.length > 0) {
-                const typesOfEmployFromServer = vacancyData.types_of_employ.map(type => ({
+            if (resumeData.types_of_employ) {
+                const typesOfEmployFromServer = resumeData.types_of_employ.map(type => ({
                     label: type.name,
                     value: type.name
                 }));
@@ -173,7 +127,7 @@ const Page = () => {
             }
         }
 
-    }, [form, vacancyData]);
+    }, [form, resumeData]);
     function onSubmit (values: z.infer<typeof VacancyCreateSchema>) {
         if (values.exp === 'Other') {
             values.exp = '';
@@ -221,14 +175,14 @@ const Page = () => {
                     return response.json();
                 })
                 .then(data => {
-                    router.replace('/vacancies')
+                    router.replace('/jobseekers')
                 })
                 .catch(error => {
                     console.error('Error:', error);
                 });
         })
     }
-    if(user?.type !== 'company'){
+    if(user?.type !== 'user'){
         return router.replace('/');
     }
     return (

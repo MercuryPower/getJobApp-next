@@ -4,16 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e9211fde-0751-489d-9f84-b4181bab2e7f" name="Changes" comment="login fixes, state of user type regularation added">
-      <change beforePath="$PROJECT_DIR$/src/app/vacancies/create/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/vacancies/create/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/vacancies/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/vacancies/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Navbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Navbar.tsx" afterDir="false" />
+    <list default="true" id="e9211fde-0751-489d-9f84-b4181bab2e7f" name="Changes" comment="updating vacancies added">
+      <change afterPath="$PROJECT_DIR$/src/app/jobseekers/[resume]/edit/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/jobseekers/me/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/data/data.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/jobseekers/[resume]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/jobseekers/[resume]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/vacancies/[vacancy]/edit/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/vacancies/[vacancy]/edit/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/vacancies/[vacancy]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/vacancies/[vacancy]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/ResumeCards.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ResumeCards.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/VacancyCards.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/VacancyCards.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/filter/ComboboxCities.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/filter/ComboboxCities.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/filter/VacancyFilter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/filter/VacancyFilter.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middleware.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/middleware.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/forms/JobSeekerForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/JobSeekerForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/forms/VacancyForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/VacancyForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/sections/LogOutSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/sections/LogOutSection.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/sections/SearchMainSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/sections/SearchMainSection.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/types/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/url/urls.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/url/urls.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,6 +29,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="TypeScript JSX File" />
+        <option value="TypeScript File" />
       </list>
     </option>
   </component>
@@ -76,6 +82,8 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\game\getJobApp-next\src" />
+      <recent name="C:\game\getJobApp-next\src\app\vacancies\[vacancy]" />
       <recent name="C:\game\getJobApp-next\src\components\forms" />
     </key>
   </component>
@@ -94,6 +102,12 @@
       <workItem from="1716032843177" duration="897000" />
       <workItem from="1716033905474" duration="6046000" />
       <workItem from="1716054505667" duration="5842000" />
+      <workItem from="1716230756273" duration="99000" />
+      <workItem from="1716230864988" duration="4674000" />
+      <workItem from="1716244379997" duration="622000" />
+      <workItem from="1716282990415" duration="21144000" />
+      <workItem from="1716304972228" duration="15476000" />
+      <workItem from="1716320477286" duration="5670000" />
     </task>
     <task id="LOCAL-00001" summary="login, getuserinfo added">
       <option name="closed" value="true" />
@@ -127,7 +141,39 @@
       <option name="project" value="LOCAL" />
       <updated>1716037550309</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="need to fix some bugs">
+      <option name="closed" value="true" />
+      <created>1716233927097</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1716233927097</updated>
+    </task>
+    <task id="LOCAL-00006" summary="fix some bugs">
+      <option name="closed" value="true" />
+      <created>1716235545552</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1716235545552</updated>
+    </task>
+    <task id="LOCAL-00007" summary="showing vacancy functionality and my vacancies showing">
+      <option name="closed" value="true" />
+      <created>1716302657817</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1716302657817</updated>
+    </task>
+    <task id="LOCAL-00008" summary="updating vacancies added">
+      <option name="closed" value="true" />
+      <created>1716320202538</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1716320202538</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -149,6 +195,11 @@
     <MESSAGE value="loginIn added and logOut" />
     <MESSAGE value="finally registration and login added" />
     <MESSAGE value="login fixes, state of user type regularation added" />
-    <option name="LAST_COMMIT_MESSAGE" value="login fixes, state of user type regularation added" />
+    <MESSAGE value="some creation vacancy fixes" />
+    <MESSAGE value="need to fix some bugs" />
+    <MESSAGE value="fix some bugs" />
+    <MESSAGE value="showing vacancy functionality and my vacancies showing" />
+    <MESSAGE value="updating vacancies added" />
+    <option name="LAST_COMMIT_MESSAGE" value="updating vacancies added" />
   </component>
 </project>
