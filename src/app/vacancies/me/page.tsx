@@ -93,7 +93,7 @@ const Page = () => {
                                     <p className={'text-ellipsis overflow-hidden'}>
                                         <HoverCard>
                                             <HoverCardTrigger asChild>
-                                                <Button variant="link">{'vacancy.companyName'}</Button>
+                                                <Button variant="link">{vacancy.companyName}</Button>
                                             </HoverCardTrigger>
                                             <HoverCardContent className="w-fit ">
                                                 <div className="flex justify-between space-x-4 self-center " >
@@ -103,13 +103,13 @@ const Page = () => {
                                                         <AvatarFallback>VC</AvatarFallback>
                                                     </Avatar>
                                                     <div className="space-y-2 flex max-w-md flex-col  justify-center self-center ">
-                                                        <h4 className="text-sm text-ellipsis overflow-hidden font-semibold">{"vacancy.companyName"}</h4>
+                                                        <h4 className="text-sm text-ellipsis overflow-hidden font-semibold">{vacancy.companyName}</h4>
                                                         <p className="text-sm max-w-32 text-ellipsis overflow-hidden">
-                                                            {`vacancy.descriptionaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa`}
+                                                            {vacancy.companyDescription}
                                                         </p>
                                                         <div className="flex flex-col  items-center text-ellipsis  overflow-hidden pt-2">
                                                     <span
-                                                        className="text-xs text-muted-foreground ">Присоединился в {formattedDate(vacancy.created_at, true)}</span>
+                                                        className="text-xs text-muted-foreground ">Присоединился в {formattedDate(vacancy.registered_at, true)}</span>
                                                         </div>
                                                     </div>
                                                 </div>

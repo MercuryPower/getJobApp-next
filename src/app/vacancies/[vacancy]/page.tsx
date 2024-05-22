@@ -96,11 +96,11 @@ const Page = () => {
                                             <div className="space-y-2 flex max-w-md flex-col  justify-center self-center ">
                                                 <p className="text-sm text-ellipsis overflow-hidden font-semibold">{vacancy.companyName}</p>
                                                 <p className="text-xs max-w-32 max-h-14  text-ellipsis overflow-hidden">
-                                                    {vacancy.description}
+                                                    {vacancy.companyDescription}
                                                 </p>
                                                 <div className="flex flex-col  items-center text-ellipsis  overflow-hidden pt-2">
                                                     <span
-                                                        className="text-xs text-muted-foreground ">Присоединился в {formattedDate(vacancy.created_at, false)}</span>
+                                                        className="text-xs text-muted-foreground ">Присоединился в {formattedDate(vacancy.registered_at, false)}</span>
                                                 </div>
                                             </div>
                                         </div>

@@ -12,6 +12,7 @@ import {useAuth} from "@/components/providers";
 import {ResumeInfo, VacancyInfo} from "@/types/types";
 import VacancyCardSkeleton from "@/components/ui/skeletons/VacancyCardSkeleton";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import {formattedDate} from "@/hooks/formatDate";
 
 const Page = () => {
     const router = useRouter();
@@ -90,7 +91,7 @@ const Page = () => {
                                             <p className={'text-ellipsis overflow-hidden'}>
                                                 <HoverCard>
                                                     <HoverCardTrigger asChild>
-                                                        <Button variant="link">{'vacancy.companyName'}</Button>
+                                                        <Button variant="link">{resume.companyName}</Button>
                                                     </HoverCardTrigger>
                                                     <HoverCardContent className="w-fit ">
                                                         <div className="flex justify-between space-x-4 self-center " >
@@ -100,13 +101,13 @@ const Page = () => {
                                                                 <AvatarFallback>VC</AvatarFallback>
                                                             </Avatar>
                                                             <div className="space-y-2 flex max-w-md flex-col  justify-center self-center ">
-                                                                <h4 className="text-sm text-ellipsis overflow-hidden font-semibold">{"vacancy.companyName"}</h4>
+                                                                <h4 className="text-sm text-ellipsis overflow-hidden font-semibold">{resume.companyName}</h4>
                                                                 <p className="text-sm max-w-32 text-ellipsis overflow-hidden">
-                                                                    {`vacancy.descriptionaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa`}
+                                                                    {resume.companyDescription}
                                                                 </p>
                                                                 <div className="flex flex-col  items-center text-ellipsis  overflow-hidden pt-2">
                                                     <span
-                                                        className="text-xs text-muted-foreground ">Joined December 2021</span>
+                                                        className="text-xs text-muted-foreground ">Присоединился в {formattedDate(resume.registered_at, true)}</span>
                                                                 </div>
                                                             </div>
                                                         </div>

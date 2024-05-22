@@ -95,11 +95,11 @@ const Page = () => {
                                             <div className="space-y-2  flex flex-col  justify-center self-center ">
                                                 <p className="text-xl font-bold  text-ellipsis overflow-hidden">@{resume.companyName}</p>
                                                 <p className="text-lg   text-ellipsis overflow-hidden">
-                                                    {resume.description}
+                                                    {resume.companyDescription}
                                                 </p>
                                                 <div className="flex text-center justify-center flex-col  items-center text-ellipsis  overflow-hidden pt-2">
                                                     <p className="text-lg text-center text-muted-foreground ">
-                                                        Присоединился {formattedDate(resume.created_at, false)}
+                                                        Присоединился {formattedDate(resume.registered_at, false)}
                                                     </p>
 
                                                 </div>

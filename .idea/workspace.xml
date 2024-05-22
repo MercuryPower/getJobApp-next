@@ -4,20 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e9211fde-0751-489d-9f84-b4181bab2e7f" name="Changes" comment="updating vacancies added">
-      <change afterPath="$PROJECT_DIR$/src/app/jobseekers/[resume]/edit/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/jobseekers/me/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/data/data.ts" afterDir="false" />
+    <list default="true" id="e9211fde-0751-489d-9f84-b4181bab2e7f" name="Changes" comment="companyName and companyDescription with date added">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/jobseekers/[resume]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/jobseekers/[resume]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/jobseekers/me/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/jobseekers/me/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/vacancies/[vacancy]/edit/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/vacancies/[vacancy]/edit/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/vacancies/[vacancy]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/vacancies/[vacancy]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/vacancies/me/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/vacancies/me/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/ResumeCards.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ResumeCards.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/VacancyCards.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/VacancyCards.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/forms/JobSeekerForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/JobSeekerForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/forms/VacancyForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/VacancyForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/sections/LogOutSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/sections/LogOutSection.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/sections/SearchMainSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/sections/SearchMainSection.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/types/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/types.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -107,7 +102,8 @@
       <workItem from="1716244379997" duration="622000" />
       <workItem from="1716282990415" duration="21144000" />
       <workItem from="1716304972228" duration="15476000" />
-      <workItem from="1716320477286" duration="5670000" />
+      <workItem from="1716320477286" duration="7122000" />
+      <workItem from="1716366128240" duration="9797000" />
     </task>
     <task id="LOCAL-00001" summary="login, getuserinfo added">
       <option name="closed" value="true" />
@@ -173,7 +169,23 @@
       <option name="project" value="LOCAL" />
       <updated>1716320202538</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="jobseekers updating and showing functionality added, final">
+      <option name="closed" value="true" />
+      <created>1716326258233</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1716326258233</updated>
+    </task>
+    <task id="LOCAL-00010" summary="companyName and companyDescription with date added">
+      <option name="closed" value="true" />
+      <created>1716378293027</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1716378293027</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -200,6 +212,8 @@
     <MESSAGE value="fix some bugs" />
     <MESSAGE value="showing vacancy functionality and my vacancies showing" />
     <MESSAGE value="updating vacancies added" />
-    <option name="LAST_COMMIT_MESSAGE" value="updating vacancies added" />
+    <MESSAGE value="jobseekers updating and showing functionality added, final" />
+    <MESSAGE value="companyName and companyDescription with date added" />
+    <option name="LAST_COMMIT_MESSAGE" value="companyName and companyDescription with date added" />
   </component>
 </project>

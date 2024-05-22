@@ -26,6 +26,7 @@ export interface VacancyInfo {
     contacts:string;
     registered_at:string;
     created_at:string;
+    companyDescription:string;
     [key: string]: any;
 }
 export interface ResumeInfo extends VacancyInfo {

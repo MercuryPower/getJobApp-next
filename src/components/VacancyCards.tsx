@@ -93,7 +93,7 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
                                             <div className="space-y-2 flex max-w-md flex-col  justify-center self-center ">
                                                 <p className="text-sm text-ellipsis overflow-hidden font-semibold">{vacancy.companyName}</p>
                                                 <p className="text-xs max-w-32 max-h-14  text-ellipsis overflow-hidden">
-                                                    {vacancy.description}
+                                                    {vacancy.companyDescription}
                                                 </p>
                                                 <div className="flex flex-col  items-center text-ellipsis  overflow-hidden pt-2">
                                                     <span
@@ -165,7 +165,7 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
                                 onClick={() => router.push(`${pathname}/${vacancy.id}`)}>Посмотреть
                         </Button>
                         <div className={'absolute bottom-2 text-xs opacity-50'}>
-                            {formattedDate(vacancy.registered_at)}
+                            {formattedDate(vacancy.created_at)}
                         </div>
                     </div>
 

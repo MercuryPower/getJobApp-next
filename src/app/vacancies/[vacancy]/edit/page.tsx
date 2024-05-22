@@ -340,7 +340,7 @@ const Page = () => {
                             <FormItem>
                                 <FormLabel>Уровень навыка</FormLabel>
                                 <FormControl>
-                                    <Select onValueChange={field.onChange} defaultValue={field.value} >
+                                    <Select onValueChange={field.onChange} defaultValue={vacancyData?.exp || field.value} >
                                         <SelectTrigger className="w-full h-16 text-xl">
                                             <SelectValue className="w-full text-xl" placeholder="Middle, Junior, Senior и т.д" />
                                         </SelectTrigger>

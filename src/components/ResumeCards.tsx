@@ -94,7 +94,7 @@ const ResumeCards = ({data, page, query, queryString}: {data:ResumeInfo[], page:
                                                             className="space-y-2 flex max-w-md flex-col  justify-center self-center ">
                                                             <p className="text-sm text-ellipsis overflow-hidden font-semibold">{resume.companyName}</p>
                                                             <p className="text-sm max-w-32 max-h-14 text-ellipsis overflow-hidden">
-                                                                {resume.description}
+                                                                {resume.companyDescription}
                                                             </p>
                                                             <div
                                                                 className="flex flex-col  items-center text-ellipsis  overflow-hidden pt-2">
@@ -167,7 +167,7 @@ const ResumeCards = ({data, page, query, queryString}: {data:ResumeInfo[], page:
                                             onClick={() => router.push(`${pathname}/${resume.id}`)}>Посмотреть
                                     </Button>
                                     <div className={'absolute bottom-0 text-xs opacity-50'}>
-                                        {formattedDate(resume.registered_at)}
+                                        {formattedDate(resume.created_at)}
                                     </div>
                                 </div>
 
