@@ -15,6 +15,7 @@ import {SeparatorHorizontal} from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 import AutoScroll from 'embla-carousel-auto-scroll'
 import {useAuth} from "@/components/providers";
+import {formattedDate} from "@/hooks/formatDate";
 
 const Page = () => {
     const pathname = usePathname();
@@ -83,25 +84,23 @@ const Page = () => {
                         <div className={'flex justify-center p-2 max-h-23'}>
                                 <HoverCard>
                                     <HoverCardTrigger asChild>
-                                        <Button variant="link">{'vacancy.companyName'}</Button>
+                                        <Button  variant="link">{vacancy.companyName}</Button>
                                     </HoverCardTrigger>
                                     <HoverCardContent className="w-fit ">
-                                        <div className="flex justify-between space-x-4 self-center ">
+                                        <div className="flex justify-between space-x-4 self-center " >
                                             <Avatar className={'self-center'}>
                                                 <AvatarImage
                                                     src="https://acdn.tinkoff.ru/static/pages/files/d39e9d26-fd5e-4574-9ad3-c3f2fc102598.png"/>
                                                 <AvatarFallback>VC</AvatarFallback>
                                             </Avatar>
-                                            <div
-                                                className="space-y-2 flex flex-col  justify-center self-center ">
-                                                <p className="text-sm text-ellipsis overflow-hidden font-semibold">{"vacancy.companyName"}</p>
-                                                <p className="text-sm max-w-32 text-ellipsis overflow-hidden">
-                                                    {`vacancy.descriptionaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa`}
+                                            <div className="space-y-2 flex max-w-md flex-col  justify-center self-center ">
+                                                <p className="text-sm text-ellipsis overflow-hidden font-semibold">{vacancy.companyName}</p>
+                                                <p className="text-xs max-w-32 max-h-14  text-ellipsis overflow-hidden">
+                                                    {vacancy.description}
                                                 </p>
-                                                <div
-                                                    className="flex flex-col  items-center text-ellipsis  overflow-hidden pt-2">
+                                                <div className="flex flex-col  items-center text-ellipsis  overflow-hidden pt-2">
                                                     <span
-                                                        className="text-xs text-muted-foreground ">Joined December 2021</span>
+                                                        className="text-xs text-muted-foreground ">Присоединился в {formattedDate(vacancy.created_at, false)}</span>
                                                 </div>
                                             </div>
                                         </div>

@@ -13,10 +13,12 @@ import VacancyCards from "@/components/VacancyCards";
 import {VacancyInfo} from "@/types/types";
 import VacancyCardSkeleton from "@/components/ui/skeletons/VacancyCardSkeleton";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import {formattedDate} from "@/hooks/formatDate";
+import {auth} from "@/auth";
 
 const Page = () => {
     const router = useRouter();
-    const {user} = useAuth();
+    const {user, isLoggedIn} = useAuth();
     const params = useParams();
     const [myVacancies, setMyVacancies] = useState<VacancyInfo[]>([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -44,7 +46,14 @@ const Page = () => {
 
         void fetchVacancy();
     }, []);
-    console.log(myVacancies)
+    useEffect(() => {
+        if(!isLoggedIn){
+            return router.replace('/')
+        }
+    }, [isLoggedIn, router]);
+    if(!isLoggedIn){
+        return null;
+    }
     return (
     <>
         <div className={'flex justify-center'}>
@@ -100,7 +109,7 @@ const Page = () => {
                                                         </p>
                                                         <div className="flex flex-col  items-center text-ellipsis  overflow-hidden pt-2">
                                                     <span
-                                                        className="text-xs text-muted-foreground ">Joined December 2021</span>
+                                                        className="text-xs text-muted-foreground ">Присоединился в {formattedDate(vacancy.created_at, true)}</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -170,15 +179,23 @@ const Page = () => {
                         </div>
                     )
                 }) :
-                    <div className={'flex gap-2 flex-col shadow-lg m-4 p-4 border rounded-2xl w-[700px] h-96 justify-center'}>
+                    <div
+                        className={'flex self-center gap-2 flex-col shadow-lg m-4 p-4 border rounded-2xl w-[700px] m h-96 justify-center'}>
                         <CircleX className={'self-center'} size={64}/>
-                        <span className={'self-center text-3xl '}>Ничего не найдено</span>
+                        <span className={'self-center text-3xl font-extrabold '}>Вакансии не найдены</span>
+                        <div className={'mt-2'}>
+                            <p className={'text-md opacity-75'}> Вакансии ещё не созданы.</p>
+                            <p className={'text-lg opacity-75 font-bold'}>или</p>
+                            <p className={'text-md opacity-75'}>Попробуйте повторить ещё раз.</p>
+                        </div>
+
+
                     </div>
                 }
             </div>
         )}
     </>
-)
+    )
 };
 
 export default Page;

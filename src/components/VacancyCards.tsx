@@ -10,6 +10,7 @@ import VacancyCardSkeleton from "@/components/ui/skeletons/VacancyCardSkeleton";
 import {CircleX} from "lucide-react";
 import {usePathname, useRouter} from "next/navigation";
 import Link from "next/link";
+import {formattedDate} from "@/hooks/formatDate";
 
 
 
@@ -35,6 +36,7 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
 
         void fetchData();
     }, [page, query, queryString]);
+
     // useEffect(() => {
     //     if (data && data.length > 0 && query && query.trim() !== '') {
     //         const filteredData = data.filter((vacancy) => {
@@ -54,7 +56,7 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
             <div className={'text-center '}>
                 {filteredVacancies.length > 0 ? filteredVacancies.map((vacancy) => {
                 return (
-                <div key={vacancy.id} className={'flex shadow p-4 m-2 my-6 rounded-2xl h-80 gap-5 border'}>
+                <div key={vacancy.id} className={'flex shadow p-4 m-2 my-6 rounded-2xl gap-5 border min-h-80'}>
                     <div className={'p-2  w-[500px] flex flex-col flex-grow  justify-center rounded'}>
                         <div className={' flex text-center justify-center p-2'}>
                             <Link href={`${pathname}/${vacancy.id}`}>
@@ -77,10 +79,9 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
                                     src="https://acdn.tinkoff.ru/static/pages/files/d39e9d26-fd5e-4574-9ad3-c3f2fc102598.png"/>
                                 <AvatarFallback>VC</AvatarFallback>
                             </Avatar>
-                            <p className={'text-ellipsis overflow-hidden'}>
                                 <HoverCard>
                                     <HoverCardTrigger asChild>
-                                        <Button variant="link">{'vacancy.companyName'}</Button>
+                                        <Button variant="link">{vacancy.companyName}</Button>
                                     </HoverCardTrigger>
                                     <HoverCardContent className="w-fit ">
                                         <div className="flex justify-between space-x-4 self-center " >
@@ -90,19 +91,18 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
                                                 <AvatarFallback>VC</AvatarFallback>
                                             </Avatar>
                                             <div className="space-y-2 flex max-w-md flex-col  justify-center self-center ">
-                                                <h4 className="text-sm text-ellipsis overflow-hidden font-semibold">{"vacancy.companyName"}</h4>
-                                                <p className="text-sm max-w-32 text-ellipsis overflow-hidden">
-                                                    {`vacancy.descriptionaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa`}
+                                                <p className="text-sm text-ellipsis overflow-hidden font-semibold">{vacancy.companyName}</p>
+                                                <p className="text-xs max-w-32 max-h-14  text-ellipsis overflow-hidden">
+                                                    {vacancy.description}
                                                 </p>
                                                 <div className="flex flex-col  items-center text-ellipsis  overflow-hidden pt-2">
                                                     <span
-                                                        className="text-xs text-muted-foreground ">Joined December 2021</span>
+                                                        className="text-xs text-muted-foreground ">Присоединился в {formattedDate(vacancy.registered_at, true)}</span>
                                                 </div>
                                             </div>
                                         </div>
                                     </HoverCardContent>
                                 </HoverCard>
-                            </p>
                         </div>
                         {vacancy.skills && vacancy.skills?.length > 0 && (
                             <div className={'flex justify-center m-2'}>
@@ -160,9 +160,15 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
                             </Carousel>
                         </div>
                     </div>
-                    <div className={'flex self-center flex-col '}>
-                        <Button size={'lg'} type={'button'} onClick={()=> router.push(`${pathname}/${vacancy.id}`)}>Посмотреть</Button>
+                    <div className={'flex flex-col justify-center items-center relative'}>
+                        <Button size={'lg'} type={'button'}
+                                onClick={() => router.push(`${pathname}/${vacancy.id}`)}>Посмотреть
+                        </Button>
+                        <div className={'absolute bottom-2 text-xs opacity-50'}>
+                            {formattedDate(vacancy.registered_at)}
+                        </div>
                     </div>
+
                 </div>
                 )
                 }) : <div
@@ -171,8 +177,8 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
                     <span className={'self-center text-3xl '}>Ничего не найдено</span>
                 </div>}
 
-        </div>
-            )}
+            </div>
+        )}
         </>
 
     );

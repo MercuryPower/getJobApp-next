@@ -9,6 +9,7 @@ import {Button} from "@/components/ui/button";
 import {Carousel, CarouselContent, CarouselItem, CarouselNext} from "@/components/ui/carousel";
 import {Card, CardContent} from "@/components/ui/card";
 import {CircleX} from "lucide-react";
+import {formattedDate} from "@/hooks/formatDate";
 
 interface ResumeInfo extends VacancyInfo{
     resume: string;
@@ -54,7 +55,7 @@ const ResumeCards = ({data, page, query, queryString}: {data:ResumeInfo[], page:
                 <div className={'text-center '}>
                     {filteredResumes.length > 0 ? filteredResumes.map((resume) => {
                         return (
-                            <div key={resume.id} className={'flex shadow p-4 m-2 my-6 rounded-2xl gap-5 border'}>
+                            <div key={resume.id} className={'flex shadow p-4 m-2 my-6 rounded-2xl gap-5 border min-h-80'}>
                                 <div className={'p-2  w-[500px] flex flex-col flex-grow justify-center rounded'}>
                                     <div className={' flex text-center justify-center p-2'}>
                                         <Link href={`${pathname}/${resume.id}`}>
@@ -67,8 +68,9 @@ const ResumeCards = ({data, page, query, queryString}: {data:ResumeInfo[], page:
                                         :
                                         resume.salary_type === 'fixed' ? (
                                             <p className={'text-center text-2xl text-ellipsis overflow-hidden '}>{resume.fixed_salary} &#8381;</p>
-                                        ): (
-                                            <p className={'text-center text-2xl text-ellipsis overflow-hidden '}>по договоренности </p>
+                                        ) : (
+                                            <p className={'text-center text-2xl text-ellipsis overflow-hidden '}>по
+                                                договоренности </p>
                                         )
                                     }
                                     <div className={'flex justify-center p-2'}>
@@ -77,32 +79,32 @@ const ResumeCards = ({data, page, query, queryString}: {data:ResumeInfo[], page:
                                                 src="https://acdn.tinkoff.ru/static/pages/files/d39e9d26-fd5e-4574-9ad3-c3f2fc102598.png"/>
                                             <AvatarFallback>VC</AvatarFallback>
                                         </Avatar>
-                                        <p className={'text-ellipsis overflow-hidden'}>
                                             <HoverCard>
                                                 <HoverCardTrigger asChild>
-                                                    <Button variant="link">{'vacancy.companyName'}</Button>
+                                                    <Button variant="link">{resume.companyName}</Button>
                                                 </HoverCardTrigger>
                                                 <HoverCardContent className="w-fit ">
-                                                    <div className="flex justify-between space-x-4 self-center " >
+                                                    <div className="flex justify-between space-x-4 self-center ">
                                                         <Avatar className={'self-center'}>
                                                             <AvatarImage
                                                                 src="https://acdn.tinkoff.ru/static/pages/files/d39e9d26-fd5e-4574-9ad3-c3f2fc102598.png"/>
                                                             <AvatarFallback>VC</AvatarFallback>
                                                         </Avatar>
-                                                        <div className="space-y-2 flex max-w-md flex-col  justify-center self-center ">
-                                                            <p className="text-sm text-ellipsis overflow-hidden font-semibold">{"vacancy.companyName"}</p>
-                                                            <p className="text-sm max-w-32 text-ellipsis overflow-hidden">
-                                                                {`vacancy.descriptionaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa`}
+                                                        <div
+                                                            className="space-y-2 flex max-w-md flex-col  justify-center self-center ">
+                                                            <p className="text-sm text-ellipsis overflow-hidden font-semibold">{resume.companyName}</p>
+                                                            <p className="text-sm max-w-32 max-h-14 text-ellipsis overflow-hidden">
+                                                                {resume.description}
                                                             </p>
-                                                            <div className="flex flex-col  items-center text-ellipsis  overflow-hidden pt-2">
+                                                            <div
+                                                                className="flex flex-col  items-center text-ellipsis  overflow-hidden pt-2">
                                                     <span
-                                                        className="text-xs text-muted-foreground ">Joined December 2021</span>
+                                                        className="text-xs text-muted-foreground ">Присоединился в {formattedDate(resume.registered_at, true)}</span>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </HoverCardContent>
                                             </HoverCard>
-                                        </p>
                                     </div>
                                     {resume.skills && resume.skills?.length > 0 && (
                                         <div className={'flex justify-center m-2'}>
@@ -114,7 +116,7 @@ const ResumeCards = ({data, page, query, queryString}: {data:ResumeInfo[], page:
                                                             key={skill.name}>
                                                             <div className="p-1  ">
                                                                 <>
-                                                                    <CardContent  className="m-1 p-2 ">
+                                                                    <CardContent className="m-1 p-2 ">
                                                                         <span className="font-black">{skill.name}</span>
                                                                     </CardContent>
                                                                 </>
@@ -160,9 +162,15 @@ const ResumeCards = ({data, page, query, queryString}: {data:ResumeInfo[], page:
                                         </Carousel>
                                     </div>
                                 </div>
-                                <div className={'flex self-center flex-col '}>
-                                    <Button size={'lg'} type={'button'} onClick={()=> router.push(`${pathname}/${resume.id}`)}>Посмотреть</Button>
+                                <div className={'flex flex-col justify-center items-center relative'}>
+                                    <Button size={'lg'} type={'button'}
+                                            onClick={() => router.push(`${pathname}/${resume.id}`)}>Посмотреть
+                                    </Button>
+                                    <div className={'absolute bottom-0 text-xs opacity-50'}>
+                                        {formattedDate(resume.registered_at)}
+                                    </div>
                                 </div>
+
                             </div>
                         )
                     }) : <div

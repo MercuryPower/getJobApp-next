@@ -35,6 +35,7 @@ const LoginSection = () => {
                 email: '',
                 password: '',
                 username: '',
+                description: '',
             }
         })
 
@@ -92,7 +93,7 @@ const LoginSection = () => {
                             userType ? (
                                 userType === 'company' ? (
                                     <>
-                                        <Button onClick={() => setUserType('user')}>
+                                        <Button type={'button'} onClick={() => setUserType('user')}>
                                             <span>Я ищу работу</span>
                                         </Button>
                                         <RegistrationForm userType={userType} isPending={isPending} error={error}
@@ -114,10 +115,10 @@ const LoginSection = () => {
                             )
                                 : (
                                 <>
-                                    <Button onClick={() => setUserType('company')}>
+                                    <Button type={'button'} onClick={() => setUserType('company')}>
                                         <span>Я ищу работника</span>
                                     </Button>
-                                    <Button onClick={() => setUserType('user')}>
+                                    <Button type={'button'} onClick={() => setUserType('user')}>
                                         <span>Я ищу работу</span>
                                     </Button>
                                 </>

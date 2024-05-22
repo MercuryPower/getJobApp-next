@@ -1,5 +1,5 @@
 'use client'
-import React, {useState, useTransition} from 'react';
+import React, {useEffect, useState, useTransition} from 'react';
 import {FormProvider, useForm} from "react-hook-form";
 import {z} from "zod";
 import {VacancyCreateSchema} from "@/schemas";
@@ -31,34 +31,9 @@ import {
     DialogHeader,
     DialogTitle, DialogTrigger
 } from "@/components/ui/dialog";
+import {citiesForChoice, workTypes} from "@/data/data";
 const Page = () => {
-    const workTypes: Option[] = [
-        { value: 'Полный рабочий день', label: 'Полный рабочий день' },
-        { value: 'Сменный график', label: 'Сменный график' },
-        { value: 'Вахтовый метод', label: 'Вахтовый метод' },
-        { value: 'Ненормированный рабочий день', label: 'Ненормированный рабочий день' },
-        { value: 'Гибкий график', label: 'Гибкий график' },
-        { value: 'Неполный рабочий день', label: 'Неполный рабочий день' },
-        { value: 'Удаленная работа', label: 'Удаленная работа' }
-    ];
-    const citiesForChoice: Option[] = [
-        { value: 'Москва', label: 'Москва' },
-        { value: 'Санкт-Петербург', label: 'Санкт-Петербург' },
-        { value: 'Новосибирск', label: 'Новосибирск' },
-        { value: 'Екатеринбург', label: 'Екатеринбург' },
-        { value: 'Казань', label: 'Казань' },
-        { value: 'Нижний Новгород', label: 'Нижний Новгород' },
-        { value: 'Челябинск', label: 'Челябинск' },
-        { value: 'Самара', label: 'Самара' },
-        { value: 'Ростов-на-Дону', label: 'Ростов-на-Дону' },
-        { value: 'Уфа', label: 'Уфа' },
-        { value: 'Красноярск', label: 'Красноярск' },
-        { value: 'Воронеж', label: 'Воронеж' },
-        { value: 'Пермь', label: 'Пермь' },
-        { value: 'Волгоград', label: 'Волгоград' },
-        { value: 'Краснодар', label: 'Краснодар' },
-        { value: 'Саратов', label: 'Саратов' }
-    ];
+
     const [isPending, startTransition] = useTransition();
     const {user} = useAuth();
     const [skills, setSkills] = useState<Option[]>()
@@ -67,9 +42,6 @@ const Page = () => {
     const [isByAgreement, setIsByAgreement] = useState(false);
     const [isFixedSalary, setIsFixedSalary] = useState(true)
     const router = useRouter()
-    // if(user?.type !== 'company'){
-    //     return router.replace('/');
-    // }
     const form = useForm<z.infer<typeof VacancyCreateSchema>>({
         resolver: zodResolver(VacancyCreateSchema),
         defaultValues: {
@@ -144,7 +116,14 @@ const Page = () => {
                 });
         })
     }
-
+    useEffect(() => {
+        if (user?.type !== 'company') {
+            return router.replace('/');
+        }
+    }, [user, router]);
+    if (user?.type !== 'company') {
+        return null;
+    }
     return (
         <div className={'flex justify-center p-4 m-4'}>
             <FormProvider {...form}>

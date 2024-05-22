@@ -11,19 +11,20 @@ export const LoginSchema = z.object({
 })
 export const RegistrationSchema = z.object({
     username: z.string().min(3, {
-        message: 'Имя пользователя должно быть больше 3 символов'
+        message: 'Имя пользователя должно быть больше 3 символов.'
     }),
     email: z.string().email({
         message: "Неправильный адрес электронной почты.",
     }),
     password: z.string().min(6,{
-        message:'Пароль должен быть больше 6 символов'
+        message:'Пароль должен быть больше 6 символов.'
     }),
+    description: z.string()
 })
 
 export const VacancyCreateSchema = z.object({
     vacancy_name: z.string().min(2,{
-        message: 'Название вакансии должно состоять из больше чем 2 символов'
+        message: 'Название должно состоять из более чем 2 символов'
     }),
     salary_type:z.string(),
     fixed_salary: z.number(),

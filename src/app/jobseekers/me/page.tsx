@@ -15,7 +15,7 @@ import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 const Page = () => {
     const router = useRouter();
-    const {user} = useAuth();
+    const {user, isLoggedIn} = useAuth();
     const params = useParams();
     const [myResumes, setMyResumes] = useState<ResumeInfo[]>([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -43,6 +43,14 @@ const Page = () => {
 
         void fetchVacancy();
     }, []);
+    useEffect(() => {
+        if(!isLoggedIn){
+            return router.replace('/')
+        }
+    }, [isLoggedIn, router]);
+    if(!isLoggedIn){
+        return null;
+    }
     return (
         <>
             <div className={'flex justify-center'}>

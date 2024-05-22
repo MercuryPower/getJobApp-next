@@ -18,11 +18,12 @@ export const register = async (values: TypeOf<typeof RegistrationSchema>, type:s
 
     try {
         'use server'
-        const { username, email, password } = values;
+        const { username, email, password, description } = values;
         const payload = {
             username,
             email,
             password,
+            description,
             type,
         };
 

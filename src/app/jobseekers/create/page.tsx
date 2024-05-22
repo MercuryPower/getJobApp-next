@@ -1,5 +1,5 @@
 'use client'
-import React, {useState, useTransition} from 'react';
+import React, {useEffect, useState, useTransition} from 'react';
 import {FormProvider, useForm} from "react-hook-form";
 import {z} from "zod";
 import {VacancyCreateSchema} from "@/schemas";
@@ -85,9 +85,6 @@ const Page = () => {
             typeOfEmploy:[],
         }
     })
-    if(user?.type !== 'user'){
-        return router.replace('/');
-    }
     function onSubmit(values: z.infer<typeof VacancyCreateSchema>) {
         if (values.exp === 'Other') {
             values.exp = '';
@@ -145,6 +142,14 @@ const Page = () => {
                 });
 
         })
+    }
+    useEffect(() => {
+        if (user?.type !== 'user') {
+            return router.replace('/');
+        }
+    }, [user, router]);
+    if (user?.type !== 'user') {
+        return null;
     }
     return (
         <div className={'flex justify-center p-4 m-4'}>

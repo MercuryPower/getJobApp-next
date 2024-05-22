@@ -55,19 +55,30 @@ export default function Home() {
             <KeyFeaturesSection/>
             <section>
                 <div className={'flex flex-col m-24 p-2 '}>
-                    <h1 className={'text-4xl font-light'}>| 01 <span className={' p-2 font-bold text-3xl '}>Создайте необходимую вакансию</span>
-                    </h1>
-                    {isLoggedIn  ?
-                        user?.type === 'company' ?(
-                            <VacancyForm/>
-                            ):
-                            (
-                            <JobSeekerForm/>
-                            )
+                    {isLoggedIn ?
+                        user?.type === 'company' ?
+                            <h1 className={'text-4xl font-light'}>| 01 <span className={' p-2 font-bold text-3xl '}>Создайте необходимую вакансию</span>
+                            </h1>
                             :
-                        <div className={'flex h-96 justify-center flex-grow flex-col self-center min-w-4 w-1/2  m-6 shadow rounded border p-4 space-y-4'}>
-                            <span className={'self-center '}>Чтобы создать вакансию - авторизуйтесь</span>
-                            <LoginSection />
+                            <h1 className={'text-4xl font-light'}>| 01 <span className={' p-2 font-bold text-3xl '}>Создайте необходимое резюме</span>
+                            </h1>
+                    :
+                        <h1 className={'text-4xl font-light'}>| 01 <span className={' p-2 font-bold text-3xl '}>Создайте вакансию или резюме </span>
+                        </h1>
+                    }
+
+                    {isLoggedIn ?
+                        user?.type === 'company' ? (
+                                <VacancyForm/>
+                            ) :
+                            (
+                                <JobSeekerForm/>
+                            )
+                        :
+                        <div
+                            className={'flex h-96 justify-center flex-grow flex-col self-center min-w-4 w-1/2  m-6 shadow rounded border p-4 space-y-4'}>
+                            <span className={'self-center '}>Чтобы создать вакансию/резюме - авторизуйтесь</span>
+                            <LoginSection/>
                         </div>
                     }
                 </div>
