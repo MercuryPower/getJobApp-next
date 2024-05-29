@@ -188,8 +188,6 @@ const Page = () => {
                             <p className={'text-lg opacity-75 font-bold'}>или</p>
                             <p className={'text-md opacity-75'}>Попробуйте повторить ещё раз.</p>
                         </div>
-
-
                     </div>
                 }
             </div>

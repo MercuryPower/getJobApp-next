@@ -10,9 +10,11 @@ import KeyFeaturesSection from "@/components/sections/KeyFeaturesSection";
 import {auth} from "@/auth";
 import LoginSection from "@/components/sections/LoginSection";
 import {useRouter} from "next/navigation";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useAuth} from "@/components/providers";
 import JobSeekerForm from "@/components/forms/JobSeekerForm";
+import {Statistics} from "@/components/tables/Statistics";
+import RecommendationSection from "@/components/sections/RecommendationSection";
 export default function Home() {
     const { isLoggedIn, user } = useAuth();
     // const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -76,21 +78,27 @@ export default function Home() {
                             )
                         :
                         <div
-                            className={'flex h-96 justify-center flex-grow flex-col self-center min-w-4 w-1/2  m-6 shadow rounded border p-4 space-y-4'}>
+                            className={'flex rounded-2xl h-96 justify-center flex-grow flex-col self-center min-w-4 w-1/2  m-6 shadow border p-4 space-y-4'}>
                             <span className={'self-center '}>Чтобы создать вакансию/резюме - авторизуйтесь</span>
                             <LoginSection/>
                         </div>
                     }
                 </div>
-                <div className={'flex m-24 p-2 '}>
+                <div className={'flex m-24 p-2 flex-col'}>
                     <h1 className={'text-4xl font-light'}>| 02 <span className={'p-2 font-bold text-3xl '}>Посмотрите рекомендации для вас</span>
                     </h1>
+                    <div className={'flex justify-center mt-4 h-auto overflow-hidden'}>
+                        <RecommendationSection />
+                    </div>
                 </div>
-                <div className={'flex m-24 p-2 '}>
+                <div className={'flex m-24 p-2 flex-col  '}>
                     <h1 className={'text-4xl font-light'}>| 03 <span
                         className={'p-2 font-bold text-3xl '}>Почти готово!</span> <span
                         className={'text-xl text-center'}>Вы можете посмотреть статистику о востребованности профессии внизу.</span>
                     </h1>
+                    <div className={'flex justify-center mt-4 h-auto'}>
+                            <Statistics/>
+                    </div>
                 </div>
             </section>
         </main>

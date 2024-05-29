@@ -14,7 +14,7 @@ import {formattedDate} from "@/hooks/formatDate";
 
 
 
-const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], page:number, query:string, queryString:string}) => {
+const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], page?:number, query?:string, queryString?:string}) => {
     const pathname = usePathname()
     const router = useRouter();
     const [filteredVacancies, setFilteredVacancies] = useState<VacancyInfo[]>(data)
@@ -24,7 +24,7 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
         const fetchData = async () => {
             setIsLoading(true);
             try {
-                const response = await fetch(`http://127.0.0.1:8000/tests/company?page=${page}&query=${query}&${queryString}`);
+                const response = await fetch(`http://127.0.0.1:8000/tests/company?page=${page}&query=${query}&${queryString}`, {cache:'force-cache'});
                 const responseData = await response.json();
                 setFilteredVacancies(responseData);
             } catch (error) {

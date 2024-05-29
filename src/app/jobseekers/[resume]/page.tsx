@@ -24,12 +24,11 @@ const Page = () => {
     const params = useParams();
     const [resume, setResume] = useState<ResumeInfo>();
     useEffect(() => {
-        const fetchVacancy = async () => {
+        const fetchResume = async () => {
             try {
-                // Отправляем запрос на сервер, используя id из параметров URL
                 const response = await fetch(`http://127.0.0.1:8000/tests/vacancy/${params.resume}`);
                 if (!response.ok) {
-                    throw new Error('Failed to fetch vacancy');
+                    throw new Error('Ошибка при сборе данных о резюме:');
                 }
                 const data = await response.json();
                 setResume(data);
@@ -38,7 +37,7 @@ const Page = () => {
             }
         };
 
-        void fetchVacancy();
+        void fetchResume();
     }, [params.resume]);
     return (
         <>

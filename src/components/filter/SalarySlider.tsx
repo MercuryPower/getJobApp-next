@@ -1,5 +1,5 @@
 'use client'
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Slider} from "@/components/ui/slider";
 import {cn} from "@/lib/utils";
 import {FormItem} from "@/components/ui/form";
@@ -14,7 +14,7 @@ const SalarySlider = ({ className,onChangeMinSalary, onChangeMaxSalary, ...props
     const [minSalary, setMinSalary] = useState<number>(0);
     const [maxSalary, setMaxSalary] = useState<number>(500000);
 
-    const handleRangeChange = (value: number[]) => {
+    const handleRangeChange = useCallback((value: number[]) => {
         setRange(value);
         setMinSalary(value[0]);
         setMaxSalary(value[1]);
@@ -22,7 +22,7 @@ const SalarySlider = ({ className,onChangeMinSalary, onChangeMaxSalary, ...props
             onChangeMinSalary(value[0]);
             onChangeMaxSalary(value[1]);
         }
-    };
+    }, [onChangeMaxSalary, onChangeMinSalary]);
 
     const handleMinSalaryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         let value = Number(event.target.value.replace(/\D/g, ''));
@@ -44,7 +44,7 @@ const SalarySlider = ({ className,onChangeMinSalary, onChangeMaxSalary, ...props
 
     useEffect(() => {
         handleRangeChange(range);
-    }, [minSalary, maxSalary]);
+    }, [minSalary, maxSalary, handleRangeChange, range]);
     return (
         <div className={cn("slider-container", className)}>
             <div className="flex justify-between  p-2">

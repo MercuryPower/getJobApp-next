@@ -47,29 +47,30 @@ const Page = () => {
     const router = useRouter()
     const [resumeData, setResumeData] = useState<VacancyInfo>();
     const id = pathname.split('/')[2];
-    const fetchVacancyData = async () => {
-        try {
-            const response = await fetch(`http://127.0.0.1:8000/tests/vacancy/${id}`);
-            if (!response.ok) {
-                throw new Error('Failed to fetch vacancy data');
-            }
-            const data = await response.json();
-            setResumeData(data)
-        } catch (error) {
-            console.error('Error fetching vacancy data:', error);
-            return null;
-        }
-    };
+   
     useEffect(() => {
         const fetchData = async () => {
-            const data = await fetchVacancyData();
+            const fetchResumeData = async () => {
+                try {
+                    const response = await fetch(`http://127.0.0.1:8000/tests/vacancy/${id}`);
+                    if (!response.ok) {
+                        throw new Error('Ошибка при сборе данных');
+                    }
+                    const data = await response.json();
+                    setResumeData(data)
+                } catch (error) {
+                    console.error('Ошибка при сборе данных о резюме:', error);
+                    return null;
+                }
+            };
+            const data = await fetchResumeData();
             if (data) {
                 setResumeData(data);
             }
         };
 
         void fetchData();
-    }, []);
+    }, [id]);
 
     const form = useForm<z.infer<typeof VacancyCreateSchema>>({
         resolver: zodResolver(VacancyCreateSchema),

@@ -1,5 +1,5 @@
 'use client'
-import React, {useEffect, useState, useTransition} from 'react';
+import React, {useCallback, useEffect, useState, useTransition} from 'react';
 import {z} from "zod";
 import {VacancyCreateSchema} from "@/schemas";
 import {FormProvider, useForm} from "react-hook-form";
@@ -47,7 +47,8 @@ const Page = () => {
     const router = useRouter()
     const [vacancyData, setVacancyData] = useState<VacancyInfo>();
     const id = pathname.split('/')[2];
-    const fetchVacancyData = async () => {
+
+    const fetchVacancyData = useCallback(async () => {
         try {
             const response = await fetch(`http://127.0.0.1:8000/tests/vacancy/${id}`);
             if (!response.ok) {
@@ -59,7 +60,7 @@ const Page = () => {
             console.error('Error fetching vacancy data:', error);
             return null;
         }
-    };
+    }, [id]);
     useEffect(() => {
         const fetchData = async () => {
             const data = await fetchVacancyData();
@@ -69,7 +70,7 @@ const Page = () => {
         };
 
         void fetchData();
-    }, []);
+    }, [fetchVacancyData]);
 
     const form = useForm<z.infer<typeof VacancyCreateSchema>>({
         resolver: zodResolver(VacancyCreateSchema),

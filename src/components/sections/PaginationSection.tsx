@@ -68,7 +68,7 @@ const PaginationSection = ({currentPage,queryString, query}:{currentPage:number,
             }
         };
         void fetchTotalPages();
-    }, [page, query, queryString]);
+    }, [page, query, queryString, type]);
     return (
         <Pagination >
             <PaginationContent>

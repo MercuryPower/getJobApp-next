@@ -6,6 +6,7 @@ import MultiselectSkills from "@/components/filter/MultiselectSkills";
 import SalarySlider from "@/components/filter/SalarySlider";
 import {Button} from "@/components/ui/button";
 import {usePathname, useRouter} from "next/navigation";
+import MultiselectProfessions from "@/components/filter/MultiselectProfessions";
 
 const VacancyFilter = ({ onQueryChange, query }: { onQueryChange: (query: string) => void , query: string}) => {
     const pathname = usePathname();
@@ -15,6 +16,7 @@ const VacancyFilter = ({ onQueryChange, query }: { onQueryChange: (query: string
     const [minSalary, setMinSalary] = useState<number>(0);
     const [maxSalary, setMaxSalary] = useState<number>(500000);
     const router = useRouter();
+    const [selectedProfessions, setSelectedProfessions] = useState<string[]>([]);
     const onSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -79,26 +81,33 @@ const VacancyFilter = ({ onQueryChange, query }: { onQueryChange: (query: string
                     <div className={'space-y-4 pt-6'}>
                         <div className={'space-y-2'}>
                             <h3 className={'text-lg'}>Город</h3>
-                            <ComboboxCity setSelectedCity={(selectedCity) => setSelectedCity(selectedCity)} />
+                            <ComboboxCity setSelectedCity={(selectedCity) => setSelectedCity(selectedCity)}/>
                         </div>
-                        <div className={'space-y-2' }>
+                        <div className={'space-y-2'}>
                             <h3 className={'text-lg'}>Тип занятости</h3>
                             {!selectedTypeOfEmploy ?
                                 <div>
-                                    <span className={'m-4 text-xs max-h-20 p-2 border text-start '}>Данных не найдено</span>
+                                    <span
+                                        className={'m-4 text-xs max-h-20 p-2 border text-start '}>Данных не найдено</span>
                                 </div>
                                 :
-                                <SelectTypeOfEmploy onChecked={(selectedEmploymentType) => setSelectedTypeOfEmploy(selectedEmploymentType)} />
+                                <SelectTypeOfEmploy
+                                    onChecked={(selectedEmploymentType) => setSelectedTypeOfEmploy(selectedEmploymentType)}/>
                             }
 
                         </div>
                         <div className={'space-y-2'}>
                             <h3 className={'text-lg'}>Навыки</h3>
-                            <MultiselectSkills  onChange={(skills) => setSelectedSkills(skills)}  />
+                            <MultiselectSkills onChange={(skills) => setSelectedSkills(skills)}/>
+                        </div>
+                        <div className={'space-y-2'}>
+                            <h3 className={'text-lg'}>Профессии</h3>
+                            <MultiselectProfessions onChange={(professions) => setSelectedProfessions(professions)}/>
                         </div>
                         <div className={'space-y-2'}>
                             <h3 className={'text-lg'}>Желаемая зарплата</h3>
-                            <SalarySlider onChangeMinSalary={handleMinSalaryChange} onChangeMaxSalary={handleMaxSalaryChange}   />
+                            <SalarySlider onChangeMinSalary={handleMinSalaryChange}
+                                          onChangeMaxSalary={handleMaxSalaryChange}/>
                         </div>
                     </div>
                     <Button type={'submit'} className={'mt-8'}>Поиск</Button>

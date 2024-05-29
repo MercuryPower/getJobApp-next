@@ -177,9 +177,15 @@ const Page = () => {
                                 </div>
                             )
                         }) :
-                        <div className={'flex gap-2 flex-col shadow-lg m-4 p-4 border rounded-2xl w-[700px] h-96 justify-center'}>
+                        <div
+                            className={'flex self-center gap-2 flex-col shadow-lg m-4 p-4 border rounded-2xl w-[700px] m h-96 justify-center'}>
                             <CircleX className={'self-center'} size={64}/>
-                            <span className={'self-center text-3xl '}>Ничего не найдено</span>
+                            <span className={'self-center text-3xl font-extrabold '}>Резюме не найдены</span>
+                            <div className={'mt-2'}>
+                                <p className={'text-md opacity-75'}>Ваши резюме ещё не созданы.</p>
+                                <p className={'text-lg opacity-75 font-bold'}>или</p>
+                                <p className={'text-md opacity-75'}>Попробуйте повторить ещё раз.</p>
+                            </div>
                         </div>
                     }
                 </div>
