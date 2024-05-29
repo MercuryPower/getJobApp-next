@@ -123,7 +123,7 @@ const Navbar = () => {
                     </Button>
                 </div>
                 <div className={'ml-9'}>
-                    <Button variant={'link'} className={'flex border-black p-2 hover:no-underline rounded font-bold hover:opacity-70 transition'}>
+                        <Button variant={'link'} className={'flex border-black p-2 hover:no-underline rounded font-bold hover:opacity-70 transition'} onClick={() => router.push('/recommendations')}>
                         <svg className={'mr-2 self-center dark:invert'} width="15" height="14" viewBox="0 0 15 14"
                              fill="black" xmlns="http://www.w3.org/2000/svg">
                             <g clipPath="url(#clip0_128_115)">
@@ -136,7 +136,7 @@ const Navbar = () => {
                                 </clipPath>
                             </defs>
                         </svg>
-                        Тренды
+                        Рекомендации
                     </Button>
                 </div>
                 <div className={'ml-9 '}>
