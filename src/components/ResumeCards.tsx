@@ -51,7 +51,7 @@ const ResumeCards = ({data, page, query, queryString}: {data:ResumeInfo[], page:
 
     return (
         <>
-            {isLoading ? <VacancyCardSkeleton /> : (
+            {isLoading ? <VacancyCardSkeleton/> : (
                 <div className={'text-center '}>
                     {filteredResumes.length > 0 ? filteredResumes.map((resume) => {
                         return (

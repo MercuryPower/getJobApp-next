@@ -4,16 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e9211fde-0751-489d-9f84-b4181bab2e7f" name="Changes" comment="companyName and companyDescription with date added">
+    <list default="true" id="e9211fde-0751-489d-9f84-b4181bab2e7f" name="Changes" comment="Recommendation section was added, in main and /recommendation page, bug fixes, and dependencies from useEffect was fixed">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/jobseekers/[resume]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/jobseekers/[resume]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/jobseekers/me/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/jobseekers/me/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/vacancies/[vacancy]/edit/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/vacancies/[vacancy]/edit/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/vacancies/[vacancy]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/vacancies/[vacancy]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/vacancies/me/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/vacancies/me/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/statistics/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/statistics/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/ResumeCards.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ResumeCards.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/VacancyCards.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/VacancyCards.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/filter/MultiselectProfessions.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/filter/MultiselectProfessions.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/filter/VacancyFilter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/filter/VacancyFilter.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/tables/Statistics.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/tables/Statistics.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/types/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/url/urls.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/url/urls.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,8 +23,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="TypeScript JSX File" />
         <option value="TypeScript File" />
+        <option value="TypeScript JSX File" />
       </list>
     </option>
   </component>
@@ -50,7 +50,7 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="DEPENDENCY_CHECKER_PROBLEMS_TAB" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
@@ -103,7 +103,15 @@
       <workItem from="1716282990415" duration="21144000" />
       <workItem from="1716304972228" duration="15476000" />
       <workItem from="1716320477286" duration="7122000" />
-      <workItem from="1716366128240" duration="9797000" />
+      <workItem from="1716366128240" duration="10667000" />
+      <workItem from="1716509268539" duration="497000" />
+      <workItem from="1716524005975" duration="1215000" />
+      <workItem from="1716720064487" duration="1087000" />
+      <workItem from="1716915627567" duration="661000" />
+      <workItem from="1716985975079" duration="555000" />
+      <workItem from="1716986541599" duration="431000" />
+      <workItem from="1716987154332" duration="12246000" />
+      <workItem from="1717074421722" duration="12261000" />
     </task>
     <task id="LOCAL-00001" summary="login, getuserinfo added">
       <option name="closed" value="true" />
@@ -185,7 +193,23 @@
       <option name="project" value="LOCAL" />
       <updated>1716378293027</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="new Recommendation page and navbar new menu of recommendation">
+      <option name="closed" value="true" />
+      <created>1716987254278</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1716987254278</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Recommendation section was added, in main and /recommendation page, bug fixes, and dependencies from useEffect was fixed">
+      <option name="closed" value="true" />
+      <created>1717000639014</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1717000639014</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -214,6 +238,8 @@
     <MESSAGE value="updating vacancies added" />
     <MESSAGE value="jobseekers updating and showing functionality added, final" />
     <MESSAGE value="companyName and companyDescription with date added" />
-    <option name="LAST_COMMIT_MESSAGE" value="companyName and companyDescription with date added" />
+    <MESSAGE value="new Recommendation page and navbar new menu of recommendation" />
+    <MESSAGE value="Recommendation section was added, in main and /recommendation page, bug fixes, and dependencies from useEffect was fixed" />
+    <option name="LAST_COMMIT_MESSAGE" value="Recommendation section was added, in main and /recommendation page, bug fixes, and dependencies from useEffect was fixed" />
   </component>
 </project>

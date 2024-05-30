@@ -36,3 +36,11 @@ export interface IsEmployerContextProps {
     isEmployer: boolean;
     setIsEmployer: (value: boolean) => void;
 }
+
+export type StatisticProps = {
+    id: string
+    profession : string
+    averageSalaryByGrades: number;
+    grade:'Intern' | 'Junior' | 'Middle' | 'Senior' | 'Lead';
+    amountOfVacancies: number
+}

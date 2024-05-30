@@ -38,10 +38,13 @@ const VacancyFilter = ({ onQueryChange, query }: { onQueryChange: (query: string
         {
             queryParams.set('maxSalary', maxSalary.toString());
         }
+        if (selectedProfessions.length > 0) {
+            queryParams.set('profession', selectedProfessions.join(','));
+        }
 
         const queryString = queryParams.toString();
         const fullPath = `${pathname}?${queryString}${query &&`&query=${query}`}`;
-
+        console.log(fullPath)
 
         onQueryChange(queryString);
 
