@@ -1,29 +1,12 @@
 import React, {useEffect} from 'react';
 import {Button} from "@/components/ui/button";
+import {useLogOut} from "@/hooks/useLogOut";
 
 const LogOutSection = () => {
-    const logOut = async () => {
-        try {
-            const response = await fetch(`http://127.0.0.1:8000/auth/jwt/logout`,{
-                method: 'POST',
-                headers:{
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
-            });
-            if (response.ok) {
-                localStorage.removeItem('token');
-                window.location.reload();
-            } else {
-                console.error('Error logging out:', response.statusText);
-            }
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-    };
+
     return (
         <div>
-            <Button onClick={logOut} size={"lg"}
+            <Button onClick={useLogOut} size={"lg"}
                     className={'h-12 p-4 flex justify-center self-center border-black bg-green-600 rounded  font-bold  transition'}>
                 <svg className={'mr-2 self-center'} width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path

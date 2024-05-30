@@ -10,7 +10,7 @@ import {
     DropdownMenuShortcut,
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
-import {CreditCard, User} from "lucide-react";
+import {CreditCard, FileText, User} from "lucide-react";
 import LoginSection from "@/components/sections/LoginSection";
 import {useSession} from "next-auth/react";
 import {auth} from "@/auth";
@@ -18,6 +18,7 @@ import {getToken} from "@auth/core/jwt";
 import LogOutSection from "@/components/sections/LogOutSection";
 import {useAuth, useIsEmployer} from "@/components/providers";
 import Link from "next/link";
+import {useLogOut} from "@/hooks/useLogOut";
 
 const Navbar = () => {
     // const [userType, setUserType] = useState('employer')
@@ -156,11 +157,11 @@ const Navbar = () => {
                             <DropdownMenuGroup>
                                 <DropdownMenuItem>
                                     <User className="mr-2 h-4 w-4"/>
-                                    <span>Profile</span>
+                                    <Link href={'/profile'}>Профиль</Link>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem>
                                     <CreditCard className="mr-2 h-4 w-4"/>
-                                    <span>Billing</span>
+                                    <span>Отзывы</span>
                                 </DropdownMenuItem>
                             </DropdownMenuGroup>
                         </DropdownMenuContent>
@@ -182,7 +183,7 @@ const Navbar = () => {
                                     {user?.username}
                                 </Button>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent className="w-56 ">
+                            <DropdownMenuContent className="w-56">
                                 <DropdownMenuLabel>Привет, {user?.username}!</DropdownMenuLabel>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuGroup>
@@ -191,13 +192,15 @@ const Navbar = () => {
                                         <span>{user?.email}</span>
                                     </DropdownMenuItem>
                                     <DropdownMenuItem>
-                                        <CreditCard className="mr-2 h-4 w-4"/>
+                                        <FileText className="mr-2 h-4 w-4"/>
                                         {user?.type === 'company' ?
                                             <Link href={'/vacancies/me'}>Мои вакансии</Link>
                                             :
                                             <Link href={'/jobseekers/me'}>Мои резюме</Link>
                                         }
-
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem>
+                                        <Button variant={'link'} onClick={useLogOut}>Выйти</Button>
                                     </DropdownMenuItem>
                                 </DropdownMenuGroup>
                             </DropdownMenuContent>
