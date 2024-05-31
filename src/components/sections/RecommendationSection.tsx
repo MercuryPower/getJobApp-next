@@ -31,7 +31,7 @@ const RecommendationSection = () => {
 
     return (
         <div className="flex justify-center mt-4">
-            <Carousel className="w-1/2">
+            <Carousel>
                 <Label className={'font-extralight text-xl flex justify-center'}>Рекомендуемые вакансии для вас:</Label>
                 <CarouselContent>
                     <CarouselItem>

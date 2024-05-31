@@ -11,11 +11,31 @@ import {auth} from "@/auth";
 import LoginSection from "@/components/sections/LoginSection";
 import {useRouter} from "next/navigation";
 import React, {useEffect, useState} from "react";
-import {useAuth} from "@/components/providers";
+import {useAuth, useIsEmployer} from "@/components/providers";
 import JobSeekerForm from "@/components/forms/JobSeekerForm";
 import {Statistics} from "@/components/tables/Statistics";
 import RecommendationSection from "@/components/sections/RecommendationSection";
+import {StatisticProps} from "@/types/types";
+import {RESUME_STATISTIC, VACANCY_STATISTIC} from "@/url/urls";
 export default function Home() {
+    const {isEmployer} = useIsEmployer()
+    const [dataVacancyStatistics, setDataVacancyStatistics] = useState<StatisticProps[]>([])
+    useEffect(() => {
+
+        const fetchStatisticVacancy = async () => {
+            try {
+                const response = await fetch(`${isEmployer ? `${VACANCY_STATISTIC}`: `${RESUME_STATISTIC}`}`, {
+                    cache: 'force-cache',
+                    next: {revalidate: 1800}
+                })
+                const data = await response.json();
+                setDataVacancyStatistics(data)
+            } catch (e) {
+                throw new Error((e as Error).message)
+            }
+        }
+        void fetchStatisticVacancy()
+    },[])
     const { isLoggedIn, user } = useAuth();
     // const [isLoggedIn, setIsLoggedIn] = useState(false)
     // const [user, setUser] = useState<any>()
@@ -97,7 +117,12 @@ export default function Home() {
                         className={'text-xl text-center'}>Вы можете посмотреть статистику о востребованности профессии внизу.</span>
                     </h1>
                     <div className={'flex justify-center mt-4 h-auto'}>
-                            <Statistics/>
+                        {isEmployer ?
+                            <Statistics data={dataVacancyStatistics}/>
+                            :
+                            <Statistics data={dataVacancyStatistics}/>
+                        }
+
                     </div>
                 </div>
             </section>

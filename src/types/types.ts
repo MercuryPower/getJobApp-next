@@ -1,4 +1,4 @@
-import React, {createContext} from "react";
+import React, {createContext, Dispatch, SetStateAction} from "react";
 
 export interface VacancyInfo {
     id: number;
@@ -34,7 +34,7 @@ export interface ResumeInfo extends VacancyInfo {
 }
 export interface IsEmployerContextProps {
     isEmployer: boolean;
-    setIsEmployer: (value: boolean) => void;
+    setIsEmployer: Dispatch<SetStateAction<boolean>>;
 }
 
 export type StatisticProps = {

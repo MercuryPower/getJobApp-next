@@ -38,111 +38,6 @@ import {
 import {StatisticProps} from "@/types/types";
 import {useEffect, useState} from "react";
 import {useIsEmployer} from "@/components/providers";
-
-
-// const data: StatisticProps[] = [
-//     {
-//         id: "m5gr84i9",
-//         profession: 'Frontend ',
-//         averageSalaryByGrades: 52990,
-//         grade: 'Junior',
-//         amountOfVacancies: 12,
-//     },
-//     {
-//         id: "m5gr84i9",
-//         profession: 'Менеджер проекта',
-//         averageSalaryByGrades: 32000,
-//         grade: 'Junior',
-//         amountOfVacancies: 12,
-//     },
-//     {
-//         id: "m5gr84i9",
-//         profession: 'C++',
-//         averageSalaryByGrades: 120000,
-//         grade: 'Intern',
-//         amountOfVacancies: 2,
-//     },
-//     {
-//         id: "m5gr84i9",
-//         profession: 'Python',
-//         averageSalaryByGrades: 125000,
-//         grade: 'Lead',
-//         amountOfVacancies: 7,
-//     },
-//     {
-//         id: "m5gr84i9",
-//         profession: 'Backend разработка',
-//         averageSalaryByGrades: 200000,
-//         grade: 'Senior',
-//         amountOfVacancies: 7,
-//     },
-//     {
-//         id: "m5gr84i9",
-//         profession: 'Backend',
-//         averageSalaryByGrades: 150000,
-//         grade: 'Middle',
-//         amountOfVacancies: 7,
-//     },
-//     {
-//         id: "m5gr84i9",
-//         profession: 'Backend',
-//         averageSalaryByGrades: 150000,
-//         grade: 'Middle',
-//         amountOfVacancies: 7,
-//     },
-//     {
-//         id: "m5gr84i9",
-//         profession: 'Backend',
-//         averageSalaryByGrades: 150000,
-//         grade: 'Middle',
-//         amountOfVacancies: 7,
-//     },
-//     {
-//         id: "m5gr84i9",
-//         profession: 'Backend',
-//         averageSalaryByGrades: 150000,
-//         grade: 'Middle',
-//         amountOfVacancies: 7,
-//     },
-//     {
-//         id: "m5gr84i9",
-//         profession: 'Backend',
-//         averageSalaryByGrades: 150000,
-//         grade: 'Middle',
-//         amountOfVacancies: 7,
-//     },
-//     {
-//         id: "m5gr84i9",
-//         profession: 'Backend',
-//         averageSalaryByGrades: 150000,
-//         grade: 'Middle',
-//         amountOfVacancies: 7,
-//     },
-//     {
-//         id: "m5gr84i9",
-//         profession: 'Backend',
-//         averageSalaryByGrades: 100000,
-//         grade: 'Junior',
-//         amountOfVacancies: 7,
-//     },
-//     {
-//
-//         profession: 'DevOps',
-//         averageSalaryByGrades: 40000,
-//         grade: 'Middle',
-//         amountOfVacancies: 9,
-//     },
-//     {
-//         id: "m5gr84i9",
-//         profession: 'IT директор',
-//         averageSalaryByGrades: 123456,
-//         grade: 'Junior',
-//         amountOfVacancies: 12,
-//     },
-// ]
-
-
-
 export const columns: ColumnDef<StatisticProps>[] = [
     {
         id: "select",
@@ -245,8 +140,6 @@ export const columns: ColumnDef<StatisticProps>[] = [
 ]
 
 export function Statistics({data}:{data: StatisticProps[]}) {
-    const {isEmployer} = useIsEmployer()
-
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
         []
@@ -275,130 +168,120 @@ export function Statistics({data}:{data: StatisticProps[]}) {
     })
 
     return (
-        <div>
-            {isEmployer ? (
-                <>
-                    <div className="w-full">
-                        <div className="flex items-center py-4">
-                            <Input
-                                placeholder="Поиск по профессиям"
-                                value={(table.getColumn("profession")?.getFilterValue() as string) ?? ""}
-                                onChange={(event) =>
-                                    table.getColumn("profession")?.setFilterValue(event.target.value)
-                                }
-                                className="max-w-sm"
-                            />
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                    <Button variant="outline" className="ml-auto">
-                                        Колонки <ChevronDown className="ml-2 h-4 w-4"/>
-                                    </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end">
-                                    {table
-                                        .getAllColumns()
-                                        .filter((column) => column.getCanHide())
-                                        .map((column) => {
-                                            return (
-                                                <DropdownMenuCheckboxItem
-                                                    key={column.id}
-                                                    className="capitalize"
-                                                    checked={column.getIsVisible()}
-                                                    onCheckedChange={(value) =>
-                                                        column.toggleVisibility(value)
-                                                    }
-                                                >
-                                                    {column.id}
-                                                </DropdownMenuCheckboxItem>
-                                            )
-                                        })}
-                                </DropdownMenuContent>
-                            </DropdownMenu>
-                        </div>
-                        <div className="rounded-md border">
-                            <Table>
-                                <TableHeader>
-                                    {table.getHeaderGroups().map((headerGroup) => (
-                                        <TableRow key={headerGroup.id}>
-                                            {headerGroup.headers.map((header) => {
-                                                return (
-                                                    <TableHead key={header.id}>
-                                                        {header.isPlaceholder
-                                                            ? null
-                                                            : flexRender(
-                                                                header.column.columnDef.header,
-                                                                header.getContext()
-                                                            )}
-                                                    </TableHead>
-                                                )
-                                            })}
-                                        </TableRow>
-                                    ))}
-                                </TableHeader>
-                                <TableBody>
-                                    {table.getRowModel().rows?.length ? (
-                                        table.getRowModel().rows.map((row) => (
-                                            <TableRow
-                                                key={row.id}
-                                                data-state={row.getIsSelected() && "selected"}
-                                            >
-                                                {row.getVisibleCells().map((cell) => (
-                                                    <TableCell key={cell.id}>
-                                                        {flexRender(
-                                                            cell.column.columnDef.cell,
-                                                            cell.getContext()
-                                                        )}
-                                                    </TableCell>
-                                                ))}
-                                            </TableRow>
-                                        ))
-                                    ) : (
-                                        <TableRow>
-                                            <TableCell
-                                                colSpan={columns.length}
-                                                className="h-24 text-center"
-                                            >
-                                                Результатов не найдено.
+            <div className="w-full">
+                <div className="flex items-center py-4">
+                    <Input
+                        placeholder="Поиск"
+                        value={(table.getColumn("profession")?.getFilterValue() as string) ?? ""}
+                        onChange={(event) =>
+                            table.getColumn("profession")?.setFilterValue(event.target.value)
+                        }
+                        className="max-w-sm"
+                    />
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="outline" className="ml-auto">
+                                Колонки <ChevronDown className="ml-2 h-4 w-4"/>
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            {table
+                                .getAllColumns()
+                                .filter((column) => column.getCanHide())
+                                .map((column) => {
+                                    return (
+                                        <DropdownMenuCheckboxItem
+                                            key={column.id}
+                                            className="capitalize"
+                                            checked={column.getIsVisible()}
+                                            onCheckedChange={(value) =>
+                                                column.toggleVisibility(value)
+                                            }
+                                        >
+                                            {column.id}
+                                        </DropdownMenuCheckboxItem>
+                                    )
+                                })}
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
+                <div className="rounded-md border">
+                    <Table>
+                        <TableHeader>
+                            {table.getHeaderGroups().map((headerGroup) => (
+                                <TableRow key={headerGroup.id}>
+                                    {headerGroup.headers.map((header) => {
+                                        return (
+                                            <TableHead key={header.id}>
+                                                {header.isPlaceholder
+                                                    ? null
+                                                    : flexRender(
+                                                        header.column.columnDef.header,
+                                                        header.getContext()
+                                                    )}
+                                            </TableHead>
+                                        )
+                                    })}
+                                </TableRow>
+                            ))}
+                        </TableHeader>
+                        <TableBody>
+                            {table.getRowModel().rows?.length ? (
+                                table.getRowModel().rows.map((row) => (
+                                    <TableRow
+                                        key={row.id}
+                                        data-state={row.getIsSelected() && "selected"}
+                                    >
+                                        {row.getVisibleCells().map((cell) => (
+                                            <TableCell key={cell.id}>
+                                                {flexRender(
+                                                    cell.column.columnDef.cell,
+                                                    cell.getContext()
+                                                )}
                                             </TableCell>
-                                        </TableRow>
-                                    )}
-                                </TableBody>
-                            </Table>
-                        </div>
-                        <div className="flex items-center justify-end space-x-2 py-4">
-                            <div className="flex-1 text-sm text-muted-foreground">
-                                {/*{table.getFilteredSelectedRowModel().rows.length} of{" "}*/}
-                                {table.getFilteredSelectedRowModel().rows.length > 0 && (
-                                    `${table.getFilteredSelectedRowModel().rows.length} из  ${table.getFilteredRowModel().rows.length} полей выбрано.`
-                                )}
+                                        ))}
+                                    </TableRow>
+                                ))
+                            ) : (
+                                <TableRow>
+                                    <TableCell
+                                        colSpan={columns.length}
+                                        className="h-24 text-center"
+                                    >
+                                        Результатов не найдено.
+                                    </TableCell>
+                                </TableRow>
+                            )}
+                        </TableBody>
+                    </Table>
+                </div>
+                <div className="flex items-center justify-end space-x-2 py-4">
+                    <div className="flex-1 text-sm text-muted-foreground">
+                        {/*{table.getFilteredSelectedRowModel().rows.length} of{" "}*/}
+                        {table.getFilteredSelectedRowModel().rows.length > 0 && (
+                            `${table.getFilteredSelectedRowModel().rows.length} из  ${table.getFilteredRowModel().rows.length} полей выбрано.`
+                        )}
 
-                            </div>
-                            <div className="space-x-2">
-                                <Button
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={() => table.previousPage()}
-                                    disabled={!table.getCanPreviousPage()}
-                                >
-                                    Назад
-                                </Button>
-                                <Button
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={() => table.nextPage()}
-                                    disabled={!table.getCanNextPage()}
-                                >
-                                    Далее
-                                </Button>
-                            </div>
-                        </div>
                     </div>
-                </>
-            ) : (
-                <h1>Hi</h1>
-            )
-
-            }
-        </div>
+                    <div className="space-x-2">
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => table.previousPage()}
+                            disabled={!table.getCanPreviousPage()}
+                        >
+                            Назад
+                        </Button>
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => table.nextPage()}
+                            disabled={!table.getCanNextPage()}
+                        >
+                            Далее
+                        </Button>
+                    </div>
+                </div>
+            </div>
     )
 }

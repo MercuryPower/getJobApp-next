@@ -61,7 +61,7 @@ const LoginForm = ({ userType,isPending, error, success }: UserFormProps) => {
                     />
                     <FormError message={error} />
                     <FormSuccess message={success} />
-                    <Button  disabled={isPending} type={'submit'} size={"lg"} className={'h-12 p-4 border-black bg-green-600 rounded  font-bold  transition'} >
+                    <Button disabled={isPending} type={'submit'} size={"lg"} className={'h-12 p-4 border-black bg-green-600 rounded  font-bold  transition'} >
                         <span>Войти</span>
                     </Button>
                 </div>
