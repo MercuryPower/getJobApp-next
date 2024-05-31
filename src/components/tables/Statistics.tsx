@@ -33,7 +33,7 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { columnTranslations, StatisticProps } from "@/types/types";
-const generateColumns = (data: StatisticProps[], isEmployer:boolean): ColumnDef<StatisticProps>[] => {
+const generateColumns = (data: StatisticProps[], isEmployer?:boolean): ColumnDef<StatisticProps>[] => {
 
     if (!data || data.length === 0) {
         return [];
@@ -62,20 +62,27 @@ const generateColumns = (data: StatisticProps[], isEmployer:boolean): ColumnDef<
                 return (
                     <div
                         className=
-                            {`capitalize 
-                             ${key === 'grade' ? 'font-extrabold text-lg ' : 'text-xl'}
+                            {` capitalize
+                             ${key === 'grade' ? ' font-extrabold text-xl ' : 'text-2xl'}
                              ${key === 'profession' ? 'font-bold': 'text-center'}
-                             ${key === 'averageSalaryByGrades' ? 'lowercase' : ''}
-                             ${key === 'amountOfVacancies' ? 'font-medium' : ''}
+                             ${key === 'averageSalaryByGrades' || key === 'expectedSalary'? 'lowercase' : ''}
+                             ${key === 'amountOfVacancies' ? 'capitalize font-medium ' : ''}
+                             ${parseFloat(value as string) === 0 && 'font-extrabold text-lg'}
                              `
                     }>
-                        {key === "averageSalaryByGrades" ? (
+                        {key === "averageSalaryByGrades" || key === 'expectedSalary' ? (
                             <>
-                                {'~ '}
-                                {new Intl.NumberFormat("ru-RU", {
-                                    style: "currency",
-                                    currency: "RUB",
-                                }).format(parseFloat(value as string))}
+                                {parseFloat(value as string) !== 0 ? (
+                                    <>
+                                        {'~ '}
+                                        {new Intl.NumberFormat("ru-RU", {
+                                            style: "currency",
+                                            currency: "RUB",
+                                        }).format(parseFloat(value as string))}
+                                    </>
+                                ) : (
+                                    "по договоренности"
+                                )}
                             </>
                         ) : (
                             value
@@ -87,14 +94,11 @@ const generateColumns = (data: StatisticProps[], isEmployer:boolean): ColumnDef<
     });
 };
 
-export function Statistics({ data, isEmployer }: { data: StatisticProps[], isEmployer:boolean }) {
-
-
+export function Statistics({ data, isEmployer }: { data: StatisticProps[], isEmployer?:boolean }) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
     const [rowSelection, setRowSelection] = React.useState({});
-
     const columns = generateColumns(data, isEmployer);
 
     const table = useReactTable({

@@ -11,14 +11,14 @@ const TypeChanger = () => {
                 (
                     <div className={'flex gap-2'}>
                         <UsersRound className={'self-center'} />
-                        Вакансии
+                        Вакансиям
                     </div>
                 )
                 :
                 (
                     <div className={'flex gap-2'}>
                         <BriefcaseBusiness className={'self-center'} />
-                        Соискатели
+                        Соискателям
                     </div>
                 )
             }

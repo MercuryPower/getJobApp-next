@@ -21,7 +21,6 @@ const VacancyFilter = ({ onQueryChange, query }: { onQueryChange: (query: string
         e.preventDefault();
 
         const queryParams = new URLSearchParams();
-
         if (selectedCity) {
             queryParams.set('city', selectedCity);
         }

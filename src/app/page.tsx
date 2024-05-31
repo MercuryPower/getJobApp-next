@@ -16,11 +16,11 @@ import JobSeekerForm from "@/components/forms/JobSeekerForm";
 import {Statistics} from "@/components/tables/Statistics";
 import RecommendationSection from "@/components/sections/RecommendationSection";
 import {RESUME_STATISTIC, VACANCY_STATISTIC} from "@/url/urls";
-import {ResumeStatisticProps, VacancyStatisticProps} from "@/types/types";
 import TypeChanger from "@/components/TypeChanger";
+import {StatisticProps} from "@/types/types";
 export default function Home() {
     const {isEmployer} = useIsEmployer()
-    const [dataVacancyStatistics, setDataVacancyStatistics] = useState<VacancyStatisticProps[] | ResumeStatisticProps[]>([])
+    const [dataVacancyStatistics, setDataVacancyStatistics] = useState<StatisticProps[]>([])
     useEffect(() => {
 
         const fetchStatisticVacancy = async () => {

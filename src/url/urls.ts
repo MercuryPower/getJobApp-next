@@ -10,3 +10,5 @@ export const VACANCY_STATISTIC = `http://127.0.0.1:8000/tests/statistics/company
 
 
 export const RESUME_STATISTIC = `http://127.0.0.1:8000/tests/statistics/user`
+
+export const SKILLS_STATISTIC =  `http://127.0.0.1:8000/tests/statistics/skills`
