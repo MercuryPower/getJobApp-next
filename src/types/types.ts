@@ -37,10 +37,25 @@ export interface IsEmployerContextProps {
     setIsEmployer: Dispatch<SetStateAction<boolean>>;
 }
 
-export type StatisticProps = {
-    id: string
-    profession : string
+export interface VacancyStatisticProps {
+    grade: string;
+    profession: string;
     averageSalaryByGrades: number;
-    grade:'Intern' | 'Junior' | 'Middle' | 'Senior' | 'Lead';
-    amountOfVacancies: number
+    amountOfVacancies: number;
 }
+
+export interface ResumeStatisticProps {
+    grade: string;
+    profession: string;
+    expectedSalary: number;
+    numberOfApplications: number;
+}
+export const columnTranslations: { [key: string]: string } = {
+    grade: "Грейд",
+    profession: "Профессия",
+    averageSalaryByGrades: "Средняя зарплата по грейдам",
+    amountOfVacancies: "Количество вакансий",
+    expectedSalary: "Ожидаемая зарплата",
+    numberOfApplications: "Количество заявок"
+};
+export type StatisticProps = VacancyStatisticProps | ResumeStatisticProps;

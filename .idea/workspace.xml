@@ -5,15 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e9211fde-0751-489d-9f84-b4181bab2e7f" name="Changes" comment="Recommendation section was added, in main and /recommendation page, bug fixes, and dependencies from useEffect was fixed">
+      <change afterPath="$PROJECT_DIR$/src/components/TypeChanger.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/statistics/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/statistics/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ResumeCards.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ResumeCards.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/VacancyCards.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/VacancyCards.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/filter/MultiselectProfessions.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/filter/MultiselectProfessions.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/filter/VacancyFilter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/filter/VacancyFilter.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/tables/Statistics.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/tables/Statistics.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/types/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/url/urls.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/url/urls.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,6 +21,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="TypeScript File" />
+        <option value="tsconfig.json" />
         <option value="TypeScript JSX File" />
       </list>
     </option>
@@ -50,7 +48,7 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="DEPENDENCY_CHECKER_PROBLEMS_TAB" />
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
@@ -111,7 +109,8 @@
       <workItem from="1716985975079" duration="555000" />
       <workItem from="1716986541599" duration="431000" />
       <workItem from="1716987154332" duration="12246000" />
-      <workItem from="1717074421722" duration="12261000" />
+      <workItem from="1717074421722" duration="13770000" />
+      <workItem from="1717153207016" duration="8163000" />
     </task>
     <task id="LOCAL-00001" summary="login, getuserinfo added">
       <option name="closed" value="true" />

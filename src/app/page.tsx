@@ -15,11 +15,12 @@ import {useAuth, useIsEmployer} from "@/components/providers";
 import JobSeekerForm from "@/components/forms/JobSeekerForm";
 import {Statistics} from "@/components/tables/Statistics";
 import RecommendationSection from "@/components/sections/RecommendationSection";
-import {StatisticProps} from "@/types/types";
 import {RESUME_STATISTIC, VACANCY_STATISTIC} from "@/url/urls";
+import {ResumeStatisticProps, VacancyStatisticProps} from "@/types/types";
+import TypeChanger from "@/components/TypeChanger";
 export default function Home() {
     const {isEmployer} = useIsEmployer()
-    const [dataVacancyStatistics, setDataVacancyStatistics] = useState<StatisticProps[]>([])
+    const [dataVacancyStatistics, setDataVacancyStatistics] = useState<VacancyStatisticProps[] | ResumeStatisticProps[]>([])
     useEffect(() => {
 
         const fetchStatisticVacancy = async () => {
@@ -35,7 +36,7 @@ export default function Home() {
             }
         }
         void fetchStatisticVacancy()
-    },[])
+    },[isEmployer])
     const { isLoggedIn, user } = useAuth();
     // const [isLoggedIn, setIsLoggedIn] = useState(false)
     // const [user, setUser] = useState<any>()
@@ -116,13 +117,13 @@ export default function Home() {
                         className={'p-2 font-bold text-3xl '}>Почти готово!</span> <span
                         className={'text-xl text-center'}>Вы можете посмотреть статистику о востребованности профессии внизу.</span>
                     </h1>
-                    <div className={'flex justify-center mt-4 h-auto'}>
-                        {isEmployer ?
-                            <Statistics data={dataVacancyStatistics}/>
-                            :
-                            <Statistics data={dataVacancyStatistics}/>
-                        }
 
+
+                    <div className={'flex justify-center mt-4 h-auto gap-x-4'}>
+                        <div className={'flex-grow flex w-[300px]'}>
+                            <TypeChanger/>
+                        </div>
+                        <Statistics data={dataVacancyStatistics} isEmployer={isEmployer}/>
                     </div>
                 </div>
             </section>
