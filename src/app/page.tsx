@@ -19,7 +19,7 @@ import {RESUME_STATISTIC, VACANCY_STATISTIC} from "@/url/urls";
 import TypeChanger from "@/components/TypeChanger";
 import {StatisticProps} from "@/types/types";
 
-import {ArrowDown, ArrowUp} from "lucide-react";
+import {ArrowDown, ArrowUp, CircleX, FileQuestion} from "lucide-react";
 import StatisticTips from "@/components/tips/StatisticTips";
 export default function Home() {
     const [offTips, setOffTips] = useState(true);
@@ -127,17 +127,32 @@ export default function Home() {
                         className={'p-2 font-bold text-3xl '}>Почти готово!</span> <span
                         className={'text-xl text-center'}>Вы можете посмотреть статистику о востребованности профессии внизу.</span>
                     </h1>
-                    <div className={'flex justify-center mt-4 h-auto gap-x-4'}>
-                        <div className={'flex-grow justify-center flex w-[300px]'}>
-                            <div className={'flex relative'}>
-                                {offTips &&
-                                    <StatisticTips fadeOut={fadeOut} offTips={offTips}/>
-                                }
-                                <TypeChanger setOffTips={handleSetOffTips}/>
+                    {
+                        dataVacancyStatistics.length > 0 ?
+                            <div className={'flex justify-center mt-4 h-auto gap-x-4'}>
+                                <div className={'flex-grow justify-center flex w-[300px]'}>
+                                    <div className={'flex relative'}>
+                                        {offTips &&
+                                            <StatisticTips fadeOut={fadeOut}/>
+                                        }
+                                        <TypeChanger setOffTips={handleSetOffTips}/>
+                                    </div>
+                                </div>
+                                <Statistics data={dataVacancyStatistics} isEmployer={isEmployer}/>
                             </div>
-                        </div>
-                        <Statistics data={dataVacancyStatistics} isEmployer={isEmployer}/>
-                    </div>
+                        :
+                            <div
+                                className={'flex text-center self-center gap-2 flex-col shadow-lg m-4 p-4 border rounded-2xl w-[700px] m h-96 justify-center'}>
+                                <FileQuestion className={'self-center'} size={64}/>
+                                <span className={'self-center text-3xl font-extrabold '}>Данных о статистике не найдено.</span>
+                                <div className={'mt-2'}>
+                                    <p className={'text-md opacity-75'}> Попробуйте обновить страницу</p>
+                                    <p className={'text-lg opacity-75 font-bold'}>или</p>
+                                    <p className={'text-md opacity-75'}>зайдите немного позже.</p>
+                                </div>
+                            </div>
+                        }
+
                 </div>
             </section>
         </main>

@@ -1,5 +1,5 @@
 'use client'
-import React, {useEffect, useState, useTransition} from 'react';
+import React, {useCallback, useEffect, useState, useTransition} from 'react';
 import {FormProvider, useForm} from "react-hook-form";
 import {z} from "zod";
 import {VacancyCreateSchema} from "@/schemas";
@@ -42,6 +42,7 @@ const Page = () => {
     const [isByAgreement, setIsByAgreement] = useState(false);
     const [isFixedSalary, setIsFixedSalary] = useState(true)
     const router = useRouter()
+
     const form = useForm<z.infer<typeof VacancyCreateSchema>>({
         resolver: zodResolver(VacancyCreateSchema),
         defaultValues: {
@@ -58,6 +59,15 @@ const Page = () => {
             cities:[],
         }
     })
+    const onChangeMinSalary = useCallback((minSalary:number) => {
+        setRange([minSalary, range[1]]);
+        form.setValue('min_salary', minSalary);
+    }, [range, form]);
+
+    const onChangeMaxSalary = useCallback((maxSalary:number) => {
+        setRange([range[0], maxSalary]);
+        form.setValue('max_salary', maxSalary);
+    }, [range, form]);
 
     function onSubmit (values: z.infer<typeof VacancyCreateSchema>) {
         if (values.exp === 'Other') {
@@ -185,14 +195,8 @@ const Page = () => {
                                             <FormControl>
                                                 <FormItem>
                                                     <SalarySlider
-                                                        onChangeMinSalary={(minSalary) => {
-                                                            setRange([minSalary, range[1]]);
-                                                            form.setValue('min_salary', minSalary)
-                                                        }}
-                                                        onChangeMaxSalary={(maxSalary)=>{
-                                                            setRange([range[0], maxSalary]);
-                                                            form.setValue('max_salary', maxSalary)
-                                                        }}
+                                                        onChangeMinSalary={onChangeMinSalary}
+                                                        onChangeMaxSalary={onChangeMaxSalary}
                                                     />
                                                 </FormItem>
                                             </FormControl>

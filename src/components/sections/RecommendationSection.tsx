@@ -42,7 +42,7 @@ const RecommendationSection = () => {
                                 <div
                                     className="flex gap-2 flex-col shadow-lg m-4 p-4 border rounded-2xl w-[700px] h-96 justify-center">
                                     <CircleX className="self-center" size={64}/>
-                                    <span className="self-center text-3xl">Ничего не найдено</span>
+                                    <span className="self-center font-extrabold text-3xl">Ничего не найдено</span>
                                 </div>
                             )}
                         </div>

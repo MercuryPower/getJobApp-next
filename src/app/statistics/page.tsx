@@ -6,7 +6,6 @@ import {useIsEmployer} from "@/components/providers";
 import {RESUME_STATISTIC, SKILLS_STATISTIC, VACANCY_STATISTIC} from "@/url/urls";
 import TypeChanger from "@/components/TypeChanger";
 import {ArrowLeft, ArrowUp, ChevronUp, CircleChevronUp} from "lucide-react";
-import style from './/style.module.sass'
 import StatisticTips from "@/components/tips/StatisticTips";
 import {off} from "next/dist/client/components/react-dev-overlay/pages/bus";
 const Page = () => {
@@ -32,19 +31,19 @@ const Page = () => {
             setIsLoading(false)
         }
         void fetchStatisticVacancy()
-        // const fetchStatisticSkills = async () => {
-        //     try {
-        //         setIsLoading(true)
-        //         const response = await fetch(SKILLS_STATISTIC, {
-        //         })
-        //         const data = await response.json();
-        //         setDataSkills(data)
-        //     } catch (e) {
-        //         throw new Error((e as Error).message)
-        //     }
-        //     setIsLoading(false)
-        // }
-        // void fetchStatisticSkills()
+        const fetchStatisticSkills = async () => {
+            try {
+                setIsLoading(true)
+                const response = await fetch(SKILLS_STATISTIC, {
+                })
+                const data = await response.json();
+                setDataSkills(data)
+            } catch (e) {
+                throw new Error((e as Error).message)
+            }
+            setIsLoading(false)
+        }
+        void fetchStatisticSkills()
     },[isEmployer])
     const handleSetOffTips = () => {
         setFadeOut(true);
@@ -59,7 +58,7 @@ const Page = () => {
                 <div className={'mt-2 relative'}>
                     <TypeChanger setOffTips={handleSetOffTips}/>
                     {offTips &&
-                      <StatisticTips fadeOut={fadeOut} offTips={offTips} isUp />
+                      <StatisticTips fadeOut={fadeOut} isUp />
                     }
                 </div>
             </div>

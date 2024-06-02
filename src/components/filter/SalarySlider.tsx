@@ -22,7 +22,8 @@ const SalarySlider = ({ className,onChangeMinSalary, onChangeMaxSalary, ...props
             onChangeMinSalary(value[0]);
             onChangeMaxSalary(value[1]);
         }
-    }, []);
+    }, [onChangeMaxSalary, onChangeMinSalary]);
+
 
     const handleMinSalaryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         let value = Number(event.target.value.replace(/\D/g, ''));
