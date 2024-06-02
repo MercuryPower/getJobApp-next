@@ -1,0 +1,6 @@
+.fadeOut {
+  transition: opacity 0.75s ease-out;
+  opacity: 0;
+}
+
+/*# sourceMappingURL=style.module.css.map */

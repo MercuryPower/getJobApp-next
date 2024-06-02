@@ -18,11 +18,15 @@ import RecommendationSection from "@/components/sections/RecommendationSection";
 import {RESUME_STATISTIC, VACANCY_STATISTIC} from "@/url/urls";
 import TypeChanger from "@/components/TypeChanger";
 import {StatisticProps} from "@/types/types";
+
+import {ArrowDown, ArrowUp} from "lucide-react";
+import StatisticTips from "@/components/tips/StatisticTips";
 export default function Home() {
+    const [offTips, setOffTips] = useState(true);
     const {isEmployer} = useIsEmployer()
+    const [fadeOut, setFadeOut] = useState(false);
     const [dataVacancyStatistics, setDataVacancyStatistics] = useState<StatisticProps[]>([])
     useEffect(() => {
-
         const fetchStatisticVacancy = async () => {
             try {
                 const response = await fetch(`${isEmployer ? `${VACANCY_STATISTIC}`: `${RESUME_STATISTIC}`}`, {
@@ -38,6 +42,7 @@ export default function Home() {
         void fetchStatisticVacancy()
     },[isEmployer])
     const { isLoggedIn, user } = useAuth();
+
     // const [isLoggedIn, setIsLoggedIn] = useState(false)
     // const [user, setUser] = useState<any>()
     // useEffect(() => {
@@ -71,7 +76,12 @@ export default function Home() {
     //     return () => {
     //     };
     // }, []);
-
+    const handleSetOffTips = () => {
+        setFadeOut(true);
+        setTimeout(() => {
+            setOffTips(false);
+        }, 750);
+    };
     return (
         <main>
             <SearchMainSection/>
@@ -117,11 +127,14 @@ export default function Home() {
                         className={'p-2 font-bold text-3xl '}>Почти готово!</span> <span
                         className={'text-xl text-center'}>Вы можете посмотреть статистику о востребованности профессии внизу.</span>
                     </h1>
-
-
                     <div className={'flex justify-center mt-4 h-auto gap-x-4'}>
-                        <div className={'flex-grow flex w-[300px]'}>
-                            <TypeChanger/>
+                        <div className={'flex-grow justify-center flex w-[300px]'}>
+                            <div className={'flex relative'}>
+                                {offTips &&
+                                    <StatisticTips fadeOut={fadeOut} offTips={offTips}/>
+                                }
+                                <TypeChanger setOffTips={handleSetOffTips}/>
+                            </div>
                         </div>
                         <Statistics data={dataVacancyStatistics} isEmployer={isEmployer}/>
                     </div>

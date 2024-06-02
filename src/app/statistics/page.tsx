@@ -5,13 +5,16 @@ import {StatisticProps} from "@/types/types";
 import {useIsEmployer} from "@/components/providers";
 import {RESUME_STATISTIC, SKILLS_STATISTIC, VACANCY_STATISTIC} from "@/url/urls";
 import TypeChanger from "@/components/TypeChanger";
-import {log} from "node:util";
-
+import {ArrowLeft, ArrowUp, ChevronUp, CircleChevronUp} from "lucide-react";
+import style from './/style.module.sass'
+import StatisticTips from "@/components/tips/StatisticTips";
+import {off} from "next/dist/client/components/react-dev-overlay/pages/bus";
 const Page = () => {
     const {isEmployer} = useIsEmployer()
     const [isLoading, setIsLoading] = useState(true)
-
+    const [offTips, setOffTips] = useState(true);
     const [dataStatistics, setDataStatistics] = useState<StatisticProps[]>([])
+    const [fadeOut, setFadeOut] = useState(false);
     const [dataSkills,setDataSkills] = useState<StatisticProps[]>([])
     useEffect(() => {
         const fetchStatisticVacancy = async () => {
@@ -43,11 +46,22 @@ const Page = () => {
         // }
         // void fetchStatisticSkills()
     },[isEmployer])
+    const handleSetOffTips = () => {
+        setFadeOut(true);
+        setTimeout(() => {
+            setOffTips(false);
+        }, 750);
+    };
     return (
         <div className={'flex flex-col items-center '}>
             <div className={'flex'}>
                 <h1 className={'text-3xl flex-grow font-extrabold mt-4 p-2  rounded-2xl'}>Статистика по</h1>
-                <TypeChanger/>
+                <div className={'mt-2 relative'}>
+                    <TypeChanger setOffTips={handleSetOffTips}/>
+                    {offTips &&
+                      <StatisticTips fadeOut={fadeOut} offTips={offTips} isUp />
+                    }
+                </div>
             </div>
             <div className={'w-[1000px]'}>
                 <Statistics data={dataStatistics} isEmployer={isEmployer}/>

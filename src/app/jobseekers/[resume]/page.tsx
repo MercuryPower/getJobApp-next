@@ -5,15 +5,10 @@ import {HoverCard, HoverCardContent, HoverCardTrigger} from "@/components/ui/hov
 import {Button} from "@/components/ui/button";
 import {useParams, usePathname, useRouter} from "next/navigation";
 import {ResumeInfo, VacancyInfo} from "@/types/types";
-import VacancyCardSkeleton from "@/components/ui/skeletons/VacancyCardSkeleton";
-import {cn} from "@/lib/utils";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import Link from "next/link";
 import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "@/components/ui/carousel";
 import {Card, CardContent} from "@/components/ui/card";
-import {SeparatorHorizontal} from "lucide-react";
-import useEmblaCarousel from "embla-carousel-react";
-import AutoScroll from 'embla-carousel-auto-scroll'
 import {useAuth} from "@/components/providers";
 import {formattedDate} from "@/hooks/formatDate";
 
@@ -28,7 +23,7 @@ const Page = () => {
             try {
                 const response = await fetch(`http://127.0.0.1:8000/tests/vacancy/${params.resume}`);
                 if (!response.ok) {
-                    throw new Error('Ошибка при сборе данных о резюме:');
+                    console.error('Ошибка при сборе данных о резюме:');
                 }
                 const data = await response.json();
                 setResume(data);
@@ -66,6 +61,7 @@ const Page = () => {
                                 </div>
                                 <Link href={`${resume.id}`}>
                                     <p className={'text-5xl text-center  text-ellipsis overflow-hidden font-bold  cursor-pointer'}>{resume.exp} {resume.vacancy_name}</p>
+
                                 </Link>
                             </div>
                             {resume.salary_type === 'range' ?
@@ -119,11 +115,9 @@ const Page = () => {
                                                         className={`basis-${resume.skills.length === 1 ? 'full' : (resume.skills.length > 3 ? 2 : 3)}  hover:opacity-75 text-3xl `}
                                                         key={skill.name}>
                                                         <div className="p-1">
-                                                            <>
-                                                                <CardContent className="m-1  p-2">
-                                                                    <span className="font-black">{skill.name}</span>
-                                                                </CardContent>
-                                                            </>
+                                                            <CardContent className="m-1  p-2">
+                                                                <span className="font-black">{skill.name}</span>
+                                                            </CardContent>
                                                         </div>
                                                     </CarouselItem>
                                                 ))}
