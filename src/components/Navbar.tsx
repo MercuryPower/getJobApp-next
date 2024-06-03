@@ -19,6 +19,14 @@ import LogOutSection from "@/components/sections/LogOutSection";
 import {useAuth, useIsEmployer} from "@/components/providers";
 import Link from "next/link";
 import {useLogOut} from "@/hooks/useLogOut";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger
+} from "@/components/ui/dialog";
 
 const Navbar = () => {
     // const [userType, setUserType] = useState('employer')
@@ -28,6 +36,7 @@ const Navbar = () => {
     // }
     const {isEmployer, setIsEmployer} = useIsEmployer()
     const router = useRouter();
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
     // const secret = process.env.AUTH_SECRET;
     const {isLoggedIn, user} = useAuth();
     // const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -175,6 +184,7 @@ const Navbar = () => {
                 </div>
                 {isLoggedIn && user ?
                     (<div className={'flex space-x-4 max-w-md text-ellipsis outline-none overflow-hidden '}>
+                        <Dialog open={isDialogOpen}>
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <Button
@@ -189,7 +199,7 @@ const Navbar = () => {
                                 <DropdownMenuGroup>
                                     <DropdownMenuItem className={'font-extrabold'}>
                                         <User className="mr-2 h-4 w-4"/>
-                                        <span>{user?.email}</span>
+                                        <Link href={'/profile'}>Профиль</Link>
                                     </DropdownMenuItem>
                                     <DropdownMenuItem>
                                         <FileText className="mr-2 h-4 w-4"/>
@@ -199,12 +209,23 @@ const Navbar = () => {
                                             <Link href={'/jobseekers/me'}>Мои резюме</Link>
                                         }
                                     </DropdownMenuItem>
-                                    <DropdownMenuItem>
-                                        <Button variant={'link'} onClick={useLogOut}>Выйти</Button>
-                                    </DropdownMenuItem>
+                                    <DropdownMenuSeparator/>
+                                        <DialogTrigger asChild>
+                                            <Button className={'mr-2 h-8 w-full self-center'} variant={'link'} onClick={() => setIsDialogOpen(!isDialogOpen)}>Выйти</Button>
+                                        </DialogTrigger>
+                                        <DialogContent className={'flex self-justify-center flex-col'} >
+                                            <DialogHeader className={'self-center'}>
+                                                <DialogTitle >Вы уверены, что хотите выйти?</DialogTitle>
+                                            </DialogHeader>
+                                            <div className={'flex justify-center space-x-4'}>
+                                                <Button size={'lg'} className={'flex self-center bg-green-600 font-bold text-lg'} type={"submit"} onClick={useLogOut}>Да</Button>
+                                                <Button size={'lg'} className={'flex self-center opacity-80 font-bold'} onClick={() => setIsDialogOpen(!isDialogOpen)} >Нет</Button>
+                                            </div>
+                                        </DialogContent>
                                 </DropdownMenuGroup>
                             </DropdownMenuContent>
                         </DropdownMenu>
+                        </Dialog>
                         <div>
                             <LogOutSection/>
                         </div>

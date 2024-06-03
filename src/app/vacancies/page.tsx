@@ -43,7 +43,7 @@ const Page = ({searchParams}:{searchParams?:{query?: string; page?:string, perPa
                         {user?.type === 'user' &&
                             <div className={'flex justify-end gap-x-2'}>
                                 <div className={'self-center opacity-75 text-center font-bold'}>
-                                    <h5>Не нашли подходящей  вакансию?</h5>
+                                    <h5>Не нашли подходящую  вакансию?</h5>
                                     <h5>Создайте её уже сейчас</h5>
                                 </div>
                                 <div className={'flex'}>

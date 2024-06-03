@@ -6,7 +6,7 @@ import {HoverCard, HoverCardContent, HoverCardTrigger} from "@/components/ui/hov
 import {Button} from "@/components/ui/button";
 import {Carousel, CarouselContent, CarouselItem, CarouselNext} from "@/components/ui/carousel";
 import {Card, CardContent} from "@/components/ui/card";
-import {CircleX} from "lucide-react";
+import {CircleX, Pencil, Trash2} from "lucide-react";
 import {useParams, useRouter} from "next/navigation";
 import {useAuth} from "@/components/providers";
 import {ResumeInfo, VacancyInfo} from "@/types/types";
@@ -121,7 +121,7 @@ const Page = () => {
                                                     <CarouselContent className={'-ml-4'}>
                                                         {resume.skills?.map((skill) => (
                                                             <CarouselItem
-                                                                className={`basis-${resume.skills.length === 1 ? 'full' : (resume.skills.length > 3 ? 2 : 3)}  hover:opacity-75 text-xl  `}
+                                                                className={`basis-${resume.skills.length === 1 ? 'full' : (resume.skills.length >= 3 ? '1/2' : '1/3')}  hover:opacity-75 text-xl  `}
                                                                 key={skill.name}>
                                                                 <div className="p-1  ">
                                                                     <>
@@ -165,14 +165,38 @@ const Page = () => {
                                                                     </CardContent>
                                                                 </Card>
                                                             </div>
+                                                            {resume.cities?.length > 3 &&
+                                                                <CarouselNext/>
+                                                            }
                                                         </CarouselItem>
                                                     ))}
                                                 </CarouselContent>
                                             </Carousel>
                                         </div>
                                     </div>
-                                    <div className={'flex self-center flex-col '}>
-                                        <Button size={'lg'} type={'button'} onClick={()=> router.push(`${resume.id}`)}>Посмотреть</Button>
+                                    <div className={'flex flex-col justify-center items-center relative'}>
+                                        {user?.id === resume.user_id &&
+                                            <div
+                                                className={'flex space-x-2 justify-end self-center top-0 p-2 absolute'}>
+                                                <div className={'flex gap-x-4'}>
+                                                    <Button className={'rounded-full gap-x-2 '}
+                                                            onClick={() => router.push(`${resume.id}/edit`)}>
+                                                        <Pencil/>
+                                                    </Button>
+                                                </div>
+                                                <div>
+                                                    <Button className={'bg-destructive  rounded-full gap-x-2'}>
+                                                        <Trash2/>
+                                                    </Button>
+                                                </div>
+                                            </div>
+                                        }
+                                        <Button size={'lg'} type={'button'}
+                                                onClick={() => router.push(`${resume.id}`)}>Посмотреть
+                                        </Button>
+                                        <div className={'absolute bottom-2 text-xs opacity-50'}>
+                                            {formattedDate(resume.created_at)}
+                                        </div>
                                     </div>
                                 </div>
                             )

@@ -10,6 +10,7 @@ export const useLogOut = async () => {
         if (response.ok) {
             localStorage.removeItem('token');
             window.location.reload();
+
         } else {
             console.error('Error logging out:', response.statusText);
         }

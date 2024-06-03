@@ -7,14 +7,16 @@ import {VacancyInfo} from "@/types/types";
 import {HoverCard, HoverCardContent, HoverCardTrigger} from "@/components/ui/hover-card";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import VacancyCardSkeleton from "@/components/ui/skeletons/VacancyCardSkeleton";
-import {CircleX} from "lucide-react";
+import {CircleX, Pencil, Trash2} from "lucide-react";
 import {usePathname, useRouter} from "next/navigation";
 import Link from "next/link";
 import {formattedDate} from "@/hooks/formatDate";
+import {useAuth} from "@/components/providers";
 
 
 
 const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], page?:number, query?:string, queryString?:string}) => {
+    const {user} = useAuth()
     const pathname = usePathname()
     const router = useRouter();
     const [filteredVacancies, setFilteredVacancies] = useState<VacancyInfo[]>(data)
@@ -110,7 +112,7 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
                                     <CarouselContent className={'-ml-4'}>
                                         {vacancy.skills?.map((skill) => (
                                             <CarouselItem
-                                                className={`basis-${vacancy.skills.length === 1 ? 'full' : (vacancy.skills.length > 3 ? 2 : 3)}  hover:opacity-75 text-xl  `}
+                                                className={`basis-${vacancy.skills.length === 1 ? 'full' : (vacancy.skills.length >= 2 ? '1/2' : '1/3')}  hover:opacity-75 pl-4 `}
                                                 key={skill.name}>
                                                 <div className="p-1  ">
                                                     <>
@@ -141,11 +143,11 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
                         }
                         {/*<p key={city.id} className={'m-1 border  hover:bg-gray-500 p-2 rounded-2xl'}>{city.city}</p>*/}
                         <div className={'flex justify-center w-full  '}>
-                            <Carousel opts={{align: 'start', dragFree: true,}} className="w- max-w-md  ">
+                            <Carousel opts={{align: 'start', dragFree: true,}} className="max-w-md ">
                                 <CarouselContent className={'-ml-4'}>
                                     {vacancy.cities?.map((city) => (
                                         <CarouselItem
-                                            className={`basis-${vacancy.cities.length === 1 ? 'full' : (vacancy.cities.length > 3 ? 2 : 3)}  hover:opacity-75 pl-4 `}
+                                            className={`basis-${vacancy.cities.length === 1 ? 'full' : (vacancy.cities.length >= 2 ? '1/2' : '1/3')}  hover:opacity-75 pl-4 `}
                                             key={city.name}>
                                             <div className="p-1">
                                                 <Card>
@@ -161,6 +163,21 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
                         </div>
                     </div>
                     <div className={'flex flex-col justify-center items-center relative'}>
+                        {user?.id === vacancy.user_id &&
+                            <div className={'flex space-x-2 justify-end self-center top-0 p-2 absolute'}>
+                                <div className={'flex gap-x-4'}>
+                                    <Button className={'rounded-full gap-x-2 '}
+                                            onClick={() => router.push(`${pathname}/${vacancy.id}/edit`)}>
+                                        <Pencil />
+                                    </Button>
+                                </div>
+                                <div>
+                                    <Button className={'bg-destructive  rounded-full gap-x-2'}>
+                                        <Trash2 />
+                                    </Button>
+                                </div>
+                            </div>
+                        }
                         <Button size={'lg'} type={'button'}
                                 onClick={() => router.push(`${pathname}/${vacancy.id}`)}>Посмотреть
                         </Button>
@@ -168,7 +185,6 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
                             {formattedDate(vacancy.created_at)}
                         </div>
                     </div>
-
                 </div>
                 )
                 }) :
