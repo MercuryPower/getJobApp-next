@@ -27,6 +27,7 @@ import {
     DialogTitle,
     DialogTrigger
 } from "@/components/ui/dialog";
+import {transliterateProfileUsername} from "@/hooks/transliterateProfileUsername";
 
 const Navbar = () => {
     // const [userType, setUserType] = useState('employer')
@@ -165,7 +166,7 @@ const Navbar = () => {
                             <DropdownMenuGroup>
                                 <DropdownMenuItem>
                                     <User className="mr-2 h-4 w-4"/>
-                                    <Link href={'/profile'}>Профиль</Link>
+                                    <Link href={`/profile/${transliterateProfileUsername(user?.username)}`}>Профиль</Link>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem>
                                     <CreditCard className="mr-2 h-4 w-4"/>
@@ -188,7 +189,7 @@ const Navbar = () => {
                             <DropdownMenuTrigger asChild>
                                 <Button
                                     className={'border-none outline-none self-center flex border-black p-2 hover:no-underline rounded bg  hover:opacity-70 transition '}
-                                    variant="link">
+                                    variant="ghost">
                                     {user?.username}
                                 </Button>
                             </DropdownMenuTrigger>
@@ -196,9 +197,9 @@ const Navbar = () => {
                                 <DropdownMenuLabel>Привет, {user?.username}!</DropdownMenuLabel>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuGroup>
-                                    <DropdownMenuItem className={'font-extrabold'}>
+                                    <DropdownMenuItem>
                                         <User className="mr-2 h-4 w-4"/>
-                                        <Link href={'/profile'}>Профиль</Link>
+                                        <Link href={`/profile/${transliterateProfileUsername(user?.username)}`}>Профиль</Link>
                                     </DropdownMenuItem>
                                     <DropdownMenuItem>
                                         <FileText className="mr-2 h-4 w-4"/>

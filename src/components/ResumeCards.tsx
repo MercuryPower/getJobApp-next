@@ -198,12 +198,12 @@ const ResumeCards = ({data, page, query, queryString}: {data:ResumeInfo[], page:
                                                     </DialogTrigger>
                                                     <DialogContent className={'flex self-justify-center flex-col'} >
                                                         <DialogHeader className={'self-center'}>
-                                                            <DialogTitle >Вы уверены, что хотите удалить резюме?</DialogTitle>
+                                                            <DialogTitle>Вы уверены, что хотите удалить резюме?</DialogTitle>
                                                         </DialogHeader>
                                                         <div className={'flex justify-center space-x-4'}>
-                                                            <Button size={'lg'} className={'flex self-center bg-green-600 font-bold text-lg'} type={"submit"} onClick={() =>deleteResume(resume.id)}>Да</Button>
+                                                            <Button size={'lg'} className={'font-bold'} type={"submit"} onClick={() =>deleteResume(resume.id)}>Да, удалить</Button>
                                                             <DialogClose asChild>
-                                                                <Button size={'lg'} className={'flex self-center  font-bold'}>Нет</Button>
+                                                                <Button size={'lg'} className={'flex self-center  bg-green-600 font-bold'}>Нет</Button>
                                                             </DialogClose>
                                                         </div>
                                                     </DialogContent>

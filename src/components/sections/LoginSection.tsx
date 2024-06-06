@@ -40,8 +40,6 @@ const LoginSection = () => {
         })
 
     function onSubmit(values: z.infer<typeof LoginSchema> | z.infer<typeof RegistrationSchema>) {
-        setSuccess('')
-        setError('')
         startTransition(() =>{
             try {
                 console.log(isRegistration)

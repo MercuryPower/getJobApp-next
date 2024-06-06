@@ -43,7 +43,10 @@ export const register = async (values: TypeOf<typeof RegistrationSchema>, type:s
             }, 300);
             return { success: 'Успешная регистрация' };
         }
+        else{
+            return { error: 'Ошибка при регистрации' };
+        }
     } catch (error: any) {
-        throw new Error(error.message);
+        return { error: 'Ошибка при регистрации' };
     }
 };

@@ -32,8 +32,10 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
             }, 300);
             return { success: 'Успешная авторизация' };
         }
+        else{
+            return {error:'Ошибка при проверка данных'}
+        }
     } catch (error) {
-        console.log((error as Error).message)
         return {error:'Ошибка при авторизации'}
     }
 

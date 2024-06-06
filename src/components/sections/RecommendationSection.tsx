@@ -15,10 +15,15 @@ const RecommendationSection = () => {
         const fetchData = async () => {
             setIsLoading(true);
             try {
-                const response = await fetch(`http://127.0.0.1:8000/tests/company?page=1`);
-
+                const response = await fetch(`http://127.0.0.1:8000/tests/recommendations`, {
+                    method:'GET',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    },
+                });
                 const responseData = await response.json();
-                setRecommendationData(responseData.slice(0, 3));
+                setRecommendationData(responseData);
+                console.log(responseData)
             } catch (error) {
                 console.error('Error fetching data:', error);
             } finally {

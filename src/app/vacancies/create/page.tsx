@@ -263,19 +263,6 @@ const Page = () => {
                     />
                     <FormField
                         control={form.control}
-                        name="resume"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Резюме</FormLabel>
-                                <FormControl>
-                                    <Input type={'text'} placeholder="Портфолио: GitHub или что-то подобное" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
                         name="exp"
                         render={({ field }) => (
                             <FormItem>

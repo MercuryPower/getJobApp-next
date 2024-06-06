@@ -29,10 +29,7 @@ export default function Home() {
     useEffect(() => {
         const fetchStatisticVacancy = async () => {
             try {
-                const response = await fetch(`${isEmployer ? `${VACANCY_STATISTIC}`: `${RESUME_STATISTIC}`}`, {
-                    cache: 'force-cache',
-                    next: {revalidate: 1800}
-                })
+                const response = await fetch(`${isEmployer ? `${VACANCY_STATISTIC}`: `${RESUME_STATISTIC}`}`)
                 const data = await response.json();
                 setDataVacancyStatistics(data)
             } catch (e) {

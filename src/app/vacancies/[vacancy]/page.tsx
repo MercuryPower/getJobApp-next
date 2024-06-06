@@ -20,7 +20,6 @@ import {Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTri
 
 const Page = () => {
     const pathname = usePathname();
-    console.log(pathname)
     const {user} = useAuth()
     const params = useParams();
     const router = useRouter();
@@ -52,7 +51,7 @@ const Page = () => {
             if (!response.ok) {
                 throw new Error('Failed to delete vacancy');
             }
-            router.replace('/vacancies')
+            router.replace(`/vacancies`)
         } catch (error) {
             console.error('Ошибка при удалении вакансии:', error);
         }
@@ -106,9 +105,9 @@ const Page = () => {
                                                         <DialogTitle >Вы уверены, что хотите удалить вакансию?</DialogTitle>
                                                     </DialogHeader>
                                                     <div className={'flex justify-center space-x-4'}>
-                                                        <Button size={'lg'} className={'flex self-center bg-green-600 font-bold text-lg'} type={"submit"} onClick={() =>deleteVacancy(vacancy.id)}>Да</Button>
+                                                        <Button size={'lg'} className={'flex self-center font-bold text-lg'} type={"submit"} onClick={() =>deleteVacancy(vacancy.id)}>Да, удалить</Button>
                                                         <DialogClose asChild>
-                                                            <Button size={'lg'} className={'flex self-center  font-bold'}>Нет</Button>
+                                                            <Button size={'lg'} className={'flex self-center  bg-green-600  font-bold'}>Нет</Button>
                                                         </DialogClose>
                                                     </div>
                                                 </DialogContent>

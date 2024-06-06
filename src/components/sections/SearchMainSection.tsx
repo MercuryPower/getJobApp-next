@@ -8,6 +8,28 @@ const AnimatedNumbers = dynamic(() => import('react-animated-numbers'), {
     ssr: false
 });
 const SearchMainSection = () => {
+    const [totalCompanies, setTotalCompanies] = useState<number | undefined>()
+    const [totalVacancies, setTotalVacancies] = useState()
+    const [totalResumes, setTotalResumes] = useState()
+
+    useEffect(() => {
+        const fetchCounts = async () => {
+            try{
+                const response = await fetch('http://127.0.0.1:8000/tests/get_stats_for_main_page',
+                    {
+                        cache:'force-cache',
+                        next:{revalidate:3600},
+                    })
+                const data = await response.json()
+                setTotalCompanies(data.totalCompanies);
+                setTotalVacancies(data.totalVacancies);
+                setTotalResumes(data.totalResumes);
+            }catch(e){
+                throw new Error((e as Error).message)
+            }
+        }
+        void fetchCounts();
+    }, [])
     const router = useRouter();
     const {isEmployer} = useIsEmployer();
     const [jobsList, setJobList] = useState([
@@ -110,7 +132,7 @@ const SearchMainSection = () => {
                                     type: "spring",
                                     duration: index + 1,
                                 })}
-                                animateToNumber={1444}
+                                animateToNumber={totalVacancies || 1250}
                             />
                         </span> Доступных вакансий</h2>
                 </div>
@@ -123,9 +145,9 @@ const SearchMainSection = () => {
                                         type: "spring",
                                         duration: index + 1,
                                     })}
-                                    animateToNumber={412}
+                                    animateToNumber={totalResumes || 1105}
                                 />
-                            </span> Компаний уже с нами</h2>
+                            </span> Доступных резюме</h2>
                 </div>
                 <div className={'w-80 flex justify-center self-end text-center mb-8'}>
                     <h2>
@@ -136,9 +158,9 @@ const SearchMainSection = () => {
                                     type: "spring",
                                     duration: index + 0.1,
                                 })}
-                                animateToNumber={2465}
+                                animateToNumber={totalCompanies || 94}
                             />
-                        </span> Успешных откликов</h2>
+                        </span>  Компаний уже с нами</h2>
                 </div>
             </div>
         </section>

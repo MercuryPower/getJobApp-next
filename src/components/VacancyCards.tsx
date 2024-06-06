@@ -200,9 +200,9 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
                                                 <DialogTitle >Вы уверены, что хотите удалить вакансию?</DialogTitle>
                                             </DialogHeader>
                                             <div className={'flex justify-center space-x-4'}>
-                                                <Button size={'lg'} className={'flex self-center bg-green-600 font-bold text-lg'} type={"submit"} onClick={() =>deleteVacancy(vacancy.id)}>Да</Button>
+                                                <Button size={'lg'} className={'font-bold'} type={"submit"} onClick={() =>deleteVacancy(vacancy.id)}>Да, удалить</Button>
                                                 <DialogClose asChild>
-                                                    <Button size={'lg'} className={'flex self-center  font-bold'}>Нет</Button>
+                                                    <Button size={'lg'} className={'flex self-center bg-green-600 font-bold'}>Нет</Button>
                                                 </DialogClose>
                                             </div>
                                         </DialogContent>

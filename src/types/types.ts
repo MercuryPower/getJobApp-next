@@ -53,3 +53,13 @@ export const columnTranslations: { [key: string]: string } = {
     expectedSalary: "Ожидаемая зарплата",
     numberOfApplications: "Количество заявок"
 };
+
+export interface userProperties {
+    id: number,
+    username:string,
+    email: string,
+    description:string,
+    type:string,
+    registered_at: string,
+    is_verified: boolean;
+}
