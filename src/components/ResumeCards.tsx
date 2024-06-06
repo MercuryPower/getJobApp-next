@@ -11,6 +11,7 @@ import {Card, CardContent} from "@/components/ui/card";
 import {CircleX, Pencil, Trash2} from "lucide-react";
 import {formattedDate} from "@/hooks/formatDate";
 import {useAuth} from "@/components/providers";
+import {Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
 
 interface ResumeInfo extends VacancyInfo{
     resume: string;
@@ -50,7 +51,22 @@ const ResumeCards = ({data, page, query, queryString}: {data:ResumeInfo[], page:
             setFilteredResumes(data);
         }
     }, [data, query]);
-
+    const deleteResume = async (resumeId: number) => {
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/tests/delete_vacancy/${resumeId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                },
+            });
+            if (!response.ok) {
+                throw new Error('Failed to delete vacancy');
+            }
+            setFilteredResumes(prevResumes => prevResumes.filter(resume => resume.id !== resumeId));
+        } catch (error) {
+            console.error('Ошибка при удалении вакансии:', error);
+        }
+    };
     return (
         <>
             {isLoading ? <VacancyCardSkeleton/> : (
@@ -174,9 +190,24 @@ const ResumeCards = ({data, page, query, queryString}: {data:ResumeInfo[], page:
                                                 </Button>
                                             </div>
                                             <div>
-                                                <Button className={'bg-destructive  rounded-full gap-x-2'}>
-                                                    <Trash2 />
-                                                </Button>
+                                                <Dialog>
+                                                    <DialogTrigger asChild>
+                                                        <Button className={'bg-destructive  rounded-full gap-x-2'}>
+                                                            <Trash2 />
+                                                        </Button>
+                                                    </DialogTrigger>
+                                                    <DialogContent className={'flex self-justify-center flex-col'} >
+                                                        <DialogHeader className={'self-center'}>
+                                                            <DialogTitle >Вы уверены, что хотите удалить резюме?</DialogTitle>
+                                                        </DialogHeader>
+                                                        <div className={'flex justify-center space-x-4'}>
+                                                            <Button size={'lg'} className={'flex self-center bg-green-600 font-bold text-lg'} type={"submit"} onClick={() =>deleteResume(resume.id)}>Да</Button>
+                                                            <DialogClose asChild>
+                                                                <Button size={'lg'} className={'flex self-center  font-bold'}>Нет</Button>
+                                                            </DialogClose>
+                                                        </div>
+                                                    </DialogContent>
+                                                </Dialog>
                                             </div>
                                         </div>
                                     }

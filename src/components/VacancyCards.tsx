@@ -12,6 +12,8 @@ import {usePathname, useRouter} from "next/navigation";
 import Link from "next/link";
 import {formattedDate} from "@/hooks/formatDate";
 import {useAuth} from "@/components/providers";
+import {Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
+import {useLogOut} from "@/hooks/useLogOut";
 
 
 
@@ -51,7 +53,22 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
     //         setFilteredVacancies(data);
     //     }
     // }, [data, query]);
-
+    const deleteVacancy = async (vacancyId: number) => {
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/tests/delete_vacancy/${vacancyId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                },
+            });
+            if (!response.ok) {
+                throw new Error('Failed to delete vacancy');
+            }
+            setFilteredVacancies(prevVacancies => prevVacancies.filter(vacancy => vacancy.id !== vacancyId));
+        } catch (error) {
+            console.error('Ошибка при удалении вакансии:', error);
+        }
+    };
     return (
         <>
         {isLoading ? <VacancyCardSkeleton /> : (
@@ -168,13 +185,28 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
                                 <div className={'flex gap-x-4'}>
                                     <Button className={'rounded-full gap-x-2 '}
                                             onClick={() => router.push(`${pathname}/${vacancy.id}/edit`)}>
-                                        <Pencil />
+                                        <Pencil  />
                                     </Button>
                                 </div>
                                 <div>
-                                    <Button className={'bg-destructive  rounded-full gap-x-2'}>
-                                        <Trash2 />
-                                    </Button>
+                                    <Dialog>
+                                        <DialogTrigger asChild>
+                                            <Button className={'bg-destructive  rounded-full gap-x-2'}>
+                                                <Trash2 />
+                                            </Button>
+                                        </DialogTrigger>
+                                        <DialogContent className={'flex self-justify-center flex-col'} >
+                                            <DialogHeader className={'self-center'}>
+                                                <DialogTitle >Вы уверены, что хотите удалить вакансию?</DialogTitle>
+                                            </DialogHeader>
+                                            <div className={'flex justify-center space-x-4'}>
+                                                <Button size={'lg'} className={'flex self-center bg-green-600 font-bold text-lg'} type={"submit"} onClick={() =>deleteVacancy(vacancy.id)}>Да</Button>
+                                                <DialogClose asChild>
+                                                    <Button size={'lg'} className={'flex self-center  font-bold'}>Нет</Button>
+                                                </DialogClose>
+                                            </div>
+                                        </DialogContent>
+                                    </Dialog>
                                 </div>
                             </div>
                         }

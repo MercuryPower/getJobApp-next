@@ -16,6 +16,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import AutoScroll from 'embla-carousel-auto-scroll'
 import {useAuth} from "@/components/providers";
 import {formattedDate} from "@/hooks/formatDate";
+import {Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
 
 const Page = () => {
     const pathname = usePathname();
@@ -40,7 +41,22 @@ const Page = () => {
 
         void fetchVacancy();
     }, [params.vacancy]);
-    console.log(vacancy)
+    const deleteVacancy = async (vacancyId: number) => {
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/tests/delete_vacancy/${vacancyId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                },
+            });
+            if (!response.ok) {
+                throw new Error('Failed to delete vacancy');
+            }
+            router.replace('/vacancies')
+        } catch (error) {
+            console.error('Ошибка при удалении вакансии:', error);
+        }
+    };
     return (
         <>
         {vacancy ?
@@ -79,9 +95,24 @@ const Page = () => {
                                             </Button>
                                         </div>
                                         <div>
-                                            <Button className={'bg-destructive  rounded-full gap-x-2'}>
-                                                <Trash2 />
-                                            </Button>
+                                            <Dialog>
+                                                <DialogTrigger asChild>
+                                                    <Button className={'bg-destructive  rounded-full gap-x-2'}>
+                                                        <Trash2 />
+                                                    </Button>
+                                                </DialogTrigger>
+                                                <DialogContent className={'flex self-justify-center flex-col'} >
+                                                    <DialogHeader className={'self-center'}>
+                                                        <DialogTitle >Вы уверены, что хотите удалить вакансию?</DialogTitle>
+                                                    </DialogHeader>
+                                                    <div className={'flex justify-center space-x-4'}>
+                                                        <Button size={'lg'} className={'flex self-center bg-green-600 font-bold text-lg'} type={"submit"} onClick={() =>deleteVacancy(vacancy.id)}>Да</Button>
+                                                        <DialogClose asChild>
+                                                            <Button size={'lg'} className={'flex self-center  font-bold'}>Нет</Button>
+                                                        </DialogClose>
+                                                    </div>
+                                                </DialogContent>
+                                            </Dialog>
                                         </div>
                                     </div>
                                 }
@@ -124,7 +155,6 @@ const Page = () => {
                                 </HoverCardContent>
                             </HoverCard>
                         </div>
-
                         {vacancy.skills && vacancy.skills?.length > 0 && (
                             <>
                                 <div className={'flex  flex-col self-center justify-center m-2'}>

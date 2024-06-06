@@ -20,7 +20,7 @@ import {useAuth, useIsEmployer} from "@/components/providers";
 import Link from "next/link";
 import {useLogOut} from "@/hooks/useLogOut";
 import {
-    Dialog,
+    Dialog, DialogClose,
     DialogContent,
     DialogDescription,
     DialogHeader,
@@ -36,7 +36,6 @@ const Navbar = () => {
     // }
     const {isEmployer, setIsEmployer} = useIsEmployer()
     const router = useRouter();
-    const [isDialogOpen, setIsDialogOpen] = useState(false);
     // const secret = process.env.AUTH_SECRET;
     const {isLoggedIn, user} = useAuth();
     // const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -184,7 +183,7 @@ const Navbar = () => {
                 </div>
                 {isLoggedIn && user ?
                     (<div className={'flex space-x-4 max-w-md text-ellipsis outline-none overflow-hidden '}>
-                        <Dialog open={isDialogOpen}>
+                        <Dialog>
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <Button
@@ -211,7 +210,7 @@ const Navbar = () => {
                                     </DropdownMenuItem>
                                     <DropdownMenuSeparator/>
                                         <DialogTrigger asChild>
-                                            <Button className={'mr-2 h-8 w-full self-center'} variant={'link'} onClick={() => setIsDialogOpen(!isDialogOpen)}>Выйти</Button>
+                                            <Button className={'mr-2 h-8 w-full self-center'} variant={'link'}>Выйти</Button>
                                         </DialogTrigger>
                                         <DialogContent className={'flex self-justify-center flex-col'} >
                                             <DialogHeader className={'self-center'}>
@@ -219,7 +218,9 @@ const Navbar = () => {
                                             </DialogHeader>
                                             <div className={'flex justify-center space-x-4'}>
                                                 <Button size={'lg'} className={'flex self-center bg-green-600 font-bold text-lg'} type={"submit"} onClick={useLogOut}>Да</Button>
-                                                <Button size={'lg'} className={'flex self-center opacity-80 font-bold'} onClick={() => setIsDialogOpen(!isDialogOpen)} >Нет</Button>
+                                                <DialogClose asChild>
+                                                    <Button size={'lg'} className={'flex self-center  font-bold'}>Нет</Button>
+                                                </DialogClose>
                                             </div>
                                         </DialogContent>
                                 </DropdownMenuGroup>

@@ -15,6 +15,7 @@ import VacancyCardSkeleton from "@/components/ui/skeletons/VacancyCardSkeleton";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import {formattedDate} from "@/hooks/formatDate";
 import {auth} from "@/auth";
+import {Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
 
 const Page = () => {
     const router = useRouter();
@@ -55,6 +56,22 @@ const Page = () => {
     if(!isLoggedIn){
         return null;
     }
+    const deleteVacancy = async (vacancyId: number) => {
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/tests/delete_vacancy/${vacancyId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                },
+            });
+            if (!response.ok) {
+                throw new Error('Failed to delete vacancy');
+            }
+            setMyVacancies(prevVacancies => prevVacancies.filter(vacancy => vacancy.id !== vacancyId));
+        } catch (error) {
+            console.error('Ошибка при удалении вакансии:', error);
+        }
+    };
     return (
     <>
         <div className={'flex justify-center'}>
@@ -186,9 +203,24 @@ const Page = () => {
                                             </Button>
                                         </div>
                                         <div>
-                                            <Button className={'bg-destructive  rounded-full gap-x-2'}>
-                                                <Trash2/>
-                                            </Button>
+                                            <Dialog>
+                                                <DialogTrigger asChild>
+                                                    <Button className={'bg-destructive  rounded-full gap-x-2'}>
+                                                        <Trash2 />
+                                                    </Button>
+                                                </DialogTrigger>
+                                                <DialogContent className={'flex self-justify-center flex-col'} >
+                                                    <DialogHeader className={'self-center'}>
+                                                        <DialogTitle >Вы уверены, что хотите удалить вакансию?</DialogTitle>
+                                                    </DialogHeader>
+                                                    <div className={'flex justify-center space-x-4'}>
+                                                        <Button size={'lg'} className={'flex self-center bg-green-600 font-bold text-lg'} type={"submit"} onClick={() =>deleteVacancy(vacancy.id)}>Да</Button>
+                                                        <DialogClose asChild>
+                                                            <Button size={'lg'} className={'flex self-center  font-bold'}>Нет</Button>
+                                                        </DialogClose>
+                                                    </div>
+                                                </DialogContent>
+                                            </Dialog>
                                         </div>
                                     </div>
                                 }

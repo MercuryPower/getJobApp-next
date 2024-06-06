@@ -13,6 +13,7 @@ import {ResumeInfo, VacancyInfo} from "@/types/types";
 import VacancyCardSkeleton from "@/components/ui/skeletons/VacancyCardSkeleton";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import {formattedDate} from "@/hooks/formatDate";
+import {Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
 
 const Page = () => {
     const router = useRouter();
@@ -52,6 +53,22 @@ const Page = () => {
     if(!isLoggedIn){
         return null;
     }
+    const deleteResume = async (resumeId: number) => {
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/tests/delete_vacancy/${resumeId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                },
+            });
+            if (!response.ok) {
+                throw new Error('Failed to delete vacancy');
+            }
+            setMyResumes(prevResumes => prevResumes.filter(resume => resume.id !== resumeId));
+        } catch (error) {
+            console.error('Ошибка при удалении вакансии:', error);
+        }
+    };
     return (
         <>
             <div className={'flex justify-center'}>
@@ -185,9 +202,24 @@ const Page = () => {
                                                     </Button>
                                                 </div>
                                                 <div>
-                                                    <Button className={'bg-destructive  rounded-full gap-x-2'}>
-                                                        <Trash2/>
-                                                    </Button>
+                                                    <Dialog>
+                                                        <DialogTrigger asChild>
+                                                            <Button className={'bg-destructive  rounded-full gap-x-2'}>
+                                                                <Trash2 />
+                                                            </Button>
+                                                        </DialogTrigger>
+                                                        <DialogContent className={'flex self-justify-center flex-col'} >
+                                                            <DialogHeader className={'self-center'}>
+                                                                <DialogTitle >Вы уверены, что хотите удалить резюме?</DialogTitle>
+                                                            </DialogHeader>
+                                                            <div className={'flex justify-center space-x-4'}>
+                                                                <Button size={'lg'} className={'flex self-center bg-green-600 font-bold text-lg'} type={"submit"} onClick={() =>deleteResume(resume.id)}>Да</Button>
+                                                                <DialogClose asChild>
+                                                                    <Button size={'lg'} className={'flex self-center  font-bold'}>Нет</Button>
+                                                                </DialogClose>
+                                                            </div>
+                                                        </DialogContent>
+                                                    </Dialog>
                                                 </div>
                                             </div>
                                         }

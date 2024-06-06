@@ -20,7 +20,8 @@ const Page = () => {
             try {
                 setIsLoading(true)
                 const response = await fetch(isEmployer ? VACANCY_STATISTIC : RESUME_STATISTIC, {
-                    cache:'force-cache'
+                    cache:'force-cache',
+                    next:{revalidate:600}
                 })
                 const data = await response.json();
                 setDataStatistics(data)
