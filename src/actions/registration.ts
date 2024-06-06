@@ -14,7 +14,6 @@ export const register = async (values: TypeOf<typeof RegistrationSchema>, type:s
     if (!validatedFields.success) {
         return { error: 'Ошибка при регистрации' };
     }
-    console.log(values);
 
     try {
         'use server'

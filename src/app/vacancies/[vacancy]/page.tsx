@@ -127,7 +127,7 @@ const Page = () => {
                                     договоренности </p>
                             )
                         }
-                        <div className={'flex justify-center p-2 max-h-23'}>
+                        <div className={'flex flex-col justify-center p-2 max-h-23'}>
                             <HoverCard>
                                 <HoverCardTrigger asChild>
                                     <Button variant="link">{vacancy.companyName}</Button>
@@ -153,6 +153,8 @@ const Page = () => {
                                     </div>
                                 </HoverCardContent>
                             </HoverCard>
+                            {vacancy.companyDescription !== null && <h2>О компании: {vacancy.companyDescription}</h2>}
+
                         </div>
                         {vacancy.skills && vacancy.skills?.length > 0 && (
                             <>

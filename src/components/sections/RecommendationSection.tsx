@@ -5,10 +5,12 @@ import VacancyCards from "@/components/VacancyCards";
 import {CircleX} from "lucide-react";
 import {VacancyInfo} from "@/types/types";
 import {usePathname, useRouter} from "next/navigation";
+import RecommendationCards from "@/components/RecommendationCards";
 
 const RecommendationSection = () => {
     const [recommendationData, setRecommendationData] = useState<VacancyInfo[]>([])
     const [isLoading, setIsLoading] = useState(false);
+    const [isHovered, setIsHovered] = useState(false)
     const pathname = usePathname()
     const router = useRouter();
     useEffect(() => {
@@ -36,13 +38,13 @@ const RecommendationSection = () => {
 
     return (
         <div className="flex justify-center mt-4">
-            <Carousel>
+            <Carousel opts={{align: 'start', dragFree: true, watchDrag:!isHovered}}>
                 <Label className={'font-extralight text-xl flex justify-center'}>Рекомендуемые вакансии для вас:</Label>
                 <CarouselContent>
-                    <CarouselItem>
+                    <CarouselItem  >
                         <div className="flex justify-center gap-4">
                             {recommendationData.length > 0 ? recommendationData.map((vacancy) => (
-                                <VacancyCards key={vacancy.id} data={[vacancy]}/>
+                                <RecommendationCards setIsHovered={setIsHovered} key={vacancy.id} data={[vacancy]}/>
                             )) : (
                                 <div
                                     className="flex gap-2 flex-col shadow-lg m-4 p-4 border rounded-2xl w-[700px] h-96 justify-center">

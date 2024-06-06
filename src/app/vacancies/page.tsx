@@ -23,7 +23,6 @@ const Page = ({searchParams}:{searchParams?:{query?: string; page?:string, perPa
 
     const handleQueryChange = (query: string) => {
         setQueryString(query);
-        console.log(query)
     };
     const {user} = useAuth();
     const pathname = usePathname();
