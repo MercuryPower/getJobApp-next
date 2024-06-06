@@ -59,15 +59,6 @@ const Page = () => {
             cities:[],
         }
     })
-    const onChangeMinSalary = useCallback((minSalary:number) => {
-        setRange([minSalary, range[1]]);
-        form.setValue('min_salary', minSalary);
-    }, [range, form]);
-
-    const onChangeMaxSalary = useCallback((maxSalary:number) => {
-        setRange([range[0], maxSalary]);
-        form.setValue('max_salary', maxSalary);
-    }, [range, form]);
 
     function onSubmit (values: z.infer<typeof VacancyCreateSchema>) {
         if (values.exp === 'Other') {
@@ -195,8 +186,14 @@ const Page = () => {
                                             <FormControl>
                                                 <FormItem>
                                                     <SalarySlider
-                                                        onChangeMinSalary={onChangeMinSalary}
-                                                        onChangeMaxSalary={onChangeMaxSalary}
+                                                        onChangeMinSalary={(minSalary) => {
+                                                            setRange([minSalary, range[1]]);
+                                                            form.setValue('min_salary', minSalary)
+                                                        }}
+                                                        onChangeMaxSalary={(maxSalary)=>{
+                                                            setRange([range[0], maxSalary]);
+                                                            form.setValue('max_salary', maxSalary)
+                                                        }}
                                                     />
                                                 </FormItem>
                                             </FormControl>
@@ -279,6 +276,7 @@ const Page = () => {
                                                 <SelectItem value="Junior">Junior</SelectItem>
                                                 <SelectItem value="Middle">Middle</SelectItem>
                                                 <SelectItem value="Senior">Senior</SelectItem>
+                                                <SelectItem value="Lead">Lead</SelectItem>
                                                 <SelectItem value="Other">Другое</SelectItem>
                                             </SelectGroup>
                                         </SelectContent>

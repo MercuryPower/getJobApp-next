@@ -154,7 +154,6 @@ const Page = () => {
                                 </HoverCardContent>
                             </HoverCard>
                             {vacancy.companyDescription !== null && <h2>О компании: {vacancy.companyDescription}</h2>}
-
                         </div>
                         {vacancy.skills && vacancy.skills?.length > 0 && (
                             <>
