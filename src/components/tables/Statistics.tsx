@@ -123,7 +123,7 @@ export function Statistics({ data, isEmployer }: { data: StatisticProps[], isEmp
     return (
         <div className="w-full">
             <div className="flex items-center py-4">
-                {table.getColumn("profession") && (
+                {table.getAllColumns().find(col => col.id === "profession") && (
                     <Input
                         placeholder="Поиск"
                         value={(table.getColumn("profession")?.getFilterValue() as string) ?? ""}
