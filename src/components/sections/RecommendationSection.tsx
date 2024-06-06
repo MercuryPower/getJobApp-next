@@ -41,15 +41,15 @@ const RecommendationSection = () => {
             <Carousel opts={{align: 'start', dragFree: true, watchDrag:!isHovered}}>
                 <Label className={'font-extralight text-xl flex justify-center'}>Рекомендуемые вакансии для вас:</Label>
                 <CarouselContent>
-                    <CarouselItem  >
-                        <div className="flex justify-center gap-4">
+                    <CarouselItem>
+                        <div className="flex justify-center self-center gap-4 ">
                             {recommendationData.length > 0 ? recommendationData.map((vacancy) => (
                                 <RecommendationCards setIsHovered={setIsHovered} key={vacancy.id} data={[vacancy]}/>
                             )) : (
                                 <div
                                     className="flex gap-2 flex-col shadow-lg m-4 p-4 border rounded-2xl w-[700px] h-96 justify-center">
                                     <CircleX className="self-center" size={64}/>
-                                    <span className="self-center font-extrabold text-3xl">Ничего не найдено</span>
+                                    <span className="self-center font-extrabold text-3xl">Рекомендаций не найдено</span>
                                 </div>
                             )}
                         </div>

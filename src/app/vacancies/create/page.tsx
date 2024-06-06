@@ -34,7 +34,6 @@ import {
 import {citiesForChoice, workTypes} from "@/data/data";
 const Page = () => {
 
-    const [isPending, startTransition] = useTransition();
     const {user} = useAuth();
     const [skills, setSkills] = useState<Option[]>()
     const [cities, setCities] = useState<Option[]>()
@@ -72,7 +71,7 @@ const Page = () => {
         } else {
             values.salary_type = isFixedSalary ? 'fixed' : 'range';
         }
-        startTransition(() => {
+
             console.log(values)
             console.log(JSON.stringify(values))
             const newVacancy = {
@@ -115,7 +114,6 @@ const Page = () => {
                 .catch(error => {
                     console.error('Error:', error);
                 });
-        })
     }
     useEffect(() => {
         if (user?.type !== 'company') {
@@ -188,11 +186,11 @@ const Page = () => {
                                                     <SalarySlider
                                                         onChangeMinSalary={(minSalary) => {
                                                             setRange([minSalary, range[1]]);
-                                                            form.setValue('min_salary', minSalary)
+                                                            form.setValue('min_salary', minSalary);
                                                         }}
-                                                        onChangeMaxSalary={(maxSalary)=>{
+                                                        onChangeMaxSalary={(maxSalary) => {
                                                             setRange([range[0], maxSalary]);
-                                                            form.setValue('max_salary', maxSalary)
+                                                            form.setValue('max_salary', maxSalary);
                                                         }}
                                                     />
                                                 </FormItem>
@@ -214,7 +212,6 @@ const Page = () => {
                                     <div className={'flex flex-col justify-center self-center  w-96 '}>
                                         <MultipleSelector
                                             badgeClassName={'text-md'}
-                                            creatable
                                             className={'self-center max-h-44 w-full h-20 overflow-y-auto overflow-x-hidden'}
                                             placeholder="Добавьте тип занятости"
                                             options={workTypes}

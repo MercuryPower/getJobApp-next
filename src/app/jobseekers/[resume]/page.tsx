@@ -12,8 +12,7 @@ import {Card, CardContent} from "@/components/ui/card";
 import {useAuth} from "@/components/providers";
 import {formattedDate} from "@/hooks/formatDate";
 import {Pencil, Trash2} from "lucide-react";
-import {Dialog, DialogClose, DialogHeader, DialogTrigger} from "@/components/ui/dialog";
-import {DialogContent, DialogTitle} from "@mui/material";
+import {Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
 
 const Page = () => {
     const pathname = usePathname()
@@ -90,7 +89,6 @@ const Page = () => {
                                                 <Pencil />
                                             </Button>
                                         </div>
-                                        <div>
                                             <Dialog>
                                                 <DialogTrigger asChild>
                                                     <Button className={'bg-destructive  rounded-full gap-x-2'}>
@@ -102,14 +100,13 @@ const Page = () => {
                                                         <DialogTitle >Вы уверены, что хотите удалить резюме?</DialogTitle>
                                                     </DialogHeader>
                                                     <div className={'flex justify-center space-x-4'}>
-                                                        <Button size={'lg'} className={'font-bold'} type={"submit"} onClick={() =>deleteResume(resume.id)}>Да, удалить</Button>
+                                                        <Button size={'lg'} className={'font-bold'}  onClick={() =>deleteResume(resume.id)}>Да, удалить</Button>
                                                         <DialogClose asChild>
                                                             <Button size={'lg'} className={'flex self-center  bg-green-600  font-bold'}>Нет</Button>
                                                         </DialogClose>
                                                     </div>
                                                 </DialogContent>
                                             </Dialog>
-                                        </div>
                                     </div>
                                 }
                             </div>

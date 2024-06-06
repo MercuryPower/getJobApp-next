@@ -66,7 +66,7 @@ const RecommendationCards = ({data,setIsHovered,page, query, queryString}: {data
                 <div className={'text-center '}>
                     {filteredVacancies.length > 0 ? filteredVacancies.map((vacancy) => {
                             return (
-                                <div key={vacancy.id} className={'flex shadow p-4 m-2 my-6 rounded-2xl gap-5 border min-h-80'}>
+                                <div key={vacancy.id} className={'flex  shadow p-4 m-2 my-6 rounded-2xl gap-5 border min-h-80'}>
                                     <div className={'p-2  w-[500px] flex flex-col flex-grow  justify-center rounded'}>
                                         <div className={' flex text-center justify-center p-2'}>
                                             <Link href={`${pathname}/${vacancy.id}`}>
@@ -216,7 +216,7 @@ const RecommendationCards = ({data,setIsHovered,page, query, queryString}: {data
                                             </div>
                                         }
                                         <Button size={'lg'} type={'button'}
-                                                onClick={() => router.push(`${pathname}/${vacancy.id}`)}>Посмотреть
+                                                onClick={() => router.push(`${user?.type !== 'company' ? `/vacancies` : `/jobseekers`}/${vacancy.id}`)}>Посмотреть
                                         </Button>
                                         <div className={'absolute bottom-2 text-xs opacity-50'}>
                                             {formattedDate(vacancy.created_at)}

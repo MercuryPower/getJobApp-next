@@ -21,6 +21,7 @@ const Page = () => {
     const params = useParams();
     const [myResumes, setMyResumes] = useState<ResumeInfo[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+
     useEffect(() => {
         const fetchVacancy = async () => {
             setIsLoading(true)

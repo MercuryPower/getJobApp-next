@@ -27,9 +27,7 @@ export const VacancyCreateSchema = z.object({
         message: 'Название должно состоять из более чем 2 символов'
     }),
     salary_type:z.string(),
-    fixed_salary: z.number().min(1, {
-        message: 'Фиксированная зарплата не должна быть равна нулю.'
-    }),
+    fixed_salary: z.number(),
     min_salary: z.number(),
     max_salary: z.number(),
     description: z.string(),
