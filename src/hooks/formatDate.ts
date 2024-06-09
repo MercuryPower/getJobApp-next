@@ -13,6 +13,6 @@ export const formattedDate = (dateString:string, onlyYear?:boolean) => {
         const year = date.getFullYear();
         return `${year} `;
     } else {
-        return `${day} ${month} ${hours}:${minutes} `;
+        return `${day} ${month} в ${hours}:${minutes} `;
     }
 };

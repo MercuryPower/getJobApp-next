@@ -21,7 +21,7 @@ import {
     SelectValue
 } from "@/components/ui/select";
 import {
-    Dialog,
+    Dialog, DialogClose,
     DialogContent,
     DialogDescription,
     DialogHeader,
@@ -47,7 +47,7 @@ const Page = () => {
     const router = useRouter()
     const [resumeData, setResumeData] = useState<VacancyInfo>();
     const id = pathname.split('/')[2];
-   
+
     useEffect(() => {
         const fetchData = async () => {
             const fetchResumeData = async () => {
@@ -105,6 +105,8 @@ const Page = () => {
                 cities: resumeData?.cities.map(city => city.name) || [],
                 typeOfEmploy: resumeData?.types_of_employ?.map(type => type.name) || [],
             });
+            setIsByAgreement(resumeData.salary_type === 'agreement');
+            setIsFixedSalary(resumeData.salary_type === 'fixed');
             if (resumeData.skills) {
                 const skillsFromServer = resumeData.skills.map(skill => ({
                     label: skill.name,
@@ -154,7 +156,6 @@ const Page = () => {
                 exp: values.exp,
                 is_reported: false,
             };
-
             const requestBody = {
                 updated_vacancy: updatedVacancy,
                 cities: values.cities,
@@ -194,7 +195,7 @@ const Page = () => {
                         <Button onClick={()=> router.back()} className={'self-center space- '} type={'button'} variant={'link'} >
                             <svg width="25" height="25" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.85355 3.85355C7.04882 3.65829 7.04882 3.34171 6.85355 3.14645C6.65829 2.95118 6.34171 2.95118 6.14645 3.14645L2.14645 7.14645C1.95118 7.34171 1.95118 7.65829 2.14645 7.85355L6.14645 11.8536C6.34171 12.0488 6.65829 12.0488 6.85355 11.8536C7.04882 11.6583 7.04882 11.3417 6.85355 11.1464L3.20711 7.5L6.85355 3.85355ZM12.8536 3.85355C13.0488 3.65829 13.0488 3.34171 12.8536 3.14645C12.6583 2.95118 12.3417 2.95118 12.1464 3.14645L8.14645 7.14645C7.95118 7.34171 7.95118 7.65829 8.14645 7.85355L12.1464 11.8536C12.3417 12.0488 12.6583 12.0488 12.8536 11.8536C13.0488 11.6583 13.0488 11.3417 12.8536 11.1464L9.20711 7.5L12.8536 3.85355Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"></path></svg>
                         </Button>
-                        <FormLabel className={'flex justify-center p-2 text-2xl font-bold'}>Редактирование вакансии</FormLabel>
+                        <FormLabel className={'flex justify-center p-2 text-2xl font-bold'}>Редактирование резюме</FormLabel>
                         <Button type={'button'} className={'self-center '} variant={'outline'} onClick={() => form.reset()}>
                             <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.84998 7.49998C1.84998 4.66458 4.05979 1.84998 7.49998 1.84998C10.2783 1.84998 11.6515 3.9064 12.2367 5H10.5C10.2239 5 10 5.22386 10 5.5C10 5.77614 10.2239 6 10.5 6H13.5C13.7761 6 14 5.77614 14 5.5V2.5C14 2.22386 13.7761 2 13.5 2C13.2239 2 13 2.22386 13 2.5V4.31318C12.2955 3.07126 10.6659 0.849976 7.49998 0.849976C3.43716 0.849976 0.849976 4.18537 0.849976 7.49998C0.849976 10.8146 3.43716 14.15 7.49998 14.15C9.44382 14.15 11.0622 13.3808 12.2145 12.2084C12.8315 11.5806 13.3133 10.839 13.6418 10.0407C13.7469 9.78536 13.6251 9.49315 13.3698 9.38806C13.1144 9.28296 12.8222 9.40478 12.7171 9.66014C12.4363 10.3425 12.0251 10.9745 11.5013 11.5074C10.5295 12.4963 9.16504 13.15 7.49998 13.15C4.05979 13.15 1.84998 10.3354 1.84998 7.49998Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"></path></svg>
                         </Button>
@@ -215,7 +216,13 @@ const Page = () => {
                     <div className="flex items-center space-x-2">
                         <Switch id="salaryFixedSwitch" checked={isFixedSalary} disabled={isByAgreement}  onCheckedChange={(prev) => setIsFixedSalary(prev)} />
                         <Label htmlFor="salarySwitch">Фиксированная зарплата</Label>
-                        <Switch id="salaryAgreementSwitch" checked={isByAgreement}  onCheckedChange={(prev) => setIsByAgreement(prev)} />
+                        <Switch id="salaryAgreementSwitch" checked={isByAgreement}  onCheckedChange={(checked) =>
+                        {
+                            setIsByAgreement(checked);
+                            if (checked) {
+                                setIsFixedSalary(false);
+                            }
+                        }} />
                         <Label htmlFor="salaryAgreementSwitch">Договоренная зарплата</Label>
                     </div>
                     {!isByAgreement && (
@@ -227,10 +234,10 @@ const Page = () => {
                                     <FormItem>
                                         <FormLabel>Фиксированная зарплата (в месяц), ₽</FormLabel>
                                         <FormControl>
-                                            <Input type="number"
-                                                   placeholder="10 000 ₽"
-                                                   {...field}
-                                                   onChange={(e) => field.onChange(Number(e.target.value))}  />
+                                            <Input
+                                                defaultValue={field.value}
+                                                {...field}
+                                                onChange={(e) => field.onChange(Number(e.target.value))}  />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -240,13 +247,15 @@ const Page = () => {
                             <>
                                 <FormField
                                     control={form.control}
-                                    name="min_salary"
-                                    render={() => (
+                                    name='min_salary'
+                                    render={({ field }) => (
                                         <FormItem className={'space-y-4'}>
                                             <FormLabel>Диапазон зарплаты, ₽</FormLabel>
                                             <FormControl>
                                                 <FormItem>
                                                     <SalarySlider
+                                                        minSalary={field.value}
+                                                        maxSalary={form.getValues('max_salary')}
                                                         onChangeMinSalary={(minSalary) => {
                                                             setRange([minSalary, range[1]]);
                                                             form.setValue('min_salary', minSalary)
@@ -274,11 +283,12 @@ const Page = () => {
                                 <FormControl>
                                     <div className={'flex flex-col justify-center self-center  w-96 '}>
                                         <MultipleSelector
+                                            {...field}
                                             badgeClassName={'text-md'}
-                                            creatable
                                             className={'self-center max-h-44 w-full h-20 overflow-y-auto overflow-x-hidden'}
                                             placeholder="Добавьте тип занятости"
                                             options={workTypes}
+                                            value={typesOfEmploy}
                                             onChange={(selectedWorkTypes) => {
                                                 field.onChange(selectedWorkTypes.map(workType => workType.value));
                                             }}
@@ -339,7 +349,7 @@ const Page = () => {
                             <FormItem>
                                 <FormLabel>Уровень навыка</FormLabel>
                                 <FormControl>
-                                    <Select onValueChange={field.onChange} defaultValue={field.value} >
+                                    <Select onValueChange={field.onChange} {...field} >
                                         <SelectTrigger className="w-full h-16 text-xl">
                                             <SelectValue className="w-full text-xl" placeholder="Middle, Junior, Senior и т.д" />
                                         </SelectTrigger>
@@ -350,6 +360,7 @@ const Page = () => {
                                                 <SelectItem value="Junior">Junior</SelectItem>
                                                 <SelectItem value="Middle">Middle</SelectItem>
                                                 <SelectItem value="Senior">Senior</SelectItem>
+                                                <SelectItem value="Lead">Lead</SelectItem>
                                                 <SelectItem value="Other">Другое</SelectItem>
                                             </SelectGroup>
                                         </SelectContent>
@@ -413,7 +424,7 @@ const Page = () => {
                         <Dialog>
                             <DialogTrigger asChild>
                                 <Button size={"lg"} className={'h-12 border-black bg-green-600 rounded font-bold  transition'} >
-                                    <span>Изменить вакансию</span>
+                                    <span>Изменить резюме</span>
                                 </Button>
                             </DialogTrigger>
                             <DialogContent className={'flex justify-center flex-col'}>
@@ -424,10 +435,15 @@ const Page = () => {
                                         <br/> Вы уверены, что хотите продолжить?
                                     </DialogDescription>
                                 </DialogHeader>
-                                <Button className={'flex self-center bg-green-600 font-bo'} type={"submit"} onClick={form.handleSubmit(onSubmit)}>Подтвердить</Button>
+                                <div className={'flex gap-x-2 justify-center'}>
+                                    <Button disabled={isPending} className={'flex self-center bg-green-600 font-bold'} type={"submit"} onClick={form.handleSubmit(onSubmit)}>Подтвердить</Button>
+                                    <DialogClose>
+                                        <Button disabled={isPending} className={'flex self-center  font-bold '} type={"submit"}>Отменить редактирование</Button>
+                                    </DialogClose>
+                                </div>
                             </DialogContent>
                         </Dialog>
-                        <Button  type={'button'} onClick={() => router.back()} size={"lg"} className={'h-12 border-black opacity-50 rounded font-bold  transition'} >
+                        <Button  type={'button'} onClick={() => router.back()} size={"lg"} className={'h-12 border-black rounded font-bold  transition'} >
                             <span>Отменить</span>
                         </Button>
                     </div>

@@ -15,7 +15,15 @@ import VacancyCardSkeleton from "@/components/ui/skeletons/VacancyCardSkeleton";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import {formattedDate} from "@/hooks/formatDate";
 import {auth} from "@/auth";
-import {Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger
+} from "@/components/ui/dialog";
 
 const Page = () => {
     const router = useRouter();
@@ -89,11 +97,11 @@ const Page = () => {
                             <span>Создать вакансию</span>
                         </Button>
                 }
-                {myVacancies.length > 0 ? myVacancies.map((vacancy) => {
+                {myVacancies && myVacancies.length > 0 ? myVacancies.map((vacancy) => {
                     return (
                         <div key={vacancy.id}
-                             className={'flex justify-center self-center shadow p-4 m-2 my-6 rounded-2xl  gap-5 border'}>
-                            <div className={'p-2  w-[500px] flex flex-col flex-grow rounded'}>
+                             className={'flex justify-center self-center shadow p-4 m-2 my-6 rounded-2xl  gap-5 border min-h-80'}>
+                            <div className={'p-2  w-[500px]  flex flex-col flex-grow rounded'}>
                                 <div className={' flex text-center justify-center p-2'}>
                                     <Link href={`${vacancy.id}`}>
                                         <p className={'text-3xl text-ellipsis overflow-hidden font-bold  cursor-pointer'}>{vacancy.exp} {vacancy.vacancy_name}</p>
@@ -148,7 +156,7 @@ const Page = () => {
                                 {vacancy.skills && vacancy.skills?.length > 0 && (
                                     <div className={'flex justify-center m-2'}>
                                         <Carousel opts={{align: 'start', dragFree: true}} className="w- max-w-md   ">
-                                            <CarouselContent className={'-ml-4'}>
+                                            <CarouselContent className={'-ml-4 justify-center'}>
                                                 {vacancy.skills?.map((skill) => (
                                                     <CarouselItem
                                                         className={`basis-${vacancy.skills.length === 1 ? 'full' : (vacancy.skills.length > 3 ? '1/2' : '1/3')}  hover:opacity-75 text-xl  `}
@@ -215,12 +223,13 @@ const Page = () => {
                                                         <Trash2 />
                                                     </Button>
                                                 </DialogTrigger>
-                                                <DialogContent className={'flex self-justify-center flex-col h-' } >
-                                                    <DialogHeader className={'self-center'}>
+                                                <DialogContent className={'flex self-justify-center flex-col ' } >
+                                                    <DialogHeader className={'self-center p-2 text-center'}>
                                                         <DialogTitle >Вы уверены, что хотите удалить вакансию?</DialogTitle>
+                                                        <DialogDescription className={'font-boldtext-center font-bold text-md text-destructive rounded'}> После подтверждения вакансия удалится без возможности восстановления</DialogDescription>
                                                     </DialogHeader>
                                                     <div className={'flex justify-center space-x-4 '}>
-                                                        <Button size={'lg'} className={'font-bold'} type={"submit"} onClick={() =>deleteVacancy(vacancy.id)}>Да, удалить</Button>
+                                                        <Button size={'lg'} className={'font-bold bg-destructive dark:text-white hover:text-inherit hover:bg-destructive dark:hover:bg-destructive dark:hover:text-black'} type={"submit"} onClick={() =>deleteVacancy(vacancy.id)}>Да, удалить</Button>
                                                         <DialogClose asChild>
                                                             <Button size={'lg'} className={'flex self-center font-bold bg-green-600'}>Нет</Button>
                                                         </DialogClose>
@@ -234,7 +243,8 @@ const Page = () => {
                                         onClick={() => router.push(`${vacancy.id}`)}>Посмотреть
                                 </Button>
                                 <div className={'absolute bottom-2 text-xs opacity-50'}>
-                                    {formattedDate(vacancy.created_at)}
+                                    <p>Создано</p>
+                                    <p>{formattedDate(vacancy.created_at)}</p>
                                 </div>
                             </div>
                         </div>

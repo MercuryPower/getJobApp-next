@@ -12,7 +12,15 @@ import {usePathname, useRouter} from "next/navigation";
 import Link from "next/link";
 import {formattedDate} from "@/hooks/formatDate";
 import {useAuth} from "@/components/providers";
-import {Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger
+} from "@/components/ui/dialog";
 import {useLogOut} from "@/hooks/useLogOut";
 
 
@@ -73,7 +81,7 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
         <>
         {isLoading ? <VacancyCardSkeleton /> : (
             <div className={'text-center '}>
-                {filteredVacancies.length > 0 ? filteredVacancies.map((vacancy) => {
+                {filteredVacancies && filteredVacancies.length > 0 ? filteredVacancies.map((vacancy) => {
                 return (
                 <div key={vacancy.id} className={'flex shadow p-4 m-2 my-6 rounded-2xl gap-5 border min-h-80'}>
                     <div className={'p-2  w-[500px] flex flex-col flex-grow  justify-center rounded'}>
@@ -126,7 +134,7 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
                         {vacancy.skills && vacancy.skills?.length > 0 && (
                             <div className={'flex justify-center m-2'}>
                                 <Carousel opts={{align: 'start', dragFree: true}} className="w-96 max-w-md   ">
-                                    <CarouselContent className={'-ml-4'}>
+                                    <CarouselContent className={'-ml-4 justify-center'}>
                                         {vacancy.skills?.map((skill) => (
                                             <CarouselItem
                                                 className={`basis-${vacancy.skills.length === 1 ? 'full' : (vacancy.skills.length >= 2 ? '1/2' : '1/3')}  hover:opacity-75 pl-4 `}
@@ -196,11 +204,12 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
                                             </Button>
                                         </DialogTrigger>
                                         <DialogContent className={'flex self-justify-center flex-col'} >
-                                            <DialogHeader className={'self-center'}>
+                                            <DialogHeader className={'self-center p-2 text-center'}>
                                                 <DialogTitle >Вы уверены, что хотите удалить вакансию?</DialogTitle>
+                                                <DialogDescription className={'font-boldtext-center font-bold text-md text-destructive rounded'}> После подтверждения вакансия удалится без возможности восстановления</DialogDescription>
                                             </DialogHeader>
                                             <div className={'flex justify-center space-x-4'}>
-                                                <Button size={'lg'} className={'font-bold'} type={"submit"} onClick={() =>deleteVacancy(vacancy.id)}>Да, удалить</Button>
+                                                <Button size={'lg'} className={'font-bold bg-destructive dark:text-white hover:text-inherit hover:bg-destructive dark:hover:bg-destructive dark:hover:text-black'} type={"submit"} onClick={() =>deleteVacancy(vacancy.id)}>Да, удалить</Button>
                                                 <DialogClose asChild>
                                                     <Button size={'lg'} className={'flex self-center bg-green-600 font-bold'}>Нет</Button>
                                                 </DialogClose>
@@ -214,15 +223,20 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
                                 onClick={() => router.push(`${pathname}/${vacancy.id}`)}>Посмотреть
                         </Button>
                         <div className={'absolute bottom-2 text-xs opacity-50'}>
-                            {formattedDate(vacancy.created_at)}
+                                <p>Создано</p>
+                                <p>{formattedDate(vacancy.created_at)}</p>
                         </div>
                     </div>
                 </div>
                 )
                 }) :
-                    <div className={'flex gap-2 flex-col shadow-lg m-4 p-4 border rounded-2xl w-[700px] h-96 justify-center'}>
+                    <div
+                        className={'flex self-center gap-2 flex-col shadow-lg m-4 p-4 border rounded-2xl w-[700px] m h-96 justify-center'}>
                         <CircleX className={'self-center'} size={64}/>
-                        <span className={'self-center font-extrabold text-3xl '}>Ничего не найдено</span>
+                        <span className={'self-center text-3xl font-extrabold '}>Вакансии не найдены</span>
+                        <div className={'mt-2'}>
+                            <p className={'text-md opacity-75'}> Попробуйте обновить страницу</p>
+                        </div>
                     </div>
                 }
 

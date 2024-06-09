@@ -24,7 +24,7 @@ import {useAuth} from "@/components/providers";
 import {Textarea} from "@/components/ui/textarea";
 import MultipleSelector, {Option} from "@/components/multiselect";
 import {
-    Dialog,
+    Dialog, DialogClose,
     DialogContent,
     DialogDescription,
     DialogFooter,
@@ -345,10 +345,15 @@ const Page = () => {
                                         <br/> Вы уверены, что хотите продолжить?
                                     </DialogDescription>
                                 </DialogHeader>
-                                <Button className={'flex self-center bg-green-600 font-bo'} type={"submit"} onClick={form.handleSubmit(onSubmit)}>Подтвердить</Button>
+                                <div className={'flex gap-x-2 justify-center'}>
+                                    <Button className={'flex self-center bg-green-600 font-bold'} type={"submit"} onClick={form.handleSubmit(onSubmit)}>Подтвердить</Button>
+                                    <DialogClose>
+                                        <Button className={'flex self-center  font-bold '} type={"submit"}>Отменить создание</Button>
+                                    </DialogClose>
+                                </div>
                             </DialogContent>
                         </Dialog>
-                        <Button  type={'button'} onClick={() => router.back()} size={"lg"} className={'h-12 border-black opacity-50 rounded font-bold  transition'} >
+                        <Button  type={'button'} onClick={() => router.back()} size={"lg"} className={'h-12 border-black rounded font-bold  transition'} >
                             <span>Отменить</span>
                         </Button>
                     </div>

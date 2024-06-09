@@ -8,11 +8,13 @@ type SliderProps = React.ComponentProps<typeof Slider>
 interface SalarySliderProps extends SliderProps {
     onChangeMinSalary: (value: number) => void;
     onChangeMaxSalary: (value: number) => void;
+    minSalary?:number;
+    maxSalary?:number;
 }
 const SalarySlider = ({ className,onChangeMinSalary, onChangeMaxSalary, ...props }: SalarySliderProps) => {
-    const [range, setRange] = useState([0, 500000]);
-    const [minSalary, setMinSalary] = useState<number>(0);
-    const [maxSalary, setMaxSalary] = useState<number>(500000);
+    const [range, setRange] = useState([props.minSalary || 0, props.maxSalary || 500000]);
+    const [minSalary, setMinSalary] = useState<number>(props.minSalary || 0);
+    const [maxSalary, setMaxSalary] = useState<number>(props.maxSalary || 500000);
 
     const handleRangeChange = useCallback((value: number[]) => {
         setRange(value);

@@ -19,7 +19,7 @@ import {RESUME_STATISTIC, VACANCY_STATISTIC} from "@/url/urls";
 import TypeChanger from "@/components/TypeChanger";
 import {StatisticProps} from "@/types/types";
 
-import {ArrowDown, ArrowUp, CircleX, FileQuestion} from "lucide-react";
+import {ArrowDown, ArrowUp, BookPlus, CircleX, FileQuestion, Lightbulb, LogIn} from "lucide-react";
 import StatisticTips from "@/components/tips/StatisticTips";
 export default function Home() {
     const [offTips, setOffTips] = useState(true);
@@ -29,7 +29,10 @@ export default function Home() {
     useEffect(() => {
         const fetchStatisticVacancy = async () => {
             try {
-                const response = await fetch(`${isEmployer ? `${VACANCY_STATISTIC}`: `${RESUME_STATISTIC}`}`)
+                const response = await fetch(`${isEmployer ? `${VACANCY_STATISTIC}`: `${RESUME_STATISTIC}`}`,{
+                    cache:'force-cache',
+                    next:{revalidate:600}
+                })
                 const data = await response.json();
                 setDataVacancyStatistics(data)
             } catch (e) {
@@ -87,10 +90,10 @@ export default function Home() {
                 <div className={'flex flex-col m-24 p-2 '}>
                     {isLoggedIn ?
                         user?.type === 'company' ?
-                            <h1 className={'text-4xl font-light'}>| 01 <span className={' p-2 font-bold text-3xl '}>Создайте необходимую вакансию</span>
+                            <h1 className={'text-4xl font-light'}>| 01 <span className={' p-2 font-bold text-3xl '}>Создайте вакансию</span>
                             </h1>
                             :
-                            <h1 className={'text-4xl font-light'}>| 01 <span className={' p-2 font-bold text-3xl '}>Создайте необходимое резюме</span>
+                            <h1 className={'text-4xl font-light'}>| 01 <span className={' p-2 font-bold text-3xl '}>Создайте резюме</span>
                             </h1>
                     :
                         <h1 className={'text-4xl font-light'}>| 01 <span className={' p-2 font-bold text-3xl '}>Создайте вакансию или резюме </span>
@@ -106,8 +109,11 @@ export default function Home() {
                             )
                         :
                         <div
-                            className={'flex rounded-2xl h-96 justify-center flex-grow flex-col self-center min-w-4 w-1/2  m-6 shadow border p-4 space-y-4'}>
-                            <span className={'self-center '}>Чтобы создать вакансию/резюме - авторизуйтесь</span>
+                            className={'flex text-center self-center space-y-4 flex-col shadow-lg m-4 p-4 border rounded-2xl w-[700px] m h-96 justify-center'}>
+                            <div className={'flex justify-center self-center p-2 bg-green-600 shadow-lg rounded-full'}>
+                                <LogIn className={'self-center dark:invert '} color={'white'} size={64}/>
+                            </div>
+                            <span className={'self-center text-3xl font-extrabold text-center '}>Чтобы создать  вакансию/резюме <br/> необходимо  войти в аккаунт.</span>
                             <LoginSection/>
                         </div>
                     }
@@ -116,7 +122,22 @@ export default function Home() {
                     <h1 className={'text-4xl font-light'}>| 02 <span className={'p-2 font-bold text-3xl '}>Посмотрите рекомендации для вас</span>
                     </h1>
                     <div className={'flex justify-center mt-4 h-auto overflow-hidden'}>
-                        <RecommendationSection />
+                        {isLoggedIn ?
+                            <RecommendationSection />
+                            :
+                            <div
+                                className={'flex text-center self-center gap-2 flex-col shadow-lg m-4 p-4 border rounded-2xl w-[700px] m h-96 justify-center'}>
+                                <div className={'flex justify-center self-center p-2 bg-green-600 shadow-lg rounded-full'}>
+                                    <Lightbulb className={'self-center dark:invert '} color={'white'} size={64}/>
+                                </div>
+                                <span className={'self-center text-3xl font-extrabold '}>Чтобы увидеть рекомендации необходимо <br/> войти в аккаунт.</span>
+                                <div className={'flex  justify-center mt-2'}>
+                                    <LoginSection />
+                                </div>
+                            </div>
+                        }
+
+
                     </div>
                 </div>
                 <div className={'flex m-24 p-2 flex-col  '}>
@@ -125,14 +146,14 @@ export default function Home() {
                         className={'text-xl text-center'}>Вы можете посмотреть статистику о востребованности профессии внизу.</span>
                     </h1>
                     {
-                        dataVacancyStatistics.length > 0 ?
+                        dataVacancyStatistics ?
                             <div className={'flex justify-center mt-4 h-auto gap-x-4'}>
                                 <div className={'flex-grow justify-center flex w-[300px]'}>
                                     <div className={'flex relative'}>
                                         {offTips &&
                                             <StatisticTips fadeOut={fadeOut}/>
                                         }
-                                        <TypeChanger setOffTips={handleSetOffTips}/>
+                                        <TypeChanger inMainPage setOffTips={handleSetOffTips}/>
                                     </div>
                                 </div>
                                 <Statistics data={dataVacancyStatistics} isEmployer={isEmployer}/>

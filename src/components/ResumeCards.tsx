@@ -81,13 +81,13 @@ const ResumeCards = ({data, page, query, queryString}: {data:ResumeInfo[], page:
                                         </Link>
                                     </div>
                                     {resume.salary_type === 'range' ?
-                                        <p className={'text-center text-2xl text-ellipsis overflow-hidden '}>{resume.min_salary} - {resume.max_salary} &#8381; </p>
+                                        <p className={'text-center text-2xl font-light  text-ellipsis overflow-hidden '}>{resume.min_salary} - {resume.max_salary} &#8381; </p>
 
                                         :
                                         resume.salary_type === 'fixed' ? (
-                                            <p className={'text-center text-2xl text-ellipsis overflow-hidden '}>{resume.fixed_salary} &#8381;</p>
+                                            <p className={'text-center text-2xl font-light  text-ellipsis overflow-hidden '}>{resume.fixed_salary} &#8381;</p>
                                         ) : (
-                                            <p className={'text-center text-2xl text-ellipsis overflow-hidden '}>по
+                                            <p className={'text-center text-2xl font-light  text-ellipsis overflow-hidden '}>по
                                                 договоренности </p>
                                         )
                                     }
@@ -215,7 +215,8 @@ const ResumeCards = ({data, page, query, queryString}: {data:ResumeInfo[], page:
                                             onClick={() => router.push(`${pathname}/${resume.id}`)}>Посмотреть
                                     </Button>
                                     <div className={'absolute bottom-2 text-xs opacity-50'}>
-                                        {formattedDate(resume.created_at)}
+                                        <p>Создано</p>
+                                        <p>{formattedDate(resume.created_at)}</p>
                                     </div>
                                 </div>
 

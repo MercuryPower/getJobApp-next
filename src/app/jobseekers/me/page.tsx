@@ -13,7 +13,15 @@ import {ResumeInfo, VacancyInfo} from "@/types/types";
 import VacancyCardSkeleton from "@/components/ui/skeletons/VacancyCardSkeleton";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import {formattedDate} from "@/hooks/formatDate";
-import {Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger
+} from "@/components/ui/dialog";
 
 const Page = () => {
     const router = useRouter();
@@ -216,8 +224,9 @@ const Page = () => {
                                                             </Button>
                                                         </DialogTrigger>
                                                         <DialogContent className={'flex self-justify-center flex-col'} >
-                                                            <DialogHeader className={'self-center'}>
+                                                            <DialogHeader className={'self-center p-2 text-center'}>
                                                                 <DialogTitle >Вы уверены, что хотите удалить резюме?</DialogTitle>
+                                                                <DialogDescription className={'font-boldtext-center font-bold text-md text-destructive rounded'}> После подтверждения резюме удалится без возможности восстановления</DialogDescription>
                                                             </DialogHeader>
                                                             <div className={'flex justify-center space-x-4'}>
                                                                 <Button size={'lg'} className={'font-bold'} type={"submit"} onClick={() =>deleteResume(resume.id)}>Да, удалить</Button>

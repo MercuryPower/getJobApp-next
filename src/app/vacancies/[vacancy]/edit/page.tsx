@@ -21,7 +21,7 @@ import {
     SelectValue
 } from "@/components/ui/select";
 import {
-    Dialog,
+    Dialog, DialogClose,
     DialogContent,
     DialogDescription,
     DialogHeader,
@@ -105,6 +105,8 @@ const Page = () => {
                 cities: vacancyData?.cities.map(city => city.name) || [],
                 typeOfEmploy: vacancyData?.types_of_employ?.map(type => type.name) || [],
             });
+            setIsByAgreement(vacancyData.salary_type === 'agreement');
+            setIsFixedSalary(vacancyData.salary_type === 'fixed');
             if (vacancyData.skills) {
                 const skillsFromServer = vacancyData.skills.map(skill => ({
                     label: skill.name,
@@ -215,7 +217,13 @@ const Page = () => {
                     <div className="flex items-center space-x-2">
                         <Switch id="salaryFixedSwitch" checked={isFixedSalary} disabled={isByAgreement}  onCheckedChange={(prev) => setIsFixedSalary(prev)} />
                         <Label htmlFor="salarySwitch">Фиксированная зарплата</Label>
-                        <Switch id="salaryAgreementSwitch" checked={isByAgreement}  onCheckedChange={(prev) => setIsByAgreement(prev)} />
+                        <Switch id="salaryAgreementSwitch" checked={isByAgreement}  onCheckedChange={(checked) =>
+                        {
+                            setIsByAgreement(checked);
+                            if (checked) {
+                                setIsFixedSalary(false);
+                            }
+                        }} />
                         <Label htmlFor="salaryAgreementSwitch">Договоренная зарплата</Label>
                     </div>
                     {!isByAgreement && (
@@ -227,8 +235,8 @@ const Page = () => {
                                     <FormItem>
                                         <FormLabel>Фиксированная зарплата (в месяц), ₽</FormLabel>
                                         <FormControl>
-                                            <Input type="number"
-                                                   placeholder="10 000 ₽"
+                                            <Input type="text"
+                                                   defaultValue={field.value}
                                                    {...field}
                                                    onChange={(e) => field.onChange(Number(e.target.value))}  />
                                         </FormControl>
@@ -240,13 +248,15 @@ const Page = () => {
                             <>
                                 <FormField
                                     control={form.control}
-                                    name="min_salary"
-                                    render={() => (
+                                    name='min_salary'
+                                    render={({ field }) => (
                                         <FormItem className={'space-y-4'}>
                                             <FormLabel>Диапазон зарплаты, ₽</FormLabel>
                                             <FormControl>
                                                 <FormItem>
                                                     <SalarySlider
+                                                        minSalary={field.value}
+                                                        maxSalary={form.getValues('max_salary')}
                                                         onChangeMinSalary={(minSalary) => {
                                                             setRange([minSalary, range[1]]);
                                                             form.setValue('min_salary', minSalary)
@@ -277,7 +287,6 @@ const Page = () => {
                                             {...field}
                                             value={typesOfEmploy}
                                             badgeClassName={'text-md'}
-                                            creatable
                                             className={'self-center max-h-44 w-full h-20 overflow-y-auto overflow-x-hidden'}
                                             placeholder="Добавьте тип занятости"
                                             options={workTypes}
@@ -323,25 +332,12 @@ const Page = () => {
                     />
                     <FormField
                         control={form.control}
-                        name="resume"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Резюме</FormLabel>
-                                <FormControl>
-                                    <Input type={'text'} placeholder="Портфолио: GitHub или что-то подобное" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
                         name="exp"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Уровень навыка</FormLabel>
                                 <FormControl>
-                                    <Select onValueChange={field.onChange} defaultValue={vacancyData?.exp || field.value} >
+                                    <Select onValueChange={field.onChange} {...field} >
                                         <SelectTrigger className="w-full h-16 text-xl">
                                             <SelectValue className="w-full text-xl" placeholder="Middle, Junior, Senior и т.д" />
                                         </SelectTrigger>
@@ -352,6 +348,7 @@ const Page = () => {
                                                 <SelectItem value="Junior">Junior</SelectItem>
                                                 <SelectItem value="Middle">Middle</SelectItem>
                                                 <SelectItem value="Senior">Senior</SelectItem>
+                                                <SelectItem value="Lead">Lead</SelectItem>
                                                 <SelectItem value="Other">Другое</SelectItem>
                                             </SelectGroup>
                                         </SelectContent>
@@ -398,7 +395,8 @@ const Page = () => {
                                         <MultipleSelector
                                             {...field}
                                             badgeClassName={'text-md'}
-                                            creatable className={'self-center max-h-40 h-16 w-full overflow-y-auto overflow-x-hidden'}
+                                            creatable
+                                            className={'self-center max-h-40 h-16 w-full overflow-y-auto overflow-x-hidden'}
                                             placeholder="Добавьте города"
                                             options={citiesForChoice}
                                             value={cities}
@@ -427,10 +425,15 @@ const Page = () => {
                                         <br/> Вы уверены, что хотите продолжить?
                                     </DialogDescription>
                                 </DialogHeader>
-                                <Button className={'flex self-center bg-green-600 font-bo'} type={"submit"} onClick={form.handleSubmit(onSubmit)}>Подтвердить</Button>
+                                <div className={'flex gap-x-2 justify-center'}>
+                                    <Button className={'flex self-center bg-green-600 font-bold'} type={"submit"} onClick={form.handleSubmit(onSubmit)}>Подтвердить</Button>
+                                    <DialogClose>
+                                        <Button className={'flex self-center  font-bold '} type={"submit"}>Отменить редактирование</Button>
+                                    </DialogClose>
+                                </div>
                             </DialogContent>
                         </Dialog>
-                        <Button  type={'button'} onClick={() => router.back()} size={"lg"} className={'h-12 border-black opacity-50 rounded font-bold  transition'} >
+                        <Button  type={'button'} onClick={() => router.back()} size={"lg"} className={'h-12 border-black rounded font-bold  transition'} >
                             <span>Отменить</span>
                         </Button>
                     </div>

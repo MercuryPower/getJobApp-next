@@ -54,11 +54,11 @@ const Page = ({searchParams}:{searchParams?:{query?: string; page?:string, perPa
                                 </Button>
                             </div>
                         }
-                    {data ?
-                        <VacancyCards queryString={queryString} page={currentPage} query={query} data={data}/>
-                        :
-                        <VacancyCardSkeleton />
-                    }
+                        {data ?
+                            <VacancyCards queryString={queryString} page={currentPage} query={query} data={data}/>
+                            :
+                            <VacancyCardSkeleton />
+                        }
                         <PaginationSection queryString={queryString} query={query} currentPage={currentPage}/>
                     </div>
                     <VacancyFilter onQueryChange={handleQueryChange}  query={query}/>
