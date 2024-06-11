@@ -9,7 +9,7 @@ import {Card, CardContent} from "@/components/ui/card";
 import {ChevronsRight, CircleX, Pencil, Trash2} from "lucide-react";
 import {useParams, usePathname, useRouter} from "next/navigation";
 import {useAuth} from "@/providers";
-import VacancyCards from "@/components/VacancyCards";
+import VacancyCards from "@/components/cards/VacancyCards";
 import {VacancyInfo} from "@/types/types";
 import VacancyCardSkeleton from "@/components/ui/skeletons/VacancyCardSkeleton";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";

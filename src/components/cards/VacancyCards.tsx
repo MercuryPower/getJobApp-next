@@ -196,6 +196,12 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
                                         <Pencil  />
                                     </Button>
                                 </div>
+                                <div className={'flex gap-x-4'}>
+                                    <Button className={'rounded-full gap-x-2 '}
+                                            onClick={() => router.push(`${pathname}/${vacancy.id}/edit`)}>
+                                        <Pencil  />
+                                    </Button>
+                                </div>
                                 <div>
                                     <Dialog>
                                         <DialogTrigger asChild>

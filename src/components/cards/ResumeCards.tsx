@@ -8,15 +8,19 @@ import {HoverCard, HoverCardContent, HoverCardTrigger} from "@/components/ui/hov
 import {Button} from "@/components/ui/button";
 import {Carousel, CarouselContent, CarouselItem, CarouselNext} from "@/components/ui/carousel";
 import {Card, CardContent} from "@/components/ui/card";
-import {CircleX, Pencil, Trash2} from "lucide-react";
+import {CircleX, Flag, Pencil, ShieldAlert, Trash2} from "lucide-react";
 import {formattedDate} from "@/hooks/formatDate";
 import {useAuth} from "@/providers";
 import {Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
+import style from "@/components/styles/style.module.sass";
+import ComplaintsForm from "@/components/forms/ComplaintsForm";
 
 interface ResumeInfo extends VacancyInfo{
     resume: string;
 }
 const ResumeCards = ({data, page, query, queryString}: {data:ResumeInfo[], page:number, query:string, queryString:string}) => {
+    const [hoveredResumeId, setHoveredResumeId] = useState<number | null>(null);
+    const [isDialogOpen, setIsDialogOpen] = useState(false)
     const pathname = usePathname()
     const {user} = useAuth()
     const router = useRouter();
@@ -39,6 +43,7 @@ const ResumeCards = ({data, page, query, queryString}: {data:ResumeInfo[], page:
 
         void fetchData();
     }, [page, query, queryString]);
+
     useEffect(() => {
         if (data && data.length > 0 && query && query.trim() !== '') {
             const filteredData = data.filter((resume) => {
@@ -67,22 +72,39 @@ const ResumeCards = ({data, page, query, queryString}: {data:ResumeInfo[], page:
             console.error('Ошибка при удалении вакансии:', error);
         }
     };
+
+
+    const handleMouseEnter = (resumeId: number) => {
+        setHoveredResumeId(resumeId);
+    };
+
+    const handleMouseLeave = () => {
+        if(!isDialogOpen){
+            setHoveredResumeId(null);
+        }
+    };
+
     return (
         <>
             {isLoading ? <VacancyCardSkeleton/> : (
                 <div className={'text-center '}>
                     {filteredResumes.length > 0 ? filteredResumes.map((resume) => {
                         return (
-                            <div key={resume.id} className={'flex shadow p-4 m-2 my-6 rounded-2xl gap-5 border min-h-80'}>
-                                <div className={'p-2  w-[500px] flex flex-col flex-grow justify-center rounded'}>
-                                    <div className={' flex text-center justify-center p-2'}>
+                            <div key={resume.id} className={'flex shadow p-4 m-2 my-6 rounded-2xl gap-5 border min-h-80'}
+                                 onMouseEnter={() => handleMouseEnter(resume.id)}
+                                 onMouseLeave={handleMouseLeave}>
+                                <div className={'p-2  w-[500px] flex flex-col flex-grow justify-center rounded relative'} >
+                                    <div className={' flex text-center justify-center p-2 relative'}
+                                         >
+                                        {hoveredResumeId === resume.id &&
+                                            <ComplaintsForm setHoveredResumeId={setHoveredResumeId} setIsDialogOpen={setIsDialogOpen} vacancy_id={resume.id}/>
+                                        }
                                         <Link href={`${pathname}/${resume.id}`}>
-                                            <p className={'text-3xl text-ellipsis overflow-hidden font-bold  cursor-pointer'}>{resume.exp} {resume.vacancy_name}</p>
+                                            <h1 className={'text-3xl text-ellipsis overflow-hidden font-bold  cursor-pointer hover:opacity-75'}>{resume.exp} {resume.vacancy_name}</h1>
                                         </Link>
                                     </div>
                                     {resume.salary_type === 'range' ?
                                         <p className={'text-center text-2xl font-light  text-ellipsis overflow-hidden '}>{resume.min_salary} - {resume.max_salary} &#8381; </p>
-
                                         :
                                         resume.salary_type === 'fixed' ? (
                                             <p className={'text-center text-2xl font-light  text-ellipsis overflow-hidden '}>{resume.fixed_salary} &#8381;</p>

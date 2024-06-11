@@ -6,7 +6,7 @@ import {Input} from "@/components/ui/input";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {Button} from "@/components/ui/button";
 import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "@/components/ui/carousel";
-import VacancyCards from "@/components/VacancyCards";
+import VacancyCards from "@/components/cards/VacancyCards";
 import {VacancyInfo} from "@/types/types";
 import Link from "next/link";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";

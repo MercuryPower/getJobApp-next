@@ -29,15 +29,15 @@ const LoginSection = () => {
     const [success, setSuccess] = useState<string | undefined>('')
 
     const formSchema = isRegistration ? RegistrationSchema : LoginSchema;
-        const form = useForm<z.infer<typeof LoginSchema | typeof RegistrationSchema>>({
-            resolver: zodResolver(formSchema),
-            defaultValues: {
-                email: '',
-                password: '',
-                username: '',
-                description: '',
-            }
-        })
+    const form = useForm<z.infer<typeof LoginSchema | typeof RegistrationSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            email: '',
+            password: '',
+            username: '',
+            description: '',
+        }
+    })
 
     function onSubmit(values: z.infer<typeof LoginSchema> | z.infer<typeof RegistrationSchema>) {
         startTransition(() =>{

@@ -42,10 +42,12 @@ const Page = () => {
                     <h2 className={'font-bold  min-w-[150px]'}>Email :</h2>
                     <h2>{user?.email} </h2>
                 </div>
-                <div className={'flex text-2xl'}>
-                    <h2 className={'font-bold  min-w-[150px]'}>О вас: </h2>
-                    <h2 className={'text-xl'}>{user?.description} </h2>
-                </div>
+                {user?.description &&
+                    <div className={'flex text-2xl'}>
+                        <h2 className={'font-bold  min-w-[150px]'}>О вас: </h2>
+                        <h2 className={'text-xl'}>{user?.description} </h2>
+                    </div>
+                }
             </div>
                 <div className={'flex justify-items-center self-center mt-12 text-3xl'}>
                     <h2 className={'font-extralight '}>{user?.type === 'user' ? `Вы ищите работу` : `Вы ищите работника`} </h2>

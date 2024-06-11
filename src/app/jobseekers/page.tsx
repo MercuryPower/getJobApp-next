@@ -9,7 +9,7 @@ import {useAuth} from "@/providers";
 import {useRouter} from "next/navigation";
 import {useApiGet} from "@/hooks/useFetching";
 import {GET_RESUMES} from "@/url/urls";
-import ResumeCards from "@/components/ResumeCards";
+import ResumeCards from "@/components/cards/ResumeCards";
 import {ChevronsRight} from "lucide-react";
 
 const Page = ({searchParams}:{searchParams?:{query?: string; page?:string, perPage?:string}}) => {

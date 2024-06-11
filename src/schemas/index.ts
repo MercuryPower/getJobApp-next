@@ -38,3 +38,9 @@ export const VacancyCreateSchema = z.object({
     cities:z.array(z.string()),
     typeOfEmploy:z.array(z.string()),
 })
+
+export const ComplaintSchema = z.object({
+    report_description:z.string().min(3, {
+        message: 'Сообщение не должно содержать менее 3 символов'
+    })
+})

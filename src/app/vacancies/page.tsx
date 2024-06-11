@@ -1,6 +1,6 @@
 'use client'
 import React, {useEffect, useState} from 'react';
-import VacancyCards from "@/components/VacancyCards";
+import VacancyCards from "@/components/cards/VacancyCards";
 import VacancyCardSkeleton from "@/components/ui/skeletons/VacancyCardSkeleton";
 import Search from "@/components/ui/search";
 import {useApiGet} from "@/hooks/useFetching";

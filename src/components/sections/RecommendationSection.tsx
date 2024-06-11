@@ -8,11 +8,11 @@ import {
     CarouselPrevious
 } from "@/components/ui/carousel";
 import {Label} from "@/components/ui/label";
-import VacancyCards from "@/components/VacancyCards";
+import VacancyCards from "@/components/cards/VacancyCards";
 import {CircleX} from "lucide-react";
 import {VacancyInfo} from "@/types/types";
 import {usePathname, useRouter} from "next/navigation";
-import RecommendationCards from "@/components/RecommendationCards";
+import RecommendationCards from "@/components/cards/RecommendationCards";
 import {Separator} from "@/components/ui/separator";
 import {useAuth} from "@/providers";
 

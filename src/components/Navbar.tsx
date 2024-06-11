@@ -10,7 +10,7 @@ import {
     DropdownMenuShortcut,
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
-import {CreditCard, FileText, User} from "lucide-react";
+import {CircleSlash2, CreditCard, FileText, ShieldAlert, User} from "lucide-react";
 import LoginSection from "@/components/sections/LoginSection";
 import {useSession} from "next-auth/react";
 import {auth} from "@/auth";
@@ -209,6 +209,13 @@ const Navbar = () => {
                                             <Link href={'/jobseekers/me'}>Мои резюме</Link>
                                         }
                                     </DropdownMenuItem>
+                                        {user?.is_superuser &&
+                                            <DropdownMenuItem>
+                                                <ShieldAlert color="#e83030"  className="mr-2 h-4 w-4"/>
+                                                <Link className={'border-destructive'} href={'/dashboard/complaints'}>Жалобы</Link>
+                                            </DropdownMenuItem>
+                                        }
+
                                     <DropdownMenuSeparator/>
                                         <DialogTrigger asChild>
                                             <Button className={'mr-2 h-8 w-full self-center'} variant={'link'}>Выйти</Button>

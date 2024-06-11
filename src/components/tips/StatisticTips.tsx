@@ -1,5 +1,5 @@
 import React from 'react';
-import style from "@/app/statistics/style.module.sass";
+import style from "@/components/styles/style.module.sass";
 import {ArrowDown, ArrowUp} from "lucide-react";
 
 const StatisticTips = ({isUp, fadeOut}:{isUp?:boolean, fadeOut:boolean}) => {
