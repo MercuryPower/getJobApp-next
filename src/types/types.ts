@@ -1,5 +1,14 @@
 import React, {createContext, Dispatch, SetStateAction} from "react";
 
+
+export interface CardsProperties {
+    data:VacancyInfo[],
+    setIsHovered?:(b: boolean)=> void,
+    page?:number,
+    query?:string,
+    queryString?:string,
+    isLoading?:boolean
+}
 export interface VacancyInfo {
     id: number;
     user_id:number;
@@ -62,4 +71,5 @@ export interface userProperties {
     type:string,
     registered_at: string,
     is_verified: boolean;
+    is_superuser: boolean;
 }

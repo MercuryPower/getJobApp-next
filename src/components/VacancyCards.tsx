@@ -11,7 +11,7 @@ import {CircleX, Pencil, Trash2} from "lucide-react";
 import {usePathname, useRouter} from "next/navigation";
 import Link from "next/link";
 import {formattedDate} from "@/hooks/formatDate";
-import {useAuth} from "@/components/providers";
+import {useAuth} from "@/providers";
 import {
     Dialog,
     DialogClose,
@@ -133,8 +133,8 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
                         </div>
                         {vacancy.skills && vacancy.skills?.length > 0 && (
                             <div className={'flex justify-center m-2'}>
-                                <Carousel opts={{align: 'start', dragFree: true}} className="w-96 max-w-md   ">
-                                    <CarouselContent className={'-ml-4 justify-center'}>
+                                <Carousel opts={{align: 'start', dragFree: true}} className="w-96 max-w-xs justify-items-center   ">
+                                    <CarouselContent  className={'-ml-4'}>
                                         {vacancy.skills?.map((skill) => (
                                             <CarouselItem
                                                 className={`basis-${vacancy.skills.length === 1 ? 'full' : (vacancy.skills.length >= 2 ? '1/2' : '1/3')}  hover:opacity-75 pl-4 `}
@@ -149,7 +149,7 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
                                             </CarouselItem>
                                         ))}
                                     </CarouselContent>
-                                    {vacancy.skills?.length > 3 &&
+                                    {vacancy.skills?.length >= 3 &&
                                         <CarouselNext/>
                                     }
                                 </Carousel>

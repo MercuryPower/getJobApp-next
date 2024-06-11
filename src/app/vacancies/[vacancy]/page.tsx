@@ -14,7 +14,7 @@ import {Card, CardContent} from "@/components/ui/card";
 import {Pencil, SeparatorHorizontal, Trash2} from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 import AutoScroll from 'embla-carousel-auto-scroll'
-import {useAuth} from "@/components/providers";
+import {useAuth} from "@/providers";
 import {formattedDate} from "@/hooks/formatDate";
 import {Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
 

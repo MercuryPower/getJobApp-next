@@ -8,7 +8,7 @@ import {Carousel, CarouselContent, CarouselItem, CarouselNext} from "@/component
 import {Card, CardContent} from "@/components/ui/card";
 import {CircleX, Pencil, Trash2} from "lucide-react";
 import {useParams, useRouter} from "next/navigation";
-import {useAuth} from "@/components/providers";
+import {useAuth} from "@/providers";
 import {ResumeInfo, VacancyInfo} from "@/types/types";
 import VacancyCardSkeleton from "@/components/ui/skeletons/VacancyCardSkeleton";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";

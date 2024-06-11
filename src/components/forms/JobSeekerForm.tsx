@@ -1,7 +1,7 @@
 import React from 'react';
 import {Button} from "@/components/ui/button";
 import {useRouter} from "next/navigation";
-import {useIsEmployer} from "@/components/providers";
+import {useIsEmployer} from "@/providers";
 import {BookCheck} from "lucide-react";
 import {Separator} from "@/components/ui/separator";
 
@@ -14,12 +14,12 @@ const JobSeekerForm = () => {
                     <BookCheck className={'self-center'} size={64} />
                     <p className={'text-center text-2xl font-black self-center'}>Отлично! </p>
                 </div>
-                <p className={'text-center text-2xl font-extra  flex justify-center'}> Теперь вы можете создать резюме.</p>
+                <p className={'text-center text-2xl font-extra  flex justify-center'}> Теперь вы можете создавать резюме.</p>
                 <div className={'flex flex-col space-y-4'}>
                     <Button size={'lg'} type={'button'} onClick={() => router.push('/jobseekers/create')}
-                            className={'transition-all rounded-xl shadow p-2 h-16 bg-green-600 mt-4 text-2xl '}>Создать резюме
+                            className={'transition-all w-3/4 rounded-xl shadow self-center p-2 h-16 bg-green-600 mt-4 text-2xl '}>Создать резюме
                     </Button>
-                    <Button className={'transition-all shadow rounded-xl p-2 w-full self-center h-16  mt-4 text-2xl'}
+                    <Button className={'transition-all w-1/2 shadow rounded-xl p-2 self-center h-16  mt-6 text-xl'}
                             onClick={() => router.replace('/jobseekers/me')}>Мои резюме</Button>
                 </div>
             </div>

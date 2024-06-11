@@ -9,7 +9,7 @@ import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import Link from "next/link";
 import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "@/components/ui/carousel";
 import {Card, CardContent} from "@/components/ui/card";
-import {useAuth} from "@/components/providers";
+import {useAuth} from "@/providers";
 import {formattedDate} from "@/hooks/formatDate";
 import {Pencil, Trash2} from "lucide-react";
 import {Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";

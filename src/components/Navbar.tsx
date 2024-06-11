@@ -16,7 +16,7 @@ import {useSession} from "next-auth/react";
 import {auth} from "@/auth";
 import {getToken} from "@auth/core/jwt";
 import LogOutSection from "@/components/sections/LogOutSection";
-import {useAuth, useIsEmployer} from "@/components/providers";
+import {useAuth, useIsEmployer} from "@/providers";
 import Link from "next/link";
 import {useLogOut} from "@/hooks/useLogOut";
 import {

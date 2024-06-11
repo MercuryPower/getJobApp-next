@@ -14,7 +14,7 @@ import {Button} from "@/components/ui/button";
 import {Form} from "@/components/ui/form";
 import VacancyFilter from "@/components/filter/VacancyFilter";
 import {usePathname, useRouter} from "next/navigation";
-import {useAuth} from "@/components/providers";
+import {useAuth} from "@/providers";
 import {ChevronsRight} from "lucide-react";
 
 

@@ -1,7 +1,7 @@
 'use client'
 import React, {memo, useCallback, useEffect, useState} from 'react';
 import dynamic from "next/dynamic";
-import {useIsEmployer} from "@/components/providers";
+import {useIsEmployer} from "@/providers";
 import {useRouter} from "next/navigation";
 
 const AnimatedNumbers = dynamic(() => import('react-animated-numbers'), {

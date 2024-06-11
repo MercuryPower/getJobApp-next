@@ -10,7 +10,7 @@ import {Carousel, CarouselContent, CarouselItem, CarouselNext} from "@/component
 import {Card, CardContent} from "@/components/ui/card";
 import {CircleX, Pencil, Trash2} from "lucide-react";
 import {formattedDate} from "@/hooks/formatDate";
-import {useAuth} from "@/components/providers";
+import {useAuth} from "@/providers";
 import {Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
 
 interface ResumeInfo extends VacancyInfo{

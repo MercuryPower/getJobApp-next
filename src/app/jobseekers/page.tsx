@@ -5,7 +5,7 @@ import {Button} from "@/components/ui/button";
 import VacancyCardSkeleton from "@/components/ui/skeletons/VacancyCardSkeleton";
 import PaginationSection from "@/components/sections/PaginationSection";
 import VacancyFilter from "@/components/filter/VacancyFilter";
-import {useAuth} from "@/components/providers";
+import {useAuth} from "@/providers";
 import {useRouter} from "next/navigation";
 import {useApiGet} from "@/hooks/useFetching";
 import {GET_RESUMES} from "@/url/urls";

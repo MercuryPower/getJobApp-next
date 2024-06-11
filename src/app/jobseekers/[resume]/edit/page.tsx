@@ -28,7 +28,7 @@ import {
     DialogTitle,
     DialogTrigger
 } from "@/components/ui/dialog";
-import {useAuth} from "@/components/providers";
+import {useAuth} from "@/providers";
 import {usePathname, useRouter} from "next/navigation";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {VacancyInfo} from "@/types/types";

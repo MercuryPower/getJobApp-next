@@ -1,6 +1,6 @@
 
 import { auth } from "@/auth"
-import {useAuth} from "@/components/providers";
+import {useAuth} from "@/providers";
 import {redirect} from "next/navigation";
 import {NextResponse} from "next/server";
 

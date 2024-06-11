@@ -11,7 +11,7 @@ import {auth} from "@/auth";
 import LoginSection from "@/components/sections/LoginSection";
 import {useRouter} from "next/navigation";
 import React, {useEffect, useState} from "react";
-import {useAuth, useIsEmployer} from "@/components/providers";
+import {useAuth, useIsEmployer} from "@/providers";
 import JobSeekerForm from "@/components/forms/JobSeekerForm";
 import {Statistics} from "@/components/tables/Statistics";
 import RecommendationSection from "@/components/sections/RecommendationSection";

@@ -20,7 +20,7 @@ import {useRouter} from "next/navigation";
 import {Label} from "@/components/ui/label";
 import {Switch} from "@/components/ui/switch";
 import SalarySlider from "@/components/filter/SalarySlider";
-import {useAuth} from "@/components/providers";
+import {useAuth} from "@/providers";
 import {Textarea} from "@/components/ui/textarea";
 import MultipleSelector, {Option} from "@/components/multiselect";
 import {

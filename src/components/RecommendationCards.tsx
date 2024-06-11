@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {Button} from "@/components/ui/button";
 import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "@/components/ui/carousel";
 import {Card, CardContent} from "@/components/ui/card";
-import {VacancyInfo} from "@/types/types";
+import {CardsProperties, VacancyInfo} from "@/types/types";
 import {HoverCard, HoverCardContent, HoverCardTrigger} from "@/components/ui/hover-card";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import VacancyCardSkeleton from "@/components/ui/skeletons/VacancyCardSkeleton";
@@ -11,13 +11,13 @@ import {CircleX, Pencil, Trash2} from "lucide-react";
 import {usePathname, useRouter} from "next/navigation";
 import Link from "next/link";
 import {formattedDate} from "@/hooks/formatDate";
-import {useAuth} from "@/components/providers";
+import {useAuth} from "@/providers";
 import {Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
 import {useLogOut} from "@/hooks/useLogOut";
 
 
 
-const RecommendationCards = ({data,setIsHovered,page, query, queryString}: {data:VacancyInfo[],setIsHovered:(b: boolean)=> void, page?:number, query?:string, queryString?:string}) => {
+const RecommendationCards = ({data,setIsHovered,page, query, queryString}: CardsProperties) => {
     const {user} = useAuth()
     const pathname = usePathname()
     const router = useRouter();
@@ -55,21 +55,26 @@ const RecommendationCards = ({data,setIsHovered,page, query, queryString}: {data
         }
     };
     const handleMouseEnter = () => {
-        setIsHovered(true)
+        if (setIsHovered) {
+            setIsHovered(true)
+        }
     }
     const handleMouseLeave = () => {
-        setIsHovered(false)
+        if (setIsHovered) {
+            setIsHovered(false)
+        }
     }
+
     return (
         <>
             {isLoading ? <VacancyCardSkeleton /> : (
                 <div className={'text-center '}>
                     {filteredVacancies.length > 0 ? filteredVacancies.map((vacancy) => {
                             return (
-                                <div key={vacancy.id} className={'flex  shadow p-4 m-2 my-6 rounded-2xl gap-5 border min-h-80'}>
+                                <div key={vacancy.id} className={'flex shadow p-4 m-2 my-6 rounded-2xl gap-5 border min-h-80'}>
                                     <div className={'p-2  w-[500px] flex flex-col flex-grow  justify-center rounded'}>
                                         <div className={' flex text-center justify-center p-2'}>
-                                            <Link href={`${pathname}/${vacancy.id}`}>
+                                            <Link href={`${user?.type === 'company' ? '/vacancies' : '/jobseekers'}/${vacancy.id}`}>
                                                 <p className={'text-3xl text-ellipsis overflow-hidden font-bold  cursor-pointer'}>{vacancy.exp} {vacancy.vacancy_name}</p>
                                             </Link>
                                         </div>
@@ -123,16 +128,14 @@ const RecommendationCards = ({data,setIsHovered,page, query, queryString}: {data
                                                                 className={`basis-${vacancy.skills.length === 1 ? 'full' : (vacancy.skills.length >= 2 ? '1/2' : '1/3')}  hover:opacity-75 pl-4 `}
                                                                 key={skill.name}>
                                                                 <div className="p-1  ">
-                                                                    <>
                                                                         <CardContent  className="m-1 p-2 ">
                                                                             <span className="font-black">{skill.name}</span>
                                                                         </CardContent>
-                                                                    </>
                                                                 </div>
                                                             </CarouselItem>
                                                         ))}
                                                     </CarouselContent>
-                                                    {vacancy.skills?.length > 3 &&
+                                                    {vacancy.skills?.length >= 3 &&
                                                         <CarouselNext/>
                                                     }
                                                 </Carousel>
@@ -219,7 +222,8 @@ const RecommendationCards = ({data,setIsHovered,page, query, queryString}: {data
                                                 onClick={() => router.push(`${user?.type !== 'company' ? `/vacancies` : `/jobseekers`}/${vacancy.id}`)}>Посмотреть
                                         </Button>
                                         <div className={'absolute bottom-2 text-xs opacity-50'}>
-                                            {formattedDate(vacancy.created_at)}
+                                            <p>Создано</p>
+                                            <p>{formattedDate(vacancy.created_at)}</p>
                                         </div>
                                     </div>
                                 </div>

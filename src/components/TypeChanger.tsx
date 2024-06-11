@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Button} from "@/components/ui/button";
 import {BriefcaseBusiness, UsersRound} from "lucide-react";
-import {useIsEmployer} from "@/components/providers";
+import {useIsEmployer} from "@/providers";
 
 interface TypeChangerProps {
     setOffTips:(value:boolean) => void;

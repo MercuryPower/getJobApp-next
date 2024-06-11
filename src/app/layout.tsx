@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import {Inter, Rubik} from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-import Providers from "../components/providers";
+import Providers from "../providers";
 import {cn} from "@/lib/utils";
 import { Rubik as FontSans } from "next/font/google"
 import {ThemeProvider} from "next-themes";

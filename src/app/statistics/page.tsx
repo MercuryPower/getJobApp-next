@@ -2,7 +2,7 @@
 import React, {useEffect, useState} from 'react';
 import {Statistics} from "@/components/tables/Statistics";
 import {StatisticProps} from "@/types/types";
-import {useIsEmployer} from "@/components/providers";
+import {useIsEmployer} from "@/providers";
 import {RESUME_STATISTIC, SKILLS_STATISTIC, VACANCY_STATISTIC} from "@/url/urls";
 import TypeChanger from "@/components/TypeChanger";
 import {ArrowLeft, ArrowUp, ChevronUp, CircleChevronUp} from "lucide-react";
