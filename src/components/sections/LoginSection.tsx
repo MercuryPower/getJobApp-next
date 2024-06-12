@@ -48,10 +48,8 @@ const LoginSection = () => {
                         .then((data) =>{
                         if (data?.error) {
                             setError(data.error);
-                            console.log(data)
                         } else if(data?.success){
                             setSuccess(data.success);
-                            console.log(data)
                         }
                         void login({email: values.email, password: values.password})
                     })

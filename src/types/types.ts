@@ -36,6 +36,9 @@ export interface VacancyInfo {
     registered_at:string;
     created_at:string;
     companyDescription:string;
+    report_description:string;
+    report_username:string;
+    report_type:string;
     [key: string]: any;
 }
 export interface ResumeInfo extends VacancyInfo {

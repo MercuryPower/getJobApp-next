@@ -40,7 +40,10 @@ export const VacancyCreateSchema = z.object({
 })
 
 export const ComplaintSchema = z.object({
-    report_description:z.string().min(3, {
+    description:z.string().min(3, {
         message: 'Сообщение не должно содержать менее 3 символов'
+    }),
+    report_type: z.string().min(1, {
+        message:'Пожалуйста, выберите тип жалобы'
     })
 })

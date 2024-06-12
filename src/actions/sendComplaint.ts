@@ -1,28 +1,37 @@
 import {z} from "zod";
 import {ComplaintSchema, LoginSchema, RegistrationSchema} from "@/schemas";
 import ComplaintsForm from "@/components/forms/ComplaintsForm";
+import {json} from "stream/consumers";
 
-export const sendComplaint = async (values: z.infer<typeof ComplaintSchema>, vacancy_id: number) => {
+export const sendComplaint = async (values: z.infer<typeof ComplaintSchema>, vacancy_id: number, report_username?: string) => {
     const validatedFields = ComplaintSchema.safeParse(values);
+    if(!report_username){
+        report_username = 'Аноним'
+    }
     if (!validatedFields.success) {
         return { error: 'Ошибка: Неверные данные для жалобы' };
     }
     try {
         'use server'
-        const { report_description} = values;
+        const { description, report_type} = values;
         const payload = {
-            report_description,
             vacancy_id,
+            report_username,
+            description,
+            report_type,
         };
-        const response = await fetch('http://127.0.0.1:8000/tests/report_vacancy', {
+        console.log(payload)
+        const response = await fetch(`http://127.0.0.1:8000/tests/report_vacancy`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(payload),
-            cache:'force-cache'
+            body:JSON.stringify(payload)
         });
         if (response.ok) {
+            setTimeout(() => {
+                window.location.reload()
+            }, 300);
             return { success: 'Жалоба успешно отправлена' };
         }
         else{

@@ -33,7 +33,6 @@ import {
 } from "@/components/ui/dialog";
 import {citiesForChoice, workTypes} from "@/data/data";
 const Page = () => {
-
     const {user} = useAuth();
     const [skills, setSkills] = useState<Option[]>()
     const [cities, setCities] = useState<Option[]>()
@@ -71,7 +70,6 @@ const Page = () => {
         } else {
             values.salary_type = isFixedSalary ? 'fixed' : 'range';
         }
-
             console.log(values)
             console.log(JSON.stringify(values))
             const newVacancy = {

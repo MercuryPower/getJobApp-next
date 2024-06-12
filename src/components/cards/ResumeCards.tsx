@@ -97,7 +97,7 @@ const ResumeCards = ({data, page, query, queryString}: {data:ResumeInfo[], page:
                                     <div className={' flex text-center justify-center p-2 relative'}
                                          >
                                         {hoveredResumeId === resume.id &&
-                                            <ComplaintsForm setHoveredResumeId={setHoveredResumeId} setIsDialogOpen={setIsDialogOpen} vacancy_id={resume.id}/>
+                                            <ComplaintsForm setHoveredResumeId={setHoveredResumeId} setIsDialogOpen={setIsDialogOpen} vacancy_id={resume.id} report_username={user?.username}/>
                                         }
                                         <Link href={`${pathname}/${resume.id}`}>
                                             <h1 className={'text-3xl text-ellipsis overflow-hidden font-bold  cursor-pointer hover:opacity-75'}>{resume.exp} {resume.vacancy_name}</h1>
