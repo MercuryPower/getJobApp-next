@@ -22,10 +22,13 @@ import {
     DialogTrigger
 } from "@/components/ui/dialog";
 import {useLogOut} from "@/hooks/useLogOut";
+import ComplaintsForm from "@/components/forms/ComplaintsForm";
 
 
 
 const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], page?:number, query?:string, queryString?:string}) => {
+    const [hoveredVacancyId, setHoveredVacancyId] = useState<number | null>(null);
+    const [isDialogOpen, setIsDialogOpen] = useState(false)
     const {user} = useAuth()
     const pathname = usePathname()
     const router = useRouter();
@@ -77,15 +80,30 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
             console.error('Ошибка при удалении вакансии:', error);
         }
     };
+    const handleMouseEnter = (resumeId: number) => {
+        setHoveredVacancyId(resumeId);
+    };
+
+    const handleMouseLeave = () => {
+        if(!isDialogOpen){
+            setHoveredVacancyId(null);
+        }
+    };
     return (
         <>
         {isLoading ? <VacancyCardSkeleton /> : (
             <div className={'text-center '}>
                 {filteredVacancies && filteredVacancies.length > 0 ? filteredVacancies.map((vacancy) => {
                 return (
-                <div key={vacancy.id} className={'flex shadow p-4 m-2 my-6 rounded-2xl gap-5 border min-h-80'}>
-                    <div className={'p-2  w-[500px] flex flex-col flex-grow  justify-center rounded'}>
+                <div key={vacancy.id} className={'flex shadow p-4 m-2 my-6 rounded-2xl gap-5 border min-h-80'}
+                     onMouseEnter={() => handleMouseEnter(vacancy.id)}
+                     onMouseLeave={handleMouseLeave}
+                >
+                    <div className={'p-2  w-[500px] flex flex-col flex-grow  justify-center rounded relative'}>
                         <div className={' flex text-center justify-center p-2'}>
+                            {hoveredVacancyId === vacancy.id &&
+                                <ComplaintsForm report_user_id={user?.id} setHoveredResumeId={setHoveredVacancyId} setIsDialogOpen={setIsDialogOpen} vacancy_id={vacancy.id} report_username={user?.username}/>
+                            }
                             <Link href={`${pathname}/${vacancy.id}`}>
                                 <p className={'text-3xl text-ellipsis overflow-hidden font-bold  cursor-pointer'}>{vacancy.exp} {vacancy.vacancy_name}</p>
                             </Link>
@@ -190,12 +208,6 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
                     <div className={'flex flex-col justify-center items-center relative'}>
                         {user?.id === vacancy.user_id &&
                             <div className={'flex space-x-2 justify-end self-center top-0 p-2 absolute'}>
-                                <div className={'flex gap-x-4'}>
-                                    <Button className={'rounded-full gap-x-2 '}
-                                            onClick={() => router.push(`${pathname}/${vacancy.id}/edit`)}>
-                                        <Pencil  />
-                                    </Button>
-                                </div>
                                 <div className={'flex gap-x-4'}>
                                     <Button className={'rounded-full gap-x-2 '}
                                             onClick={() => router.push(`${pathname}/${vacancy.id}/edit`)}>

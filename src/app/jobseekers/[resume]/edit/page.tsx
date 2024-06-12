@@ -184,7 +184,7 @@ const Page = () => {
                 });
         })
     }
-    if(user?.type !== 'user'){
+    if(user?.type !== 'user' && !user?.is_superuser){
         return router.replace('/');
     }
     return (

@@ -10,7 +10,7 @@ import {HoverCard, HoverCardContent, HoverCardTrigger} from "@/components/ui/hov
 import {formattedDate} from "@/hooks/formatDate";
 import {Carousel, CarouselContent, CarouselItem, CarouselNext} from "@/components/ui/carousel";
 import {Card, CardContent} from "@/components/ui/card";
-import {CircleX, MoveDown, Pencil, Search, SearchCheck, Trash2} from "lucide-react";
+import {Check, CircleX, MoveDown, Pencil, Search, SearchCheck, Trash2} from "lucide-react";
 import {
     Dialog, DialogClose,
     DialogContent,
@@ -101,20 +101,14 @@ const Page = () => {
                 </div>
             ) : (
                 <div className={'text-center flex-col flex justify-center '}>
-                    {user?.type === 'company' &&
-                        <Button onClick={() => router.push(`/vacancies/create`)}  type={'button'} size={"lg"} className={"h-12 border-black bg-green-600 rounded font-bold transition flex self-center justify-e space-x-2"} >
-                            <svg width="30" height="30" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 2.75C8 2.47386 7.77614 2.25 7.5 2.25C7.22386 2.25 7 2.47386 7 2.75V7H2.75C2.47386 7 2.25 7.22386 2.25 7.5C2.25 7.77614 2.47386 8 2.75 8H7V12.25C7 12.5261 7.22386 12.75 7.5 12.75C7.77614 12.75 8 12.5261 8 12.25V8H12.25C12.5261 8 12.75 7.77614 12.75 7.5C12.75 7.22386 12.5261 7 12.25 7H8V2.75Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"></path></svg>
-                            <span>Создать вакансию</span>
-                        </Button>
-                    }
                     {complaints && complaints.length > 0 ? complaints.map((vacancy) => {
                             return (
-                                <React.Fragment key={vacancy.id + vacancy.report_type + vacancy.report_description}>
+                                <React.Fragment key={vacancy.id}>
                                     <div key={vacancy.id}
                                          className={'flex justify-center self-center shadow p-4 m-2 mt-6  rounded-2xl  gap-5 border min-h-80'}>
                                         <div className={'p-2  w-[500px]  flex flex-col flex-grow rounded'}>
                                             <div className={' flex text-center justify-center p-2'}>
-                                                <Link href={`${vacancy.id}`}>
+                                                <Link href={`${vacancy.type === 'company' ? `/vacancies/` : `/jobseekers/`}${vacancy.id}`}>
                                                     <p className={'text-3xl text-ellipsis overflow-hidden font-bold  cursor-pointer'}>{vacancy.exp} {vacancy.vacancy_name}</p>
                                                 </Link>
                                             </div>
@@ -223,7 +217,7 @@ const Page = () => {
                                                 <div className={'flex space-x-2 justify-end self-center top-4 absolute'}>
                                                     <div className={'flex gap-x-4'}>
                                                         <Button className={'rounded-full gap-x-2 '}
-                                                                onClick={() => router.push(`${vacancy.id}/edit`)}>
+                                                                onClick={() => router.push(`${vacancy.type === 'company' ? `/vacancies/` : `/jobseekers/`}${vacancy.id}/edit`)}>
                                                             <Pencil/>
                                                         </Button>
                                                     </div>
@@ -249,15 +243,31 @@ const Page = () => {
                                                         </Dialog>
                                                     </div>
                                                     <div className={'flex gap-x-4'}>
-                                                        <Button className={'rounded-full gap-x-2 '} variant={'ghost'}
-                                                                onClick={() => declineComplaint(vacancy.id)}>
-                                                            <CircleX size={24}  />
-                                                        </Button>
+                                                        <Dialog>
+                                                            <DialogTrigger asChild>
+                                                                <Button className={'rounded-full gap-x-2 '} variant={'ghost'}>
+                                                                    <CircleX size={24}  />
+                                                                </Button>
+                                                            </DialogTrigger>
+                                                            <DialogContent className={'flex self-justify-center flex-col ' } >
+                                                                <DialogHeader className={'self-center p-2 text-center'}>
+                                                                    <DialogTitle >Вы уверены, что хотите закрыть жалобу?</DialogTitle>
+                                                                    <DialogDescription className={'font-boldtext-center font-bold text-md rounded'}> После подтверждения жалоба будет закрыта. </DialogDescription>
+                                                                </DialogHeader>
+                                                                <div className={'flex justify-center space-x-4 '}>
+                                                                    <Button size={'lg'} className={'font-bold bg-green-600 '} type={"submit"} onClick={() =>declineComplaint(vacancy.id)}><Check /> Да, закрыть жалобу</Button>
+                                                                    <DialogClose asChild>
+                                                                        <Button size={'lg'} className={'flex self-center font-bold '}>Нет</Button>
+                                                                    </DialogClose>
+                                                                </div>
+                                                            </DialogContent>
+                                                        </Dialog>
+
                                                     </div>
                                                 </div>
                                             }
                                             <Button size={'lg'} type={'button'}
-                                                    onClick={() => router.push(`${vacancy.id}`)}>Посмотреть
+                                                    onClick={() => router.push(`${vacancy.type === 'company' ? `/vacancies/` : `/jobseekers/`}${vacancy.id}`)}>Посмотреть
                                             </Button>
                                             <div className={'absolute bottom-2 text-xs opacity-50'}>
                                                 <p>Создано</p>
@@ -266,13 +276,15 @@ const Page = () => {
                                         </div>
                                     </div>
                                     <MoveDown  size={48} className={'self-center text-muted-foreground'} />
-                                    <div className={'flex mt-3 flex-col  self-center shadow border-destructive  rounded-2xl border min-h-40 min-w-[600px]'}>
+                                    {vacancy.reports?.map((report) => (
+                                    <div key={report.id} className={'flex mt-3 flex-col  self-center shadow border-destructive  rounded-2xl border min-h-40 min-w-[600px]'}>
                                         <div className={'flex flex-col space-x-2 justify-center'}>
-                                            <h2 className={'text-2xl mt-2 '}>Жалоба от {vacancy.report_username}</h2>
-                                            <h3 className={'text-md font-light self-center text-muted-foreground'}>{vacancy.report_username !== 'Аноним' &&`(UserID:${vacancy.user_id})`} (ReportID:{vacancy.id})</h3>
+                                            <h2 className={'text-2xl mt-2 '}>Жалоба от {report.report_username}</h2>
+                                            <h3 className={'text-md font-light self-center text-muted-foreground'}>{report.report_username !== 'Аноним' &&`(UserID:${report.report_user_id})`} (ReportID:{report.id})</h3>
                                         </div>
-                                        <h2 className={'text-xl text-center self-center'}><span className={'bg-accent rounded'}>{vacancy.report_type}</span> - {vacancy.report_description}</h2>
+                                        <h2 className={'text-xl text-center self-center'}><span className={'bg-accent rounded'}>{report.report_type}</span> - {report.report_description}</h2>
                                     </div>
+                                    ))}
                                 </React.Fragment>
                             )
                         }) :

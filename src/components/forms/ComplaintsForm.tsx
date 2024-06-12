@@ -26,7 +26,7 @@ import {Label} from "@/components/ui/label";
 import FormSuccess from "@/components/forms/form-success";
 import FormError from "@/components/forms/form-error";
 
-const ComplaintsForm = ({vacancy_id, setIsDialogOpen, setHoveredResumeId, report_username }:{vacancy_id:number, setIsDialogOpen:(b:boolean) => void, setHoveredResumeId: (id: number | null) => void, report_username?: string}) => {
+const ComplaintsForm = ({vacancy_id, setIsDialogOpen, setHoveredResumeId, report_username, report_user_id, isFull }:{vacancy_id:number, setIsDialogOpen:(b:boolean) => void, setHoveredResumeId: (id: number | null) => void, report_username?: string, report_user_id:number | undefined, isFull?:boolean}) => {
     const [error, setError] = useState('')
     if(!report_username){
         report_username = 'Аноним'
@@ -42,7 +42,7 @@ const ComplaintsForm = ({vacancy_id, setIsDialogOpen, setHoveredResumeId, report
     function onSubmit(values: z.infer<typeof ComplaintSchema>) {
         startTransition(() =>{
             try {
-                sendComplaint(values as z.infer<typeof  ComplaintSchema>, vacancy_id, report_username)
+                sendComplaint(values as z.infer<typeof  ComplaintSchema>, vacancy_id, report_username, report_user_id)
                     .then((data) =>{
                         if (data?.error) {
                             setError(data.error);
@@ -65,14 +65,25 @@ const ComplaintsForm = ({vacancy_id, setIsDialogOpen, setHoveredResumeId, report
                 <Dialog onOpenChange={(isOpen) => !isOpen && handleDialogClose()}>
                     <DialogTrigger asChild>
                         <div className={'flex gap-x-4 '}>
-                            <Button variant={'ghost'}
-                                    type={'button'}
-                                    className={`${style.fadeIn} absolute -left-3 transition-all rounded-full`}
-                                    size={'sm'}
-                                    onClick={() => setIsDialogOpen(true)}
-                            >
-                                <Flag color="#e83030" size={18} />
-                            </Button>
+                            {isFull ?
+                                <Button variant={'ghost'}
+                                        type={'button'}
+                                        className={`${style.fadeIn} absolute left-5 transition-all rounded-full`}
+                                        onClick={() => setIsDialogOpen(true)}
+                                >
+                                    <Flag color="#e83030" size={24} />
+                                </Button>
+                                :
+                                <Button variant={'ghost'}
+                                        type={'button'}
+                                        className={`${style.fadeIn} absolute -left-3 transition-all rounded-full`}
+                                        size={'sm'}
+                                        onClick={() => setIsDialogOpen(true)}
+                                >
+                                    <Flag color="#e83030" size={18} />
+                                </Button>
+                            }
+
                         </div>
                     </DialogTrigger>
                     <DialogContent className={'flex self-center justify-between w-[700px] h-[400px] flex-col'} >
@@ -90,9 +101,9 @@ const ComplaintsForm = ({vacancy_id, setIsDialogOpen, setHoveredResumeId, report
                                             <SelectTrigger >
                                                 <SelectValue placeholder="Выберите тип жалобы" />
                                             </SelectTrigger>
-                                            <SelectContent className={'max-h-lg self-center overflow-y-auto'}>
+                                            <SelectContent className={'max-h-md max-w-md overflow-y-auto '}>
                                                 <SelectGroup>
-                                                    <SelectLabel className={'text-xl bg-green-600 rounded'}>Ложная информация о вакансии</SelectLabel>
+                                                    <SelectLabel className={'text-lg bg-green-600 rounded'}>Ложная информация о вакансии</SelectLabel>
                                                     <SelectItem value="Некорректное описание должности">Некорректное описание должности</SelectItem>
                                                     <SelectItem value="Неверные требования к кандидату">Неверные требования к кандидату</SelectItem>
                                                     <SelectItem value="Неактуальная информация о зарплате">Неактуальная информация о зарплате</SelectItem>
@@ -117,13 +128,8 @@ const ComplaintsForm = ({vacancy_id, setIsDialogOpen, setHoveredResumeId, report
                                                 </SelectGroup>
                                                 <SelectGroup>
                                                     <SelectLabel className={'text-xl bg-green-600 rounded'}>Нарушение правил сайта</SelectLabel>
-                                                    <SelectItem value="Проблемы с загрузкой резюме">Публикация неуместного контента</SelectItem>
-                                                    <SelectItem value="Ошибки в работе сайта">Нарушение условий использования</SelectItem>
-                                                </SelectGroup>
-                                                <SelectGroup>
-                                                    <SelectLabel className={'text-xl bg-green-600 rounded'}>Нарушение правил сайта</SelectLabel>
-                                                    <SelectItem value="Проблемы с загрузкой резюме">Публикация неуместного контента</SelectItem>
-                                                    <SelectItem value="Ошибки в работе сайта">Нарушение условий использования</SelectItem>
+                                                    <SelectItem value="Публикация неуместного контента">Публикация неуместного контента</SelectItem>
+                                                    <SelectItem value="Нарушение условий использования">Нарушение условий использования</SelectItem>
                                                 </SelectGroup>
                                             </SelectContent>
                                         </Select>

@@ -13,8 +13,11 @@ import {useAuth} from "@/providers";
 import {formattedDate} from "@/hooks/formatDate";
 import {Pencil, Trash2} from "lucide-react";
 import {Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
+import ComplaintsForm from "@/components/forms/ComplaintsForm";
 
 const Page = () => {
+    const [hoveredResumeId, setHoveredResumeId] = useState<number | null>(null);
+    const [isDialogOpen, setIsDialogOpen] = useState(false)
     const pathname = usePathname()
     const {user} = useAuth()
     const router = useRouter()
@@ -35,6 +38,36 @@ const Page = () => {
         };
         void fetchResume();
     }, [params.resume]);
+    useEffect(() => {
+        const fetchResume = async () => {
+            try {
+                const response = await fetch(`http://127.0.0.1:8000/tests/vacancy/${params.resume}`);
+                if (!response.ok) {
+                    throw new Error('Ошибка при сборе данных о резюме');
+                }
+                const data = await response.json();
+
+                if (data.is_reported && user?.is_superuser) {
+                    const reportedResponse = await fetch(`http://127.0.0.1:8000/tests/reported_vacancy/${params.resume}`,{
+                        headers: {
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                        },
+                    });
+                    if (!reportedResponse.ok) {
+                        throw new Error('Ошибка при сборе данных о репортед вакансии');
+                    }
+                    const reportedData = await reportedResponse.json();
+                    setResume(reportedData);
+                } else {
+                    setResume(data);
+                }
+            } catch (error) {
+                console.error('Ошибка при сборе данных:', error);
+            }
+        };
+        void fetchResume();
+    }, [params.resume, user]);
+
     const deleteResume = async (vacancyId: number) => {
         try {
             const response = await fetch(`http://127.0.0.1:8000/tests/delete_vacancy/${vacancyId}`, {
@@ -51,13 +84,21 @@ const Page = () => {
             console.error('Ошибка при удалении вакансии:', error);
         }
     };
+    const handleMouseEnter = (resumeId: number) => {
+        setHoveredResumeId(resumeId);
+    };
 
+    const handleMouseLeave = () => {
+        if(!isDialogOpen){
+            setHoveredResumeId(null);
+        }
+    };
 
     return (
         <>
             {resume ?
                 (
-                    <div className={'flex text-start  justify-center text-2xl  mt-12'}>
+                    <div className={'flex text-start  justify-center text-2xl  mt-12 '}>
                         <Button onClick={() => router.back()} className={'self-start mt-8 space-x-2 hover:no-underline hover:opacity-75 transition-all'} type={'button'}
                                 variant={'link'}>
                             <svg width="25" height="25" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -69,19 +110,28 @@ const Page = () => {
                         Назад
                     </span>
                         </Button>
-                        <div className={'p-2  w-[1000px] flex flex-col rounded border'}>
-                            <div className={' flex text-center justify-center gap-x-8  p-2 mt-4'}>
-                                <div className={'flex mr-6 justify-center'}>
+                        <div className={'p-2  w-[1000px] flex flex-col rounded border'}
+                             onMouseEnter={() => handleMouseEnter(resume.id)}
+                             onMouseLeave={handleMouseLeave}>
+                            <div className={' flex text-center justify-center gap-x-8  p-2 mt-4 relative  '}>
+                                <div className={'flex mr-6 justify-center '}>
                                     <Avatar>
                                         <AvatarImage
                                             src="https://acdn.tinkoff.ru/static/pages/files/d39e9d26-fd5e-4574-9ad3-c3f2fc102598.png"/>
                                         <AvatarFallback>VC</AvatarFallback>
                                     </Avatar>
                                 </div>
-                                <Link href={`${resume.id}`}>
-                                    <p className={'text-5xl text-center  text-ellipsis overflow-hidden font-bold  cursor-pointer'}>{resume.exp} {resume.vacancy_name}</p>
-                                </Link>
-                                {user?.id === resume.user_id &&
+                                <div>
+                                    {hoveredResumeId === resume.id &&
+                                        <div className={'flex justify-center self-center'}>
+                                            <ComplaintsForm  isFull report_user_id={user?.id} setHoveredResumeId={setHoveredResumeId} setIsDialogOpen={setIsDialogOpen} vacancy_id={resume.id} report_username={user?.username}/>
+                                        </div>
+                                    }
+                                    <Link href={`${resume.id}`}>
+                                        <p className={'text-5xl text-center  text-ellipsis overflow-hidden font-bold  cursor-pointer'}>{resume.exp} {resume.vacancy_name}</p>
+                                    </Link>
+                                </div>
+                                {user?.id === resume.user_id || user?.is_superuser &&
                                     <div className={'flex space-x-2 justify-end self-center relative'}>
                                         <div className={'flex gap-x-4'}>
                                             <Button className={'rounded-full gap-x-2 '}
@@ -185,7 +235,7 @@ const Page = () => {
                                 })}
                             </div>
                             {/*<p key={city.id} className={'m-1 border  hover:bg-gray-500 p-2 rounded-2xl'}>{city.city}</p>*/}
-                            {resume.cities.length > 0 &&
+                            {resume.cities && resume.cities.length > 0 &&
                                 <>
                                     <h2 className={'font-extrabold self-center p-2'}>Город:</h2>
                                     <div className={'flex justify-center w-full  '}>
@@ -213,6 +263,14 @@ const Page = () => {
                                 </>
                             }
                             <div className={'p-2 m-4 space-y-4'}>
+                                {resume.companyDescription !== null &&
+                                    <>
+                                        <h2 className={'font-extrabold'}>Обо мне:</h2>
+                                        <p  className={'text-start'}>{resume.companyDescription}</p>
+                                    </>
+                                }
+                            </div>
+                            <div className={'p-2 m-4 space-y-4'}>
                                 <h2 className={'font-black'}>Описание вакансии:</h2>
                                 <p className={'text-start'}>{resume.description}</p>
                             </div>
@@ -222,6 +280,17 @@ const Page = () => {
                                 <p className={'text-xs opacity-50'}>Вы можете связаться с соискателем по
                                     этим контактам</p>
                             </div>
+                            {user?.is_superuser &&
+                                resume.reports?.map((report) => (
+                                    <div key={report.id} className={'flex mt-3 flex-col  self-center shadow border-destructive gap-y-2 rounded-2xl border min-h-40 min-w-full p-2'}>
+                                        <div className={'flex flex-col space-x-2 justify-center'}>
+                                            <h2 className={'text-3xl mt-2 bg-destructive self-center rounded p-2 m-2 text-white flex justify-center font-bold'}>Жалоба от {report.report_username}</h2>
+                                            <h3 className={'text-xl font-light self-center text-muted-foreground'}>{report.report_username !== 'Аноним' &&`(UserID:${report.report_user_id})`} (ReportID:{report.id})</h3>
+                                        </div>
+                                        <h2 className={'text-2xl text-center font-bold self-center bg-accent rounded'}>{report.report_type}</h2>
+                                        <h2 className={'text-xl text-center self-center rounded'}>{report.report_description}</h2>
+                                    </div>
+                            ))}
                         </div>
                     </div>
                 ) : (

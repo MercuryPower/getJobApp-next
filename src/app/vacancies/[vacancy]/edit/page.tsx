@@ -185,7 +185,7 @@ const Page = () => {
                 });
         })
     }
-    if(user?.type !== 'company'){
+    if(user?.type !== 'company' && !user?.is_superuser){
         return router.replace('/');
     }
     return (

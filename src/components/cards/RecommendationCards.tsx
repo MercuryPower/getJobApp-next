@@ -14,10 +14,13 @@ import {formattedDate} from "@/hooks/formatDate";
 import {useAuth} from "@/providers";
 import {Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
 import {useLogOut} from "@/hooks/useLogOut";
+import ComplaintsForm from "@/components/forms/ComplaintsForm";
 
 
 
 const RecommendationCards = ({data,setIsHovered,page, query, queryString}: CardsProperties) => {
+    const [hoveredRecommendationId, setHoveredRecommendationId] = useState<number | null>(null);
+    const [isDialogOpen, setIsDialogOpen] = useState(false)
     const {user} = useAuth()
     const pathname = usePathname()
     const router = useRouter();
@@ -64,16 +67,30 @@ const RecommendationCards = ({data,setIsHovered,page, query, queryString}: Cards
             setIsHovered(false)
         }
     }
+    const handleMouseEnterArea = (resumeId: number) => {
+        setHoveredRecommendationId(resumeId);
+    };
 
+    const handleMouseLeaveArea = () => {
+        if(!isDialogOpen){
+            setHoveredRecommendationId(null);
+        }
+    };
     return (
         <>
             {isLoading ? <VacancyCardSkeleton /> : (
                 <div className={'text-center '}>
                     {filteredVacancies.length > 0 ? filteredVacancies.map((vacancy) => {
                             return (
-                                <div key={vacancy.id} className={'flex shadow p-4 m-2 my-6 rounded-2xl gap-5 border min-h-80'}>
-                                    <div className={'p-2  w-[500px] flex flex-col flex-grow  justify-center rounded'}>
+                                <div key={vacancy.id} className={'flex shadow p-4 m-2 my-6 rounded-2xl gap-5 border min-h-80'}
+                                     onMouseEnter={() => handleMouseEnterArea(vacancy.id)}
+                                     onMouseLeave={handleMouseLeaveArea}
+                                >
+                                    <div className={'p-2  w-[500px] flex flex-col flex-grow  justify-center rounded relative'}>
                                         <div className={' flex text-center justify-center p-2'}>
+                                            {hoveredRecommendationId === vacancy.id &&
+                                                <ComplaintsForm report_user_id={user?.id} setHoveredResumeId={setHoveredRecommendationId} setIsDialogOpen={setIsDialogOpen} vacancy_id={vacancy.id} report_username={user?.username}/>
+                                            }
                                             <Link href={`${user?.type === 'company' ? '/vacancies' : '/jobseekers'}/${vacancy.id}`}>
                                                 <p className={'text-3xl text-ellipsis overflow-hidden font-bold  cursor-pointer'}>{vacancy.exp} {vacancy.vacancy_name}</p>
                                             </Link>

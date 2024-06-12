@@ -36,9 +36,15 @@ export interface VacancyInfo {
     registered_at:string;
     created_at:string;
     companyDescription:string;
-    report_description:string;
-    report_username:string;
-    report_type:string;
+    reports:{
+        id: number;
+        report_user_id: number;
+        report_description:string;
+        report_type:string;
+        report_username:string;
+    }[]
+    type:string;
+    is_reported:boolean;
     [key: string]: any;
 }
 export interface ResumeInfo extends VacancyInfo {

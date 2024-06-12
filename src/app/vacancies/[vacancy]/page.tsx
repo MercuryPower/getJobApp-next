@@ -17,29 +17,45 @@ import AutoScroll from 'embla-carousel-auto-scroll'
 import {useAuth} from "@/providers";
 import {formattedDate} from "@/hooks/formatDate";
 import {Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
+import ComplaintsForm from "@/components/forms/ComplaintsForm";
 
 const Page = () => {
+    const [hoveredVacancyId, setHoveredVacancyId] = useState<number | null>(null);
+    const [isDialogOpen, setIsDialogOpen] = useState(false)
     const pathname = usePathname();
     const {user} = useAuth()
     const params = useParams();
     const router = useRouter();
     const [vacancy, setVacancy] = useState<VacancyInfo>();
     useEffect(() => {
-        const fetchVacancy = async () => {
+        const fetchResume = async () => {
             try {
                 const response = await fetch(`http://127.0.0.1:8000/tests/vacancy/${params.vacancy}`);
                 if (!response.ok) {
-                    throw new Error('Failed to fetch vacancy');
+                    throw new Error('Ошибка при сборе данных о резюме');
                 }
-                const vacancyData = await response.json();
-                setVacancy(vacancyData);
+                const data = await response.json();
+
+                if (data.is_reported && user?.is_superuser) {
+                    const reportedResponse = await fetch(`http://127.0.0.1:8000/tests/reported_vacancy/${params.vacancy}`,{
+                        headers: {
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                        },
+                    });
+                    if (!reportedResponse.ok) {
+                        throw new Error('Ошибка при сборе данных о репортед вакансии');
+                    }
+                    const reportedData = await reportedResponse.json();
+                    setVacancy(reportedData);
+                } else {
+                    setVacancy(data);
+                }
             } catch (error) {
                 console.error('Ошибка при сборе данных:', error);
             }
         };
-
-        void fetchVacancy();
-    }, [params.vacancy]);
+        void fetchResume();
+    }, [params.vacancy, user]);
     const deleteVacancy = async (vacancyId: number) => {
         try {
             const response = await fetch(`http://127.0.0.1:8000/tests/delete_vacancy/${vacancyId}`, {
@@ -56,6 +72,16 @@ const Page = () => {
             console.error('Ошибка при удалении вакансии:', error);
         }
     };
+    const handleMouseEnter = (resumeId: number) => {
+        setHoveredVacancyId(resumeId);
+    };
+
+    const handleMouseLeave = () => {
+        if(!isDialogOpen){
+            setHoveredVacancyId(null);
+        }
+    };
+
     return (
         <>
         {vacancy ?
@@ -72,8 +98,10 @@ const Page = () => {
                             Назад
                         </span>
                     </Button>
-                    <div className={'p-2  w-[1000px] flex flex-col rounded border'}>
-                        <div className={' flex text-center justify-center gap-x-8 p-2 mt-4'}>
+                    <div className={'p-2  w-[1000px] flex flex-col rounded border'}
+                         onMouseEnter={() => handleMouseEnter(vacancy.id)}
+                         onMouseLeave={handleMouseLeave}>
+                        <div className={' flex text-center justify-center gap-x-8 p-2 mt-4 relative'}>
                             <div className={'flex justify-center self-center'}>
                                 <Avatar>
                                     <AvatarImage
@@ -82,9 +110,21 @@ const Page = () => {
                                     <AvatarFallback>VC</AvatarFallback>
                                 </Avatar>
                             </div>
-                            <Link href={`${vacancy.id}`}>
-                                <p className={'text-5xl text-center  text-ellipsis overflow-hidden font-bold  cursor-pointer'}>{vacancy.exp} {vacancy.vacancy_name}</p>
-                            </Link>
+                            <div>
+                                {hoveredVacancyId === vacancy.id &&
+                                    <div className={'flex justify-center self-center'}>
+                                    <ComplaintsForm
+                                        report_user_id={user?.id}
+                                        setHoveredResumeId={setHoveredVacancyId}
+                                        setIsDialogOpen={setIsDialogOpen}
+                                        vacancy_id={vacancy.id}
+                                        report_username={user?.username}/>
+                                    </div>
+                                }
+                                <Link href={`${vacancy.id}`}>
+                                    <p className={'text-5xl text-center  text-ellipsis overflow-hidden font-bold  cursor-pointer'}>{vacancy.exp} {vacancy.vacancy_name}</p>
+                                </Link>
+                            </div>
                                 {user?.id === vacancy.user_id &&
                                     <div className={'flex space-x-2 justify-end self-center relative'}>
                                         <div className={'flex gap-x-4'}>
@@ -140,7 +180,7 @@ const Page = () => {
                                             <AvatarFallback>VC</AvatarFallback>
                                         </Avatar>
                                         <div className="space-y-2 flex max-w-md flex-col  justify-center self-center ">
-                                            <p className="text-sm text-ellipsis overflow-hidden font-semibold">{vacancy.companyName}</p>
+                                            <p className="text-xl font-bold  text-ellipsis overflow-hidden">@{vacancy.companyName}</p>
                                             <p className="text-xs max-w-32 max-h-14  text-ellipsis overflow-hidden">
                                                 {vacancy.companyDescription}
                                             </p>
@@ -153,7 +193,6 @@ const Page = () => {
                                     </div>
                                 </HoverCardContent>
                             </HoverCard>
-                            {vacancy.companyDescription !== null && <h2>О компании: {vacancy.companyDescription}</h2>}
                         </div>
                         {vacancy.skills && vacancy.skills?.length > 0 && (
                             <>
@@ -217,13 +256,34 @@ const Page = () => {
                             </>
                         }
                         <div className={'p-2 m-4 space-y-4'}>
+                            {vacancy.companyDescription !== null &&
+                                <>
+                                    <h2><span className={'font-extrabold'}>@{vacancy.companyName}</span> - {vacancy.companyDescription}. </h2>
+                                </>
+                            }
+                        </div>
+                        <div className={'p-2 m-4 space-y-4'}>
                             <h2 className={'font-extrabold'}>Описание вакансии:</h2>
                             <p className={'text-start'}>{vacancy.description}</p>
                         </div>
                         <div className={'p-2 m-4 space-y-4'}>
-                            <h2 className={'font-extrabold'}>Контакты:</h2>
+                            <h2 className={'font-black'}>Контакты:</h2>
                             <p className={'text-start'}>{vacancy.description}</p>
+                            <p className={'text-xs opacity-50'}>Вы можете связаться с соискателем по
+                                этим контактам</p>
                         </div>
+                        {user?.is_superuser &&
+                            vacancy.reports?.map((report) => (
+                                <div key={report.id} className={'flex mt-3 flex-col  self-center shadow border-destructive gap-y-2 rounded-2xl border min-h-40 min-w-full p-2'}>
+                                    <div className={'flex flex-col space-x-2 justify-center'}>
+                                        <h2 className={'text-3xl mt-2 bg-destructive self-center rounded p-2 m-2 text-white flex justify-center font-bold'}>Жалоба от {report.report_username}</h2>
+                                        <h3 className={'text-xl font-light self-center text-muted-foreground'}>{report.report_username !== 'Аноним' &&`(UserID:${report.report_user_id})`} (ReportID:{report.id})</h3>
+                                    </div>
+                                    <h2 className={'text-2xl text-center font-bold self-center bg-accent rounded'}>{report.report_type}</h2>
+                                    <h2 className={'text-xl text-center self-center rounded'}>{report.report_description}</h2>
+                                </div>
+                            ))
+                        }
                     </div>
 
                 </div>
