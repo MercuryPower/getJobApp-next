@@ -30,9 +30,6 @@ export const sendComplaint = async (values: z.infer<typeof ComplaintSchema>, vac
             body:JSON.stringify(payload)
         });
         if (response.ok) {
-            setTimeout(() => {
-                window.location.reload()
-            }, 300);
             return { success: 'Жалоба успешно отправлена' };
         }
         else{

@@ -31,7 +31,7 @@ const Page = ({searchParams}:{searchParams?:{query?: string; page?:string, perPa
             </div>
             <div className={'rounded-2xl m-2 flex'}>
                 <div className={'flex flex-col  shadow-lg m-4 p-4 border rounded-2xl '}>
-                    {user?.type === 'company' &&
+                    {user?.type === 'company' && !user.is_superuser &&
                         <div className={'flex justify-end gap-x-2'}>
                             <div className={'self-center opacity-75 text-center font-bold'}>
                                 <h5>Не нашли подходящего работника?</h5>

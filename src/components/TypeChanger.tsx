@@ -6,8 +6,9 @@ import {useIsEmployer} from "@/providers";
 interface TypeChangerProps {
     setOffTips:(value:boolean) => void;
     inMainPage?:boolean;
+    inSkillPage?:boolean
 }
-const TypeChanger = ({setOffTips, inMainPage} : TypeChangerProps) => {
+const TypeChanger = ({setOffTips, inMainPage, inSkillPage} : TypeChangerProps) => {
     const {isEmployer, setIsEmployer} = useIsEmployer()
 
     const handleClick = () => {
@@ -20,14 +21,15 @@ const TypeChanger = ({setOffTips, inMainPage} : TypeChangerProps) => {
                 (
                     <div className={'flex gap-2'}>
                         <UsersRound className={'self-center'} />
-                        {inMainPage ? `Вакансии` : `Вакансиям`}
+                        {inMainPage ? `Вакансии` : inSkillPage ? `Вакансий` : `Вакансиям` }
+
                     </div>
                 )
                 :
                 (
                     <div className={'flex gap-2'}>
                         <BriefcaseBusiness className={'self-center'} />
-                        {inMainPage ? `Соискатели` : `Соискателям`}
+                        {inMainPage ? `Соискатели` : inSkillPage ? `Соискателей`  : `Соискателям`}
                     </div>
                 )
             }

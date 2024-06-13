@@ -114,6 +114,7 @@ const Page = () => {
                                 {hoveredVacancyId === vacancy.id &&
                                     <div className={'flex justify-center self-center'}>
                                     <ComplaintsForm
+                                        isFull
                                         report_user_id={user?.id}
                                         setHoveredResumeId={setHoveredVacancyId}
                                         setIsDialogOpen={setIsDialogOpen}
@@ -269,7 +270,7 @@ const Page = () => {
                         <div className={'p-2 m-4 space-y-4'}>
                             <h2 className={'font-black'}>Контакты:</h2>
                             <p className={'text-start'}>{vacancy.description}</p>
-                            <p className={'text-xs opacity-50'}>Вы можете связаться с соискателем по
+                            <p className={'text-xs opacity-50'}>Вы можете связаться с работодателем по
                                 этим контактам</p>
                         </div>
                         {user?.is_superuser &&

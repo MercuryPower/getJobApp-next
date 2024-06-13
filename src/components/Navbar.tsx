@@ -10,7 +10,7 @@ import {
     DropdownMenuShortcut,
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
-import {CircleSlash2, CreditCard, FileText, ShieldAlert, User} from "lucide-react";
+import {BadgeAlert, BadgeCheck, CircleSlash2, CreditCard, FileText, ShieldAlert, User} from "lucide-react";
 import LoginSection from "@/components/sections/LoginSection";
 import {useSession} from "next-auth/react";
 import {auth} from "@/auth";
@@ -78,11 +78,11 @@ const Navbar = () => {
             <div className={'flex'}>
                 <div className={'w-159 flex ml-4 self-center flex-col p-1   '}>
                     <div className={'flex m-2 '}>
-                        <Button  onClick={() => setIsEmployer(false)}
-                                className={`w-48 font-light text-center ${!isEmployer && `bg-green-600 font-bold outline hover:bg-green-600`}   p-2  transition`}>Соискателям</Button>
+                        <Button  variant={'ghost'} onClick={() => setIsEmployer(false)}
+                                className={`w-48 font-light bg-inherit  dark:text-white text-center ${!isEmployer && `bg-green-600 font-bold shadow hover:bg-green-600`}   p-2  transition`}>Соискателям</Button>
                     </div>
                     <div className={'flex justify-center'}>
-                        <Button className={`w-48 text-center  font-light  ${isEmployer && `bg-green-600 outline font-bold hover:bg-green-600`} p-2 rounded transition`}
+                        <Button variant={'ghost'} className={`w-48 text-center bg-inherit dark:text-white font-light  ${isEmployer && `bg-green-600 shadow font-bold hover:bg-green-600`} p-2 rounded transition`}
                                 onClick={() => setIsEmployer(true)}>Работодателям</Button>
                     </div>
                 </div>
@@ -165,10 +165,6 @@ const Navbar = () => {
                         <DropdownMenuContent className="w-56">
                             <DropdownMenuGroup>
                                 <DropdownMenuItem>
-                                    <User className="mr-2 h-4 w-4"/>
-                                    <Link href={`/profile/${transliterateProfileUsername(user?.username)}`}>Профиль</Link>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem>
                                     <CreditCard className="mr-2 h-4 w-4"/>
                                     <span>Отзывы</span>
                                 </DropdownMenuItem>
@@ -196,7 +192,7 @@ const Navbar = () => {
                             <DropdownMenuContent className="w-56">
                                 <DropdownMenuLabel>Привет, {user?.username}!</DropdownMenuLabel>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuGroup>
+                                <DropdownMenuGroup className={'w-56'}>
                                     <DropdownMenuItem>
                                         <User className="mr-2 h-4 w-4"/>
                                         <Link href={`/profile/${transliterateProfileUsername(user?.username)}`}>Профиль</Link>
@@ -210,12 +206,17 @@ const Navbar = () => {
                                         }
                                     </DropdownMenuItem>
                                         {user?.is_superuser &&
-                                            <DropdownMenuItem>
-                                                <ShieldAlert color="#e83030"  className="mr-2 h-4 w-4"/>
-                                                <Link className={'border-destructive'} href={'/dashboard/complaints'}>Жалобы</Link>
-                                            </DropdownMenuItem>
+                                            <>
+                                                <DropdownMenuItem>
+                                                    <ShieldAlert color="#e83030"  className="mr-2 h-4 w-4"/>
+                                                    <Link className={'border-destructive'} href={'/dashboard/complaints'}>Жалобы</Link>
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem>
+                                                    <BadgeCheck color="#16a34a" className="mr-2 h-4 w-4"/>
+                                                    <Link className={'border-destructive'} href={'/dashboard/verifications'}>Верификация</Link>
+                                                </DropdownMenuItem>
+                                            </>
                                         }
-
                                     <DropdownMenuSeparator/>
                                         <DialogTrigger asChild>
                                             <Button className={'mr-2 h-8 w-full self-center'} variant={'link'}>Выйти</Button>

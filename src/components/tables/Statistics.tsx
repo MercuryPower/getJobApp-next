@@ -32,8 +32,15 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { columnTranslations, StatisticProps } from "@/types/types";
-const generateColumns = (data: StatisticProps[], isEmployer?:boolean): ColumnDef<StatisticProps>[] => {
+import {columnTranslations, StatisticProps, VerificationProps} from "@/types/types";
+import {
+    SET_UNVERIFIED_CITY,
+    SET_UNVERIFIED_SKILL, SET_UNVERIFIED_VACANCY_NAME,
+    SET_VERIFICATION_CITY,
+    SET_VERIFICATION_SKILL, SET_VERIFICATION_VACANCY_NAME,
+} from "@/url/urls";
+import {useEffect, useState} from "react";
+const generateColumns = (data: StatisticProps[] | VerificationProps[], isEmployer?:boolean, isVerification?:boolean, verifyTableType?: 'skill' | 'city' | 'name'): ColumnDef<StatisticProps | VerificationProps>[] => {
 
     if (!data || data.length === 0) {
         return [];
@@ -94,12 +101,89 @@ const generateColumns = (data: StatisticProps[], isEmployer?:boolean): ColumnDef
     });
 };
 
-export function Statistics({ data, isEmployer }: { data: StatisticProps[], isEmployer?:boolean }) {
+export function Statistics({ data, isEmployer, isVerification,  verifyTableType}: { data: StatisticProps[] | VerificationProps[], isEmployer?:boolean, isVerification?:boolean,  verifyTableType?: 'skill' | 'city' | 'name' }) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
     const [rowSelection, setRowSelection] = React.useState({});
-    const columns = generateColumns(data, isEmployer);
+    const [tableData, setTableData] = useState()
+    const columns = generateColumns(data, isEmployer, isVerification, verifyTableType);
+    if (isVerification) {
+        columns.push({
+            id: 'verificationStatus',
+            header: 'Статус верификации',
+            cell: ({ row }) => (
+                <div className="flex space-x-2 justify-center">
+                    <Button className={'bg-green-600'} onClick={() => handleVerification(row.original as VerificationProps, 'accept')}>
+                        Принять
+                    </Button>
+                    <Button variant={'destructive'} onClick={() => handleVerification(row.original as VerificationProps, 'reject')}>
+                        Отклонить
+                    </Button>
+                </div>
+            ),
+        });
+    }
+
+    async function handleVerification(item :VerificationProps, action: 'accept' | 'reject') {
+        let requestUrl = ''
+        switch(verifyTableType){
+            case "skill":
+                action === 'accept' ?
+                    requestUrl = SET_VERIFICATION_SKILL
+                    :
+                    requestUrl = SET_UNVERIFIED_SKILL
+                break;
+            case "city":
+                action === 'accept' ?
+                    requestUrl = SET_VERIFICATION_CITY
+                    :
+                    requestUrl = SET_UNVERIFIED_CITY
+                break;
+            case "name":
+                action === 'accept' ?
+                    requestUrl = SET_VERIFICATION_VACANCY_NAME
+                    :
+                    requestUrl = SET_UNVERIFIED_VACANCY_NAME
+                break;
+            default:
+                return;
+        }
+        if (action === 'accept') {
+            try {
+                const response = await fetch(`${requestUrl}/${item.id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                });
+                setTableData(await response.json())
+                if (!response.ok) {
+                    throw new Error('Ошибка при отправке данных');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+        if (action === 'reject') {
+            try {
+                const response = await fetch(`${requestUrl}/${item.id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                });
+                if (!response.ok) {
+                    throw new Error('Ошибка при отправке данных');
+                }
+                setTableData(await response.json())
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+    }
 
     const table = useReactTable({
         data,
@@ -119,17 +203,19 @@ export function Statistics({ data, isEmployer }: { data: StatisticProps[], isEmp
             rowSelection,
         },
     });
-
     return (
         <div className="w-full">
             <div className="flex items-center py-4">
-                {table.getAllColumns().find(col => col.id === "profession") && (
+                {table.getAllColumns().find(col => col.id === "profession" || col.id === 'name') && (
                     <Input
                         placeholder="Поиск"
-                        value={(table.getColumn("profession")?.getFilterValue() as string) ?? ""}
-                        onChange={(event) =>
-                            table.getColumn("profession")?.setFilterValue(event.target.value)
-                        }
+                        value={(table.getColumn(table.getAllColumns().find(col => col.id === "profession" || col.id === 'name')?.id as string)?.getFilterValue() as string) ?? ""}
+                        onChange={(event) => {
+                            const columnId = table.getAllColumns().find(col => col.id === "profession" || col.id === 'name')?.id;
+                            if (columnId) {
+                                table.getColumn(columnId)?.setFilterValue(event.target.value);
+                            }
+                        }}
                         className="max-w-sm"
                     />
                 )}
@@ -167,7 +253,7 @@ export function Statistics({ data, isEmployer }: { data: StatisticProps[], isEmp
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => {
                                     return (
-                                        <TableHead key={header.id}>
+                                        <TableHead key={header.id} className={header.id === 'verificationStatus' ? 'text-center' : ''}>
                                             {header.isPlaceholder
                                                 ? null
                                                 : flexRender(

@@ -362,7 +362,7 @@ const Page = () => {
                                 </DialogHeader>
                                 <div className={'flex gap-x-2 justify-center'}>
                                     <Button className={'flex self-center bg-green-600 font-bold'} type={"submit"} onClick={form.handleSubmit(onSubmit)}>Подтвердить</Button>
-                                    <DialogClose>
+                                    <DialogClose asChild>
                                         <Button className={'flex self-center  font-bold '} type={"submit"}>Отменить создание</Button>
                                     </DialogClose>
                                 </div>

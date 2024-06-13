@@ -46,8 +46,10 @@ const ComplaintsForm = ({vacancy_id, setIsDialogOpen, setHoveredResumeId, report
                     .then((data) =>{
                         if (data?.error) {
                             setError(data.error);
+
                         } else if(data?.success){
                             setSuccess(data.success);
+                            handleDialogClose();
                         }
                     })
             } catch (error) {
@@ -158,14 +160,13 @@ const ComplaintsForm = ({vacancy_id, setIsDialogOpen, setHoveredResumeId, report
                         <FormSuccess message={success} />
                         <FormError message={error} />
                         <div className={'flex justify-center self-center space-x-4'}>
-                            <Button onClick={form.handleSubmit(onSubmit)} type={'submit'} size={'lg'} className={'font-bold'} >Отправить жалобу</Button>
+                            <Button disabled={isPending} onClick={form.handleSubmit(onSubmit)} type={'submit'} size={'lg'} className={'font-bold'} >Отправить жалобу</Button>
                             <DialogClose asChild>
                                 <Button size={'lg'}
                                         className={'flex self-center  bg-green-600 font-bold'}>
                                     Отмена</Button>
                             </DialogClose>
                         </div>
-
                     </DialogContent>
                 </Dialog>
             </form>

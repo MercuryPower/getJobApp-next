@@ -62,14 +62,28 @@ export interface StatisticProps {
     numberOfApplications?: number;
     averageSalaryByGrades?: number | string;
     amountOfVacancies?: number;
+    count:number;
+    percent:number;
 }
+export interface VerificationProps {
+    id:number;
+    name:string;
+}
+
 export const columnTranslations: { [key: string]: string } = {
     grade: "Грейд",
     profession: "Профессия",
     averageSalaryByGrades: "Средняя зарплата по грейдам",
     amountOfVacancies: "Количество вакансий",
     expectedSalary: "Ожидаемая зарплата",
-    numberOfApplications: "Количество заявок"
+    numberOfApplications: "Количество заявок",
+    company_name:"Название компании",
+    company_description:"Описании компании",
+    company_email:'Email компании',
+    name:'Название',
+    verificationStatus:'Статус верификации',
+    count:'Количество',
+    percent:'% от общего числа вакансий'
 };
 
 export interface userProperties {

@@ -50,10 +50,29 @@ const Page = () => {
                 }
             </div>
                 <div className={'flex justify-items-center self-center mt-12 text-3xl'}>
-                    <h2 className={'font-extralight '}>{user?.type === 'user' ? `Вы ищите работу` : `Вы ищите работника`} </h2>
+                    {user?.is_superuser ?
+                        <h2 className={'font-extralight '}>Администратор</h2>
+                        :
+                        <h2 className={'font-extralight '}>{user?.type === 'user' ? `Вы ищите работу` : `Вы ищите работника`} </h2>
+                    }
                 </div>
-                <Button className={'flex w-96 h-16 justify-center text-xl  mt-4 self-center'}
-                        onClick={() => router.replace(`${user?.type === 'company' ? `/vacancies` : `/jobseekers`}/me`)}>Мои Вакансии</Button>
+                    {user?.is_superuser ?
+                        <>
+                            <Button className={'flex w-96 h-16 justify-center text-xl  mt-4 self-center'}
+                                    onClick={() => router.replace('/dashboard/verifications')}>
+                                Запросы на Верификацию
+                            </Button>
+                            <Button className={'flex w-96  h-16 justify-center text-xl  mt-4 self-center'}
+                                    onClick={() => router.replace('/dashboard/complaints')}>
+                                Жалобы
+                            </Button>
+                        </>
+                        :
+                        <Button className={'flex w-96 h-16 justify-center text-xl  mt-4 self-center'}
+                                onClick={() => router.replace(`${user?.type === 'company' ? `/vacancies` : `/jobseekers`}/me`)}>
+                            Мои {user?.type === 'company' ? `Вакансии` : `Резюме`}</Button>
+                    }
+
             </div>
         </div>
     );

@@ -1,10 +1,12 @@
-import React from 'react';
-import style from "@/components/styles/style.module.sass";
-import {ArrowDown, ArrowUp} from "lucide-react";
 
-const StatisticTips = ({isUp, fadeOut}:{isUp?:boolean, fadeOut:boolean}) => {
+'use client'
+import React, {useState} from 'react';
+import style from "@/components/styles/style.module.sass";
+import {ArrowDown, ArrowLeft, ArrowRight, ArrowUp} from "lucide-react";
+
+const StatisticTips = ({isUp, isLeft, isRight,fadeOut, setFadeOut}:{isUp?:boolean, fadeOut?:boolean, isLeft?:boolean, isRight?:boolean, setFadeOut?:(b:boolean) => void}) => {
     return (
-        <div className={`absolute mb-24 flex flex-col gap-x-2 text-current text-center text-xs self-center opacity-50 ${fadeOut ? style.fadeOut : ''} `}>
+        <div onClick={() => setFadeOut && setFadeOut(true)} className={`absolute mb-24 flex flex-col gap-x-2 text-current text-center text-xs self-center opacity-50  ${fadeOut ? style.fadeOut : ''} `}>
             {isUp?
                 <>
                     <ArrowUp className={'self-center'} />
@@ -17,6 +19,7 @@ const StatisticTips = ({isUp, fadeOut}:{isUp?:boolean, fadeOut:boolean}) => {
                 </>
 
             }
+
         </div>
     );
 };
