@@ -7,6 +7,7 @@ import {cn} from "@/lib/utils";
 import { Rubik as FontSans } from "next/font/google"
 import {ThemeProvider} from "next-themes";
 import {SessionContext, SessionProvider} from "next-auth/react";
+import {Toaster} from "@/components/ui/toaster";
 
   const inter = Rubik({ subsets: ["latin"] });
 
@@ -32,6 +33,7 @@ export default function RootLayout({
           <Providers>
               <Navbar />
               {children}
+              <Toaster />
           </Providers>
       </body>
     </html>

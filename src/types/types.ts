@@ -45,6 +45,7 @@ export interface VacancyInfo {
     }[]
     type:string;
     is_reported:boolean;
+    verified:boolean;
     [key: string]: any;
 }
 export interface ResumeInfo extends VacancyInfo {
@@ -62,12 +63,18 @@ export interface StatisticProps {
     numberOfApplications?: number;
     averageSalaryByGrades?: number | string;
     amountOfVacancies?: number;
-    count:number;
-    percent:number;
+    count?:number;
+    percent?:number;
 }
 export interface VerificationProps {
     id:number;
     name:string;
+}
+export interface VerificationCompanyProps {
+    id:number;
+    company_name:string;
+    company_description:string
+    company_email:string
 }
 
 export const columnTranslations: { [key: string]: string } = {

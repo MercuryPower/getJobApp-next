@@ -7,12 +7,72 @@ import notFound from "@/app/not-found";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {Button} from "@/components/ui/button";
 import {Container} from "@mui/material";
+import {toast, useToast} from "@/components/ui/use-toast";
+import {ToastAction} from "@/components/ui/toast";
+import {BadgeAlert, Check, Mail, MailPlus} from "lucide-react";
+import FormSuccess from "@/components/forms/form-success";
+import {GET_VERIFICATIONS_SKILLS, SET_VERIFICATION_COMPANY_NAME} from "@/url/urls";
 
 const Page = () => {
+    const [error, setError] = useState('')
+    const [success, setSuccess] = useState('')
+    // const [isVerificationRequestSend, setIsVerificationRequestSend] = useState(false);
+    const [isVerificationRequestSend, setIsVerificationRequestSend] = useState(() => {
+        return sessionStorage.getItem('isVerificationRequestSend') === 'true';
+    })
     const pathname = usePathname();
+    const { toast } = useToast()
     const {user, isLoggedIn} = useAuth()
     const params = useParams();
     const router = useRouter();
+    // useEffect(() => {
+    //     localStorage.setItem('isVerificationRequestSend', JSON.stringify(isVerificationRequestSend));
+    // }, [isVerificationRequestSend]);
+
+    const sendVerificationRequest = async () => {
+        try {
+            const response = await fetch(SET_VERIFICATION_COMPANY_NAME, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+            });
+
+            if (response.ok) {
+                setIsVerificationRequestSend(true)
+                setSuccess("Вы успешно подали запрос на верификацию имени");
+                toast({
+                    title: 'Вы успешно подали запрос на верификацию имени',
+                    description: `${new Date()}`,
+                    action: (
+                        <ToastAction altText="Назад">Хорошо</ToastAction>
+                    ),
+                });
+            } else {
+                setIsVerificationRequestSend(false);
+                setError(await response.json());
+                toast({
+                    variant: 'destructive',
+                    title: "Ошибка при подаче запроса на верификацию имени",
+                    description: `Попробуйте ещё раз`,
+                    action: (
+                        <ToastAction altText="Ок">Хорошо</ToastAction>
+                    )
+                });
+            }
+        } catch (e) {
+            setError((e as Error).message);
+            toast({
+                variant: 'destructive',
+                title: "Ошибка",
+                description: (e as Error).message,
+                action: (
+                    <ToastAction altText="Ок">Хорошо</ToastAction>
+                )
+            });
+        }
+    };
+
     if(!isLoggedIn){
         return notFound();
     }
@@ -29,7 +89,7 @@ const Page = () => {
                 </h2>
             </Button>
             <div className={'p-2 flex flex-col  justify-center rounded'}>
-            <div className={'flex justify-center space-x-4'}>
+            <div className={'flex justify-center space-x-4 '}>
                 <h1 className={'text-3xl self-center flex justify-center font-bold mt-4 p-2 rounded-2xl'}>Здравствуйте, {user?.username}!</h1>
                 <Avatar  className={'self-center h-14 w-14'}>
                     <AvatarImage
@@ -37,6 +97,26 @@ const Page = () => {
                     <AvatarFallback>VC</AvatarFallback>
                 </Avatar>
             </div>
+                {user?.type === 'company' && !user.is_superuser && !user?.is_verified && !isVerificationRequestSend &&
+                <div className={'flex flex-col justify-end self-center p-2 '}>
+                        <Button
+                            variant="outline"
+                            onClick={() => {
+                                void sendVerificationRequest()
+                            }}
+                        >
+                            Отправить запрос на верификацию имени
+                        </Button>
+                </div>
+                }
+                {isVerificationRequestSend && !user?.is_verified &&
+                    <div className={'flex justify-center gap-x-2 max-w-md self-center'}>
+                        <div className={'flex self-center gap-x-2 bg-green-600 p-2 text-sm rounded-full'}>
+                            <Check className={''} />
+                        </div>
+                        <FormSuccess message={'Запрос на верификацию успешно отправлен на рассмотрение'} />
+                    </div>
+                }
             <div className={'flex flex-col self-center pl-32 pr-32 justify-center mt-12 space-y-4'}>
                 <div className={'flex text-2xl '}>
                     <h2 className={'font-bold  min-w-[150px]'}>Email :</h2>
@@ -56,17 +136,20 @@ const Page = () => {
                         <h2 className={'font-extralight '}>{user?.type === 'user' ? `Вы ищите работу` : `Вы ищите работника`} </h2>
                     }
                 </div>
+
                     {user?.is_superuser ?
-                        <>
-                            <Button className={'flex w-96 h-16 justify-center text-xl  mt-4 self-center'}
+                        <div className={'space-y-4  flex flex-col'}>
+                            <Button  className={'flex gap-x-2  h-16 justify-center text-2xl font-extrabold mt-4 self-center'}
                                     onClick={() => router.replace('/dashboard/verifications')}>
+                                <MailPlus  strokeWidth={3}/>
                                 Запросы на Верификацию
                             </Button>
-                            <Button className={'flex w-96  h-16 justify-center text-xl  mt-4 self-center'}
+                            <Button className={'flex gap-x-2 h-16 justify-center font-extrabold text-2xl  mt-4 self-center'}
                                     onClick={() => router.replace('/dashboard/complaints')}>
+                                <BadgeAlert strokeWidth={3} />
                                 Жалобы
                             </Button>
-                        </>
+                        </div>
                         :
                         <Button className={'flex w-96 h-16 justify-center text-xl  mt-4 self-center'}
                                 onClick={() => router.replace(`${user?.type === 'company' ? `/vacancies` : `/jobseekers`}/me`)}>

@@ -7,7 +7,7 @@ import {VacancyInfo} from "@/types/types";
 import {HoverCard, HoverCardContent, HoverCardTrigger} from "@/components/ui/hover-card";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import VacancyCardSkeleton from "@/components/ui/skeletons/VacancyCardSkeleton";
-import {CircleX, Pencil, Trash2} from "lucide-react";
+import {BadgeCheck, CircleX, Pencil, Trash2} from "lucide-react";
 import {usePathname, useRouter} from "next/navigation";
 import Link from "next/link";
 import {formattedDate} from "@/hooks/formatDate";
@@ -126,7 +126,7 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
                             </Avatar>
                                 <HoverCard>
                                     <HoverCardTrigger asChild>
-                                        <Button variant="link">{vacancy.companyName}</Button>
+                                        <Button variant="link">{vacancy.companyName}{vacancy.is_verified && <BadgeCheck size={16} color="#16a34a" strokeWidth={1.25} />}</Button>
                                     </HoverCardTrigger>
                                     <HoverCardContent className="w-fit ">
                                         <div className="flex justify-between space-x-4 self-center " >
@@ -136,7 +136,7 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
                                                 <AvatarFallback>VC</AvatarFallback>
                                             </Avatar>
                                             <div className="space-y-2 flex max-w-md flex-col  justify-center self-center ">
-                                                <p className="text-sm text-ellipsis overflow-hidden font-semibold">{vacancy.companyName}</p>
+                                                <p className="text-sm text-ellipsis overflow-hidden font-semibold">{vacancy.companyName}{vacancy.is_verified && <BadgeCheck size={16} color="#16a34a" strokeWidth={1.25} />}</p>
                                                 <p className="text-xs max-w-32 max-h-14  text-ellipsis overflow-hidden">
                                                     {vacancy.companyDescription}
                                                 </p>

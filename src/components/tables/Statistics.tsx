@@ -32,15 +32,16 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import {columnTranslations, StatisticProps, VerificationProps} from "@/types/types";
+import {columnTranslations, StatisticProps, VerificationCompanyProps, VerificationProps} from "@/types/types";
 import {
+    GET_USER_INFO_BY_ID, PATCH_USER_INFO_BY_ID,
     SET_UNVERIFIED_CITY,
     SET_UNVERIFIED_SKILL, SET_UNVERIFIED_VACANCY_NAME,
-    SET_VERIFICATION_CITY,
+    SET_VERIFICATION_CITY, SET_VERIFICATION_COMPANY_NAME,
     SET_VERIFICATION_SKILL, SET_VERIFICATION_VACANCY_NAME,
 } from "@/url/urls";
-import {useEffect, useState} from "react";
-const generateColumns = (data: StatisticProps[] | VerificationProps[], isEmployer?:boolean, isVerification?:boolean, verifyTableType?: 'skill' | 'city' | 'name'): ColumnDef<StatisticProps | VerificationProps>[] => {
+import {useEffect, useMemo, useState} from "react";
+const generateColumns = (data: StatisticProps[] | VerificationProps[] | VerificationCompanyProps[], isEmployer?:boolean, isVerification?:boolean, verifyTableType?: 'skill' | 'city' | 'vacancyName' | 'companyName'): ColumnDef<StatisticProps | VerificationProps | VerificationCompanyProps>[] => {
 
     if (!data || data.length === 0) {
         return [];
@@ -74,18 +75,25 @@ const generateColumns = (data: StatisticProps[] | VerificationProps[], isEmploye
                              ${key === 'profession' ? 'font-bold': 'text-center'}
                              ${key === 'averageSalaryByGrades' || key === 'expectedSalary'? 'lowercase' : ''}
                              ${key === 'amountOfVacancies' ? 'capitalize font-medium ' : ''}
+                             ${key === 'percent' ? 'capitalize font-medium ' : ''}
                              ${parseFloat(value as string) === 0 && 'font-extrabold text-lg'}
                              `
                     }>
-                        {key === "averageSalaryByGrades" || key === 'expectedSalary' ? (
+                        {key === "averageSalaryByGrades" || key === 'expectedSalary' || key === 'percent' ? (
                             <>
                                 {parseFloat(value as string) !== 0 ? (
                                     <>
-                                        {'~ '}
-                                        {new Intl.NumberFormat("ru-RU", {
-                                            style: "currency",
-                                            currency: "RUB",
-                                        }).format(parseFloat(value as string))}
+                                        {key === 'percent' ? (
+                                            new Intl.NumberFormat("ru-RU", {
+                                                style: "percent",
+                                                minimumFractionDigits: 2,
+                                            }).format(parseFloat(value as string) / 100)
+                                        ) : (
+                                            new Intl.NumberFormat("ru-RU", {
+                                                style: "currency",
+                                                currency: "RUB",
+                                            }).format(parseFloat(value as string))
+                                        )}
                                     </>
                                 ) : (
                                     "по договоренности"
@@ -101,14 +109,13 @@ const generateColumns = (data: StatisticProps[] | VerificationProps[], isEmploye
     });
 };
 
-export function Statistics({ data, isEmployer, isVerification,  verifyTableType}: { data: StatisticProps[] | VerificationProps[], isEmployer?:boolean, isVerification?:boolean,  verifyTableType?: 'skill' | 'city' | 'name' }) {
+export function Statistics({ data, isEmployer, isVerification,  verifyTableType, updateVerificationData}: { data: StatisticProps[] | VerificationProps[] | VerificationCompanyProps[], isEmployer?:boolean, isVerification?:boolean,  verifyTableType?: 'skill' | 'city' | 'vacancyName' | 'companyName', updateVerificationData?: (newData: (VerificationProps)[]) => void;}) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
     const [rowSelection, setRowSelection] = React.useState({});
-    const [tableData, setTableData] = useState()
-    const columns = generateColumns(data, isEmployer, isVerification, verifyTableType);
-    if (isVerification) {
+    const columns = useMemo(() => generateColumns(data, isEmployer, isVerification, verifyTableType),[data, isEmployer, isVerification, verifyTableType]);
+    if (isVerification && data.length > 0) {
         columns.push({
             id: 'verificationStatus',
             header: 'Статус верификации',
@@ -125,8 +132,9 @@ export function Statistics({ data, isEmployer, isVerification,  verifyTableType}
         });
     }
 
-    async function handleVerification(item :VerificationProps, action: 'accept' | 'reject') {
+    async function handleVerification(item :VerificationProps | VerificationCompanyProps, action: 'accept' | 'reject') {
         let requestUrl = ''
+        let secondCompanyRequestUrl = ''
         switch(verifyTableType){
             case "skill":
                 action === 'accept' ?
@@ -140,9 +148,15 @@ export function Statistics({ data, isEmployer, isVerification,  verifyTableType}
                     :
                     requestUrl = SET_UNVERIFIED_CITY
                 break;
-            case "name":
+            case "vacancyName":
                 action === 'accept' ?
                     requestUrl = SET_VERIFICATION_VACANCY_NAME
+                    :
+                    requestUrl = SET_UNVERIFIED_VACANCY_NAME
+                break;
+            case "companyName":
+                action === 'accept' ?
+                        requestUrl = GET_USER_INFO_BY_ID
                     :
                     requestUrl = SET_UNVERIFIED_VACANCY_NAME
                 break;
@@ -158,13 +172,15 @@ export function Statistics({ data, isEmployer, isVerification,  verifyTableType}
                         'Authorization': `Bearer ${localStorage.getItem('token')}`
                     },
                 });
-                setTableData(await response.json())
                 if (!response.ok) {
                     throw new Error('Ошибка при отправке данных');
                 }
+                const newData = data.filter((d): d is VerificationProps => 'id' in d && d.id !== item.id);
+                updateVerificationData?.(newData);
             } catch (error) {
                 console.error('Error:', error);
             }
+
         }
         if (action === 'reject') {
             try {
@@ -178,7 +194,8 @@ export function Statistics({ data, isEmployer, isVerification,  verifyTableType}
                 if (!response.ok) {
                     throw new Error('Ошибка при отправке данных');
                 }
-                setTableData(await response.json())
+                const newData = data.filter((d): d is VerificationProps => 'id' in d && d.id !== item.id);
+                updateVerificationData?.(newData);
             } catch (error) {
                 console.error('Error:', error);
             }

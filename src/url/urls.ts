@@ -7,8 +7,6 @@ export const GET_TOTAL_PAGES = `http://127.0.0.1:8000/tests/company_count`
 export const GET_RESUMES = `http://127.0.0.1:8000/tests/user`
 
 export const VACANCY_STATISTIC = `http://127.0.0.1:8000/tests/statistics/company`
-
-
 export const RESUME_STATISTIC = `http://127.0.0.1:8000/tests/statistics/user`
 
 export const SKILLS_STATISTIC_VACANCY =  `http://127.0.0.1:8000/tests/skill_statistics/company`
@@ -25,3 +23,8 @@ export const SET_VERIFICATION_VACANCY_NAME = `http://127.0.0.1:8000/tests/verify
 export const SET_UNVERIFIED_SKILL = `http://127.0.0.1:8000/tests/unverify_skill`
 export const SET_UNVERIFIED_CITY = `http://127.0.0.1:8000/tests/unverify_city`
 export const SET_UNVERIFIED_VACANCY_NAME = `http://127.0.0.1:8000/tests/unverify_vacancy_name`
+
+export const GET_VERIFICATION_COMPANY_NAME = `http://127.0.0.1:8000/tests/verification_requests`
+export const SET_VERIFICATION_COMPANY_NAME = `http://127.0.0.1:8000/tests/send_verification_requests`
+export const GET_USER_INFO_BY_ID= `http://127.0.0.1:8000/users`
+export const PATCH_USER_INFO_BY_ID = `http://127.0.0.1:8000/users`

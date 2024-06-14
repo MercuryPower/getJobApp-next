@@ -11,7 +11,7 @@ import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import Link from "next/link";
 import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "@/components/ui/carousel";
 import {Card, CardContent} from "@/components/ui/card";
-import {Pencil, SeparatorHorizontal, Trash2} from "lucide-react";
+import {BadgeCheck, Pencil, SeparatorHorizontal, Trash2} from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 import AutoScroll from 'embla-carousel-auto-scroll'
 import {useAuth} from "@/providers";
@@ -171,7 +171,7 @@ const Page = () => {
                         <div className={'flex flex-col justify-center p-2 max-h-23'}>
                             <HoverCard>
                                 <HoverCardTrigger asChild>
-                                    <Button variant="link">{vacancy.companyName}</Button>
+                                    <Button variant="link">{vacancy.companyName}{vacancy.is_verified && <BadgeCheck size={16} color="#16a34a" strokeWidth={1.25} />}</Button>
                                 </HoverCardTrigger>
                                 <HoverCardContent className="w-fit ">
                                     <div className="flex justify-between space-x-4 self-center ">
@@ -181,7 +181,7 @@ const Page = () => {
                                             <AvatarFallback>VC</AvatarFallback>
                                         </Avatar>
                                         <div className="space-y-2 flex max-w-md flex-col  justify-center self-center ">
-                                            <p className="text-xl font-bold  text-ellipsis overflow-hidden">@{vacancy.companyName}</p>
+                                            <p className="text-xl font-bold  text-ellipsis overflow-hidden">@{vacancy.companyName}{vacancy.verified && <BadgeCheck size={16} color="#16a34a" strokeWidth={1.25} />}</p>
                                             <p className="text-xs max-w-32 max-h-14  text-ellipsis overflow-hidden">
                                                 {vacancy.companyDescription}
                                             </p>
