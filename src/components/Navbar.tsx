@@ -28,6 +28,7 @@ import {
     DialogTrigger
 } from "@/components/ui/dialog";
 import {transliterateProfileUsername} from "@/hooks/transliterateProfileUsername";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 
 const Navbar = () => {
     // const [userType, setUserType] = useState('employer')
@@ -236,9 +237,11 @@ const Navbar = () => {
                             </DropdownMenuContent>
                         </DropdownMenu>
                         </Dialog>
-                        <div>
-                            <LogOutSection/>
-                        </div>
+                        <Avatar className={'self-center h-16 w-16'} >
+                            <AvatarImage
+                                src={`data:image/jpeg;base64,${user?.photo_url}`}/>
+                            <AvatarFallback>VC</AvatarFallback>
+                        </Avatar>
                     </div>)
                     :
                     <LoginSection />

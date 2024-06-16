@@ -26,7 +26,7 @@ import {Label} from "@/components/ui/label";
 import FormSuccess from "@/components/forms/form-success";
 import FormError from "@/components/forms/form-error";
 
-const ComplaintsForm = ({vacancy_id, setIsDialogOpen, setHoveredResumeId, report_username, report_user_id, isFull }:{vacancy_id:number, setIsDialogOpen:(b:boolean) => void, setHoveredResumeId: (id: number | null) => void, report_username?: string, report_user_id:number | undefined, isFull?:boolean}) => {
+const ComplaintsForm = ({vacancy_id, setIsDialogOpen, setHoveredId, report_username, report_user_id, isFull }:{vacancy_id:number, setIsDialogOpen:(b:boolean) => void, setHoveredId: (id: number | null) => void, report_username?: string, report_user_id:number | undefined, isFull?:boolean}) => {
     const [error, setError] = useState('')
     if(!report_username){
         report_username = 'Аноним'
@@ -59,7 +59,7 @@ const ComplaintsForm = ({vacancy_id, setIsDialogOpen, setHoveredResumeId, report
     }
     const handleDialogClose = () => {
         setIsDialogOpen(false);
-        setHoveredResumeId(null);
+        setHoveredId(null);
     };
     return (
         <Form {...form}>

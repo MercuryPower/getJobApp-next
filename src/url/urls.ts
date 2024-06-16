@@ -54,5 +54,6 @@ export const REPORT_VACANCY = `http://127.0.0.1:8000/tests/report_vacancy`
 // !REPORT REQUESTS
 
 // PHOTO
-    export const ADD_PHOTO = `http://127.0.0.1:8000/tests/add_photo`
+export const ADD_PHOTO = `http://127.0.0.1:8000/tests/add_photo`
+export const UPDATE_PHOTO = `http://127.0.0.1:8000/tests/update_photo`
 // !PHOTO

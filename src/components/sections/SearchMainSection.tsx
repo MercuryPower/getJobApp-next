@@ -79,7 +79,7 @@ const SearchMainSection = () => {
 
     const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
-        router.push(`${isEmployer ? `vacancies/?query=${inputValue}`: `jobseekers/?query=${inputValue}`}`)
+        router.push(`${isEmployer ? `jobseekers/?query=${inputValue}`: `vacancies/?query=${inputValue}`}`)
     };
 
     return (

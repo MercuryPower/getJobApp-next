@@ -6,7 +6,7 @@ import {HoverCard, HoverCardContent, HoverCardTrigger} from "@/components/ui/hov
 import {Button} from "@/components/ui/button";
 import {Carousel, CarouselContent, CarouselItem, CarouselNext} from "@/components/ui/carousel";
 import {Card, CardContent} from "@/components/ui/card";
-import {ChevronsRight, CircleX, Pencil, Trash2} from "lucide-react";
+import {BadgeCheck, ChevronsRight, CircleX, Pencil, Trash2} from "lucide-react";
 import {useParams, usePathname, useRouter} from "next/navigation";
 import {useAuth} from "@/providers";
 import VacancyCards from "@/components/cards/VacancyCards";
@@ -119,39 +119,49 @@ const Page = () => {
                                     )
                                 }
                                 <div className={'flex justify-center p-2'}>
-                                    <Avatar>
-                                        <AvatarImage
-                                            src="https://acdn.tinkoff.ru/static/pages/files/d39e9d26-fd5e-4574-9ad3-c3f2fc102598.png"/>
-                                        <AvatarFallback>VC</AvatarFallback>
-                                    </Avatar>
-                                    <p className={'text-ellipsis overflow-hidden'}>
-                                        <HoverCard>
-                                            <HoverCardTrigger asChild>
-                                                <Button variant="link">{vacancy.companyName}</Button>
-                                            </HoverCardTrigger>
-                                            <HoverCardContent className="w-fit ">
-                                                <div className="flex justify-between space-x-4 self-center ">
-                                                    <Avatar className={'self-center'}>
-                                                        <AvatarImage
-                                                            src="https://acdn.tinkoff.ru/static/pages/files/d39e9d26-fd5e-4574-9ad3-c3f2fc102598.png"/>
-                                                        <AvatarFallback>VC</AvatarFallback>
-                                                    </Avatar>
-                                                    <div
-                                                        className="space-y-2 flex max-w-md flex-col  justify-center self-center ">
-                                                        <h4 className="text-sm text-ellipsis overflow-hidden font-semibold">{vacancy.companyName}</h4>
-                                                        <p className="text-sm max-w-32 text-ellipsis overflow-hidden">
-                                                            {vacancy.companyDescription}
-                                                        </p>
-                                                        <div
-                                                            className="flex flex-col  items-center text-ellipsis  overflow-hidden pt-2">
-                                                    <span
-                                                        className="text-xs text-muted-foreground ">Присоединился в {formattedDate(vacancy.registered_at, true)}</span>
-                                                        </div>
+                                    <HoverCard>
+                                        <HoverCardTrigger asChild>
+                                            <div className={'flex'}>
+                                                <Avatar  className={'self-center cursor-pointer w-12 h-12'}>
+                                                    {vacancy?.photo_url ?
+                                                        <AvatarImage alt={'profile-picture'}
+                                                                     src={`data:image/jpeg;base64,${vacancy?.photo_url}`}
+                                                        />
+                                                        :
+                                                        <AvatarImage alt={'profile-default-picture'}
+                                                                     src='https://cdn-icons-png.flaticon.com/512/8801/8801434.png'
+                                                        />
+                                                    }
+                                                </Avatar>
+                                                <Button variant="link" className={'gap-x-1 self-center'}>{vacancy.companyName}{vacancy.is_verified && <BadgeCheck color="#16a34a" size={18} />}</Button>
+                                            </div>
+                                        </HoverCardTrigger>
+                                        <HoverCardContent className="w-fit ">
+                                            <div className="flex justify-between space-x-4 self-center " >
+                                                <Avatar  className={'self-center cursor-pointer w-12 h-12'}>
+                                                    {vacancy?.photo_url ?
+                                                        <AvatarImage alt={'profile-picture'}
+                                                                     src={`data:image/jpeg;base64,${vacancy?.photo_url}`}
+                                                        />
+                                                        :
+                                                        <AvatarImage alt={'profile-default-picture'}
+                                                                     src='https://cdn-icons-png.flaticon.com/512/8801/8801434.png'
+                                                        />
+                                                    }
+                                                </Avatar>
+                                                <div className="space-y-2 flex max-w-md flex-col  justify-center self-center ">
+                                                    <p className="text-sm text-start flex gap-x-1 text-ellipsis overflow-hidden font-semibold">{vacancy.companyName}{vacancy.is_verified && <BadgeCheck size={18}  color="#16a34a" />}</p>
+                                                    <p className="text-xs text-start max-w-64 max-h-20  text-ellipsis overflow-hidden">
+                                                        {vacancy.companyDescription}
+                                                    </p>
+                                                    <div className="flex flex-col  items-center text-ellipsis  overflow-hidden pt-2">
+                                                <span
+                                                    className="text-xs text-muted-foreground ">Присоединился в {formattedDate(vacancy.registered_at, true)}</span>
                                                     </div>
                                                 </div>
-                                            </HoverCardContent>
-                                        </HoverCard>
-                                    </p>
+                                            </div>
+                                        </HoverCardContent>
+                                    </HoverCard>
                                 </div>
                                 {vacancy.skills && vacancy.skills?.length > 0 && (
                                     <div className={'flex justify-center m-2'}>

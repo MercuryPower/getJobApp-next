@@ -15,7 +15,7 @@ import {
     ADD_PHOTO,
     GET_VERIFICATIONS_SKILLS,
     SET_VERIFICATION_COMPANY_NAME,
-    SET_VERIFICATION_REQUEST_COMPANY_NAME
+    SET_VERIFICATION_REQUEST_COMPANY_NAME, UPDATE_PHOTO
 } from "@/url/urls";
 import {Input} from "@/components/ui/input";
 import {
@@ -36,6 +36,7 @@ import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, Form
 
 const Page = () => {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const [isHoveredOnPhoto, setIsHoveredOnPhoto] = useState(false)
     const [error, setError] = useState('')
     const [success, setSuccess] = useState('')
     const [isVerificationRequestSend, setIsVerificationRequestSend] = useState(false);
@@ -99,44 +100,51 @@ const Page = () => {
             });
         }
     };
-    if(!isLoggedIn){
-        return notFound();
-    }
-
     const handleFileChange = (e:React.ChangeEvent<HTMLInputElement>) => {
-        if(e.target.files && e.target.files.length > 0)
-        {
-            setSelectedFile(e.target.files[0]);
+        if (e.target.files && e.target.files.length > 0) {
+            const file = e.target.files[0];
+            const fileType = file.type;
+
+            if (fileType !== 'image/jpeg' && fileType !== 'image/png') {
+                setError('Допустимы только файлы форматов JPEG и PNG');
+                return;
+            }
+
+            setSelectedFile(file);
         }
+
     };
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!selectedFile) {
             setError('No file selected');
             return;
         }
+
         const formData = new FormData();
         formData.append('file', selectedFile);
 
+        const url = user?.photo_url ? UPDATE_PHOTO : ADD_PHOTO;
+
         try {
-            const response = await fetch(ADD_PHOTO, {
+            const response = await fetch(url, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
                 body: formData
             });
-            console.log(await response.json());
-            if(response.ok){
+
+            if (response.ok) {
                 toast({
-                    title: "Фото успешно загружено",
-                    description: `Ваше фото было успешно загружено.`,
+                    title:"Фото успешно загружено",
+                    description: `Ваше фото было успешно загружено и появится чуть позже.`,
                     action: (
-                        <ToastAction altText="Ок">Хорошо</ToastAction>
+                        <ToastAction altText="Ок" onClick={() => window.location.reload()}>Хорошо.</ToastAction>
                     )
                 });
-            }
-            else{
+            } else {
                 toast({
                     variant: 'destructive',
                     title: "Ошибка при загрузке фото",
@@ -157,8 +165,10 @@ const Page = () => {
                 )
             });
         }
+    };
+    if(!isLoggedIn){
+        return notFound();
     }
-
     return (
         <div className={'flex justify-center max-w- self-center shadow p-4 m-2 my-6 rounded-2xl gap-5 border relative max-w-screen-lg w-full mx-auto'}>
             <Button onClick={() => router.back()} className={'absolute left-1 self-start mt-8 space-x-2 hover:no-underline hover:opacity-75 transition-all'} variant={'link'} type={'button'}>
@@ -177,12 +187,28 @@ const Page = () => {
                 <h1 className={'text-3xl self-center flex justify-center font-bold mt-4 p-2 rounded-2xl'}>Здравствуйте, {user?.username}!</h1>
                 <Dialog>
                     <DialogTrigger asChild>
-                        {/*<Paperclip />*/}
-                        <Avatar  className={'self-center h-14 w-14 hover:after:'}>
-                            <AvatarImage
-                                src='https://cdn-icons-png.flaticon.com/512/8801/8801434.png'/>
-                            <AvatarFallback>VC</AvatarFallback>
-                        </Avatar>
+                        <div className={'relative cursor-pointer'} onMouseEnter={() => setIsHoveredOnPhoto(true)}  onMouseLeave={() => setIsHoveredOnPhoto(false)}>
+                            <Avatar  className={'self-center    h-28 w-28'}>
+                                {user?.photo_url ?
+                                    <AvatarImage alt={'profile-picture'}
+                                                 src={`data:image/jpeg;base64,${user?.photo_url}`}
+                                    />
+                                    :
+                                    <>
+                                        <AvatarImage alt={'profile-default-picture'}
+                                                     src='https://cdn-icons-png.flaticon.com/512/8801/8801434.png'
+                                        />
+                                    </>
+                                }
+                            </Avatar>
+                            {isHoveredOnPhoto &&
+                                <div className={'absolute h-28 w-28 top-0 transition-all z-100 opacity-75  rounded-full bg-green-600'}>
+                                    <Paperclip className={'absolute left-11 top-11'}/>
+                                </div>
+                            }
+
+                        </div>
+
                     </DialogTrigger>
                         <DialogContent className="sm:max-w-[425px]">
                             <DialogHeader>
@@ -200,7 +226,7 @@ const Page = () => {
                                         render={({ field }) => (
                                             <FormItem>
                                                 <FormControl>
-                                                    <Input type="file" onChange={handleFileChange} />
+                                                    <Input accept="image/png, image/jpeg"  type="file" onChange={handleFileChange} />
                                                 </FormControl>
                                                 <FormDescription>
                                                     Выберите файл для загрузки фотографии.
@@ -210,9 +236,14 @@ const Page = () => {
                                         )}
                                     />
                                     <DialogClose asChild>
-                                        <Button type={'submit'} size={"lg"} className={'h-12 p-4 border-black bg-green-600 rounded  font-bold  transition'} >
-                                            <span>Загрузить</span>
-                                        </Button>
+                                        <div className={'flex space-x-4'}>
+                                            <Button type={'submit'} size={"lg"} className={'h-12 p-4 border-black bg-green-600 rounded  font-bold  transition'} >
+                                                <span>Сохранить</span>
+                                            </Button>
+                                            <Button type={'button'} size={"lg"} className={'h-12 p-4 border-black rounded  font-bold  transition'} >
+                                                <span>Закрыть</span>
+                                            </Button>
+                                        </div>
                                     </DialogClose>
 
                                 </form>

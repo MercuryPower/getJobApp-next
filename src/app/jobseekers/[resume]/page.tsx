@@ -114,23 +114,67 @@ const Page = () => {
                              onMouseEnter={() => handleMouseEnter(resume.id)}
                              onMouseLeave={handleMouseLeave}>
                             <div className={' flex text-center justify-center gap-x-8  p-2 mt-4 relative  '}>
-                                <div className={'flex mr-6 justify-center '}>
-                                    <Avatar>
-                                        <AvatarImage
-                                            src="https://acdn.tinkoff.ru/static/pages/files/d39e9d26-fd5e-4574-9ad3-c3f2fc102598.png"/>
-                                        <AvatarFallback>VC</AvatarFallback>
-                                    </Avatar>
-                                </div>
                                 <div>
-                                    {hoveredResumeId === resume.id &&
-                                        <div className={'flex justify-center self-center'}>
-                                            <ComplaintsForm  isFull report_user_id={user?.id} setHoveredResumeId={setHoveredResumeId} setIsDialogOpen={setIsDialogOpen} vacancy_id={resume.id} report_username={user?.username}/>
+                                    <div>
+                                        <div className={'flex justify-center '}>
+                                            <Avatar  className={'self-center cursor-pointer w-40 h-40'}>
+                                                {resume?.photo_url ?
+                                                    <AvatarImage alt={'profile-picture'}
+                                                                 src={`data:image/jpeg;base64,${resume?.photo_url}`}
+                                                    />
+                                                    :
+                                                    <AvatarImage alt={'profile-default-picture'}
+                                                                 src='https://cdn-icons-png.flaticon.com/512/8801/8801434.png'
+                                                    />
+                                                }
+                                            </Avatar>
                                         </div>
-                                    }
-                                    <Link href={`${resume.id}`}>
-                                        <p className={'text-5xl text-center  text-ellipsis overflow-hidden font-bold  cursor-pointer'}>{resume.exp} {resume.vacancy_name}</p>
-                                    </Link>
+                                        <div className={'flex justify-center p-2'}>
+                                            <HoverCard>
+                                                <HoverCardTrigger asChild>
+                                                    <Button  variant="link" className={'font-extrabold text-2xl opacity-80'}>@{resume.companyName}</Button>
+                                                </HoverCardTrigger>
+                                                <HoverCardContent className='w-fit'>
+                                                    <div className="flex justify-between space-x-4 max-w-md " >
+                                                        <Avatar  className={'self-center cursor-pointer w-16 h-16'}>
+                                                            {resume?.photo_url ?
+                                                                <AvatarImage alt={'profile-picture'}
+                                                                             src={`data:image/jpeg;base64,${resume?.photo_url}`}
+                                                                />
+                                                                :
+                                                                <AvatarImage alt={'profile-default-picture'}
+                                                                             src='https://cdn-icons-png.flaticon.com/512/8801/8801434.png'
+                                                                />
+                                                            }
+                                                        </Avatar>
+                                                        <div className="space-y-2  flex flex-col  justify-center self-center text-wrap ">
+                                                            <p className="text-xl  text-start font-extrabold  text-ellipsis overflow-hidden">@{resume.companyName}</p>
+                                                            <p className="text-lg text-start   text-ellipsis overflow-hidden">
+                                                                {resume.companyDescription}
+                                                            </p>
+                                                            <div className="flex text-center justify-center flex-col  items-center text-ellipsis  overflow-hidden pt-2">
+                                                                <p className="text-lg text-center text-muted-foreground ">
+                                                                    Присоединился {formattedDate(resume.registered_at, false)}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </HoverCardContent>
+                                            </HoverCard>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        {hoveredResumeId === resume.id &&
+                                            <div className={'flex justify-center self-center'}>
+                                                <ComplaintsForm  isFull report_user_id={user?.id} setHoveredId={setHoveredResumeId} setIsDialogOpen={setIsDialogOpen} vacancy_id={resume.id} report_username={user?.username}/>
+                                            </div>
+                                        }
+                                        <Link href={`${resume.id}`}>
+                                            <p className={'text-5xl justify-center flex text-center  text-ellipsis overflow-hidden font-bold  cursor-pointer'}>{resume.exp} {resume.vacancy_name}</p>
+                                        </Link>
+                                    </div>
                                 </div>
+
                                 {user?.id === resume.user_id || user?.is_superuser &&
                                     <div className={'flex space-x-2 justify-end self-center relative'}>
                                         <div className={'flex gap-x-4'}>
@@ -171,34 +215,6 @@ const Page = () => {
                                         договоренности </p>
                                 )
                             }
-                            <div className={'flex justify-center p-2'}>
-                                <HoverCard>
-                                    <HoverCardTrigger asChild>
-                                        <Button  variant="link">{resume.companyName}</Button>
-                                    </HoverCardTrigger>
-                                    <HoverCardContent className="w-96 ">
-                                        <div className="flex justify-between space-x-4 " >
-                                            <Avatar className={'self-center'}>
-                                                <AvatarImage
-                                                    src="https://acdn.tinkoff.ru/static/pages/files/d39e9d26-fd5e-4574-9ad3-c3f2fc102598.png"/>
-                                                <AvatarFallback>VC</AvatarFallback>
-                                            </Avatar>
-                                            <div className="space-y-2  flex flex-col  justify-center self-center ">
-                                                <p className="text-xl font-bold  text-ellipsis overflow-hidden">@{resume.companyName}</p>
-                                                <p className="text-lg   text-ellipsis overflow-hidden">
-                                                    {resume.companyDescription}
-                                                </p>
-                                                <div className="flex text-center justify-center flex-col  items-center text-ellipsis  overflow-hidden pt-2">
-                                                    <p className="text-lg text-center text-muted-foreground ">
-                                                        Присоединился {formattedDate(resume.registered_at, false)}
-                                                    </p>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </HoverCardContent>
-                                </HoverCard>
-                            </div>
                             {resume.skills && resume.skills?.length > 0 && (
                                 <>
                                     <div className={'flex  flex-col self-center justify-center m-2'}>

@@ -7,7 +7,7 @@ import {CardsProperties, VacancyInfo} from "@/types/types";
 import {HoverCard, HoverCardContent, HoverCardTrigger} from "@/components/ui/hover-card";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import VacancyCardSkeleton from "@/components/ui/skeletons/VacancyCardSkeleton";
-import {CircleX, Pencil, Trash2} from "lucide-react";
+import {BadgeCheck, CircleX, Pencil, Trash2} from "lucide-react";
 import {usePathname, useRouter} from "next/navigation";
 import Link from "next/link";
 import {formattedDate} from "@/hooks/formatDate";
@@ -82,14 +82,14 @@ const RecommendationCards = ({data,setIsHovered,page, query, queryString}: Cards
                 <div className={'text-center '}>
                     {filteredVacancies.length > 0 ? filteredVacancies.map((vacancy) => {
                             return (
-                                <div key={vacancy.id} className={'flex shadow p-4 m-2 my-6 rounded-2xl gap-5 border min-h-80'}
+                                <div key={vacancy.id} className={'flex shadow p-4 m-2 my-6 rounded-2xl  gap-5 border min-h-80'}
                                      onMouseEnter={() => handleMouseEnterArea(vacancy.id)}
                                      onMouseLeave={handleMouseLeaveArea}
                                 >
-                                    <div className={'p-2  w-[500px] flex flex-col flex-grow  justify-center rounded relative'}>
+                                    <div className={'p-2  w-[500px] flex flex-col flex-grow   justify-center rounded relative'}>
                                         <div className={' flex text-center justify-center p-2'}>
                                             {hoveredRecommendationId === vacancy.id &&
-                                                <ComplaintsForm report_user_id={user?.id} setHoveredResumeId={setHoveredRecommendationId} setIsDialogOpen={setIsDialogOpen} vacancy_id={vacancy.id} report_username={user?.username}/>
+                                                <ComplaintsForm report_user_id={user?.id} setHoveredId={setHoveredRecommendationId} setIsDialogOpen={setIsDialogOpen} vacancy_id={vacancy.id} report_username={user?.username}/>
                                             }
                                             <Link href={`${user?.type === 'company' ? '/vacancies' : '/jobseekers'}/${vacancy.id}`}>
                                                 <p className={'text-3xl text-ellipsis overflow-hidden font-bold  cursor-pointer'}>{vacancy.exp} {vacancy.vacancy_name}</p>
@@ -106,30 +106,43 @@ const RecommendationCards = ({data,setIsHovered,page, query, queryString}: Cards
                                             )
                                         }
                                         <div className={'flex justify-center p-2'}>
-                                            <Avatar>
-                                                <AvatarImage
-                                                    src="https://acdn.tinkoff.ru/static/pages/files/d39e9d26-fd5e-4574-9ad3-c3f2fc102598.png"/>
-                                                <AvatarFallback>VC</AvatarFallback>
-                                            </Avatar>
                                             <HoverCard>
                                                 <HoverCardTrigger asChild>
-                                                    <Button variant="link">{vacancy.companyName}</Button>
+                                                    <div className={'flex'}>
+                                                        <Avatar  className={'self-center cursor-pointer w-12 h-12'}>
+                                                            {vacancy?.photo_url ?
+                                                                <AvatarImage alt={'profile-picture'}
+                                                                             src={`data:image/jpeg;base64,${vacancy?.photo_url}`}
+                                                                />
+                                                                :
+                                                                <AvatarImage alt={'profile-default-picture'}
+                                                                             src='https://cdn-icons-png.flaticon.com/512/8801/8801434.png'
+                                                                />
+                                                            }
+                                                        </Avatar>
+                                                        <Button variant="link">{vacancy.companyName}</Button>
+                                                    </div>
                                                 </HoverCardTrigger>
                                                 <HoverCardContent className="w-fit ">
                                                     <div className="flex justify-between space-x-4 self-center " >
-                                                        <Avatar className={'self-center'}>
-                                                            <AvatarImage
-                                                                src="https://acdn.tinkoff.ru/static/pages/files/d39e9d26-fd5e-4574-9ad3-c3f2fc102598.png"/>
-                                                            <AvatarFallback>VC</AvatarFallback>
+                                                        <Avatar  className={'self-center cursor-pointer w-12 h-12'}>
+                                                            {vacancy?.photo_url ?
+                                                                <AvatarImage alt={'profile-picture'}
+                                                                             src={`data:image/jpeg;base64,${vacancy?.photo_url}`}
+                                                                />
+                                                                :
+                                                                <AvatarImage alt={'profile-default-picture'}
+                                                                             src='https://cdn-icons-png.flaticon.com/512/8801/8801434.png'
+                                                                />
+                                                            }
                                                         </Avatar>
                                                         <div className="space-y-2 flex max-w-md flex-col  justify-center self-center ">
-                                                            <p className="text-sm text-ellipsis overflow-hidden font-semibold">{vacancy.companyName}</p>
-                                                            <p className="text-xs max-w-32 max-h-14  text-ellipsis overflow-hidden">
+                                                            <p className="text-md text-start flex gap-x-1 text-ellipsis overflow-hidden font-semibold">@{vacancy.companyName}{vacancy.is_verified && <BadgeCheck size={18}  color="#16a34a" />}</p>
+                                                            <p className="text-sm text-start max-w-80 max-h-20 text-ellipsis overflow-hidden">
                                                                 {vacancy.companyDescription}
                                                             </p>
                                                             <div className="flex flex-col  items-center text-ellipsis  overflow-hidden pt-2">
-                                                    <span
-                                                        className="text-xs text-muted-foreground ">Присоединился в {formattedDate(vacancy.registered_at, true)}</span>
+                                                                <span className="text-xs text-muted-foreground ">Присоединился в {formattedDate(vacancy.registered_at, true)}</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -166,7 +179,7 @@ const RecommendationCards = ({data,setIsHovered,page, query, queryString}: Cards
                                                         <CarouselContent className={'-ml-2 md:-ml-4'} >
                                                             {vacancy.types_of_employ?.map((type, index) => (
                                                                 <CarouselItem
-                                                                    className={`basis-${vacancy.cities.length === 1 ? 'full' : (vacancy.cities.length >= 2 ? '1/2' : '1/3')}  hover:opacity-75 pl-4 `}
+                                                                    className={`basis-${vacancy.cities.length === 1 ? 'full' : (vacancy.cities.length >= 2 ? 2 : 3)}  hover:opacity-75 pl-4 `}
                                                                     key={type.name}>
                                                                     <div className="p-1">
                                                                         <Card className={'border-none'}>
@@ -189,7 +202,7 @@ const RecommendationCards = ({data,setIsHovered,page, query, queryString}: Cards
                                                 <CarouselContent className={'-ml-4'}>
                                                     {vacancy.cities?.map((city) => (
                                                         <CarouselItem
-                                                            className={`basis-${vacancy.cities.length === 1 ? 'full' : (vacancy.cities.length >= 2 ? '1/2' : '1/3')}  hover:opacity-75 pl-4 `}
+                                                            className={`basis-${vacancy.cities.length === 1 ? 'full' : (vacancy.cities.length >= 2 ? 2 : 3)}   hover:opacity-75 pl-4 `}
                                                             key={city.name}>
                                                             <div className="p-1">
                                                                 <Card>
