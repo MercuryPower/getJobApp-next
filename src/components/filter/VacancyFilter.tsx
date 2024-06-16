@@ -50,7 +50,7 @@ const VacancyFilter = ({ onQueryChange, query }: { onQueryChange: (query: string
         router.push(fullPath);
 
         // try {
-        //     const response = await fetch(`http://127.0.0.1:8000/tests/company?${queryString}`, {
+        //     const response = await fetch(`http://127.0.0.1:8000/search/company?${queryString}`, {
         //         method: 'GET',
         //         headers: {
         //             'Content-Type': 'application/json',

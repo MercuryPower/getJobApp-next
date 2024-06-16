@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/dialog";
 import style from "@/components/styles/style.module.sass";
 import ComplaintsForm from "@/components/forms/ComplaintsForm";
+import {DELETE_VACANCY} from "@/url/urls";
 
 interface ResumeInfo extends VacancyInfo{
     resume: string;
@@ -39,7 +40,7 @@ const ResumeCards = ({data, page, query, queryString}: {data:ResumeInfo[], page:
         const fetchData = async () => {
             setIsLoading(true);
             try {
-                const response = await fetch(`http://127.0.0.1:8000/tests/user?page=${page}&query=${query}&${queryString}`);
+                const response = await fetch(`http://127.0.0.1:8000/search/user?page=${page}&query=${query}&${queryString}`);
                 const responseData = await response.json();
                 setFilteredResumes(responseData);
             } catch (error) {
@@ -66,7 +67,7 @@ const ResumeCards = ({data, page, query, queryString}: {data:ResumeInfo[], page:
     }, [data, query]);
     const deleteResume = async (resumeId: number) => {
         try {
-            const response = await fetch(`http://127.0.0.1:8000/tests/delete_vacancy/${resumeId}`, {
+            const response = await fetch(`${DELETE_VACANCY}/${resumeId}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,

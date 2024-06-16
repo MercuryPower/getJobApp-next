@@ -99,7 +99,7 @@ const Page = () => {
         const fetchData = async () => {
             const fetchResumeData = async () => {
                 try {
-                    const response = await fetch(`http://127.0.0.1:8000/tests/vacancy/${id}`);
+                    const response = await fetch(`http://127.0.0.1:8000/search/vacancy/${id}`);
                     if (!response.ok) {
                         throw new Error('Ошибка при сборе данных');
                     }
@@ -209,7 +209,7 @@ const Page = () => {
                 skills: values.skills,
                 typeOfEmploy: values.typeOfEmploy,
             };
-            fetch(`http://127.0.0.1:8000/tests/update_vacancy/${id}`, {
+            fetch(`http://127.0.0.1:8000/user/update_vacancy/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -483,7 +483,7 @@ const Page = () => {
                                 </DialogHeader>
                                 <div className={'flex gap-x-2 justify-center'}>
                                     <Button disabled={isPending} className={'flex self-center bg-green-600 font-bold'} type={"submit"} onClick={form.handleSubmit(onSubmit)}>Подтвердить</Button>
-                                    <DialogClose>
+                                    <DialogClose asChild>
                                         <Button disabled={isPending} className={'flex self-center  font-bold '} type={"submit"}>Отменить редактирование</Button>
                                     </DialogClose>
                                 </div>

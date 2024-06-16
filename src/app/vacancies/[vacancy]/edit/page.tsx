@@ -97,7 +97,7 @@ const Page = () => {
     }, []);
     const fetchVacancyData = useCallback(async () => {
         try {
-            const response = await fetch(`http://127.0.0.1:8000/tests/vacancy/${id}`);
+            const response = await fetch(`http://127.0.0.1:8000/search/vacancy/${id}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch vacancy data');
             }
@@ -210,7 +210,7 @@ const Page = () => {
                 skills: values.skills,
                 typeOfEmploy: values.typeOfEmploy,
             };
-            fetch(`http://127.0.0.1:8000/tests/update_vacancy/${id}`, {
+            fetch(`http://127.0.0.1:8000/user/update_vacancy/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/dialog";
 import {useLogOut} from "@/hooks/useLogOut";
 import ComplaintsForm from "@/components/forms/ComplaintsForm";
+import {DELETE_VACANCY} from "@/url/urls";
 
 
 
@@ -39,7 +40,7 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
         const fetchData = async () => {
             setIsLoading(true);
             try {
-                const response = await fetch(`http://127.0.0.1:8000/tests/company?page=${page}&query=${query}&${queryString}`);
+                const response = await fetch(`http://127.0.0.1:8000/search/company?page=${page}&query=${query}&${queryString}`);
                 const responseData = await response.json();
                 setFilteredVacancies(responseData);
             } catch (error) {
@@ -66,7 +67,7 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
     // }, [data, query]);
     const deleteVacancy = async (vacancyId: number) => {
         try {
-            const response = await fetch(`http://127.0.0.1:8000/tests/delete_vacancy/${vacancyId}`, {
+            const response = await fetch(`${DELETE_VACANCY}/${vacancyId}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,

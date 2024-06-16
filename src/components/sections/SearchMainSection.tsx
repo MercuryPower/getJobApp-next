@@ -15,7 +15,7 @@ const SearchMainSection = () => {
     useEffect(() => {
         const fetchCounts = async () => {
             try{
-                const response = await fetch('http://127.0.0.1:8000/tests/get_stats_for_main_page',
+                const response = await fetch('http://127.0.0.1:8000/stats/get_stats_for_main_page',
                     {
                         cache:'force-cache',
                         next:{revalidate:3600},

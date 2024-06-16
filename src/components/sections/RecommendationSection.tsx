@@ -15,6 +15,7 @@ import {usePathname, useRouter} from "next/navigation";
 import RecommendationCards from "@/components/cards/RecommendationCards";
 import {Separator} from "@/components/ui/separator";
 import {useAuth} from "@/providers";
+import {GET_RECOMMENDATIONS} from "@/url/urls";
 
 const RecommendationSection = () => {
     const [recommendationData, setRecommendationData] = useState<VacancyInfo[]>([])
@@ -27,7 +28,7 @@ const RecommendationSection = () => {
         const fetchData = async () => {
             setIsLoading(true);
             try {
-                const response = await fetch(`http://127.0.0.1:8000/tests/recommendations`, {
+                const response = await fetch(GET_RECOMMENDATIONS, {
                     method:'GET',
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`,

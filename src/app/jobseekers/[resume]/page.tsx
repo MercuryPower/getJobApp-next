@@ -14,6 +14,7 @@ import {formattedDate} from "@/hooks/formatDate";
 import {Pencil, Trash2} from "lucide-react";
 import {Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
 import ComplaintsForm from "@/components/forms/ComplaintsForm";
+import {DELETE_VACANCY} from "@/url/urls";
 
 const Page = () => {
     const [hoveredResumeId, setHoveredResumeId] = useState<number | null>(null);
@@ -23,32 +24,32 @@ const Page = () => {
     const router = useRouter()
     const params = useParams();
     const [resume, setResume] = useState<ResumeInfo>();
+    // useEffect(() => {
+    //     const fetchResume = async () => {
+    //         try {
+    //             const response = await fetch(`http://127.0.0.1:8000/search/vacancy/${params.resume}`);
+    //             if (!response.ok) {
+    //                 console.error('Ошибка при сборе данных о резюме:');
+    //             }
+    //             const data = await response.json();
+    //             setResume(data);
+    //         } catch (error) {
+    //             console.error('Ошибка при сборе данных:', error);
+    //         }
+    //     };
+    //     void fetchResume();
+    // }, [params.resume]);
     useEffect(() => {
         const fetchResume = async () => {
             try {
-                const response = await fetch(`http://127.0.0.1:8000/tests/vacancy/${params.resume}`);
-                if (!response.ok) {
-                    console.error('Ошибка при сборе данных о резюме:');
-                }
-                const data = await response.json();
-                setResume(data);
-            } catch (error) {
-                console.error('Ошибка при сборе данных:', error);
-            }
-        };
-        void fetchResume();
-    }, [params.resume]);
-    useEffect(() => {
-        const fetchResume = async () => {
-            try {
-                const response = await fetch(`http://127.0.0.1:8000/tests/vacancy/${params.resume}`);
+                const response = await fetch(`http://127.0.0.1:8000/search/vacancy/${params.resume}`);
                 if (!response.ok) {
                     throw new Error('Ошибка при сборе данных о резюме');
                 }
                 const data = await response.json();
 
                 if (data.is_reported && user?.is_superuser) {
-                    const reportedResponse = await fetch(`http://127.0.0.1:8000/tests/reported_vacancy/${params.resume}`,{
+                    const reportedResponse = await fetch(`http://127.0.0.1:8000/admin/reported_vacancy/${params.resume}`,{
                         headers: {
                             'Authorization': `Bearer ${localStorage.getItem('token')}`,
                         },
@@ -70,7 +71,7 @@ const Page = () => {
 
     const deleteResume = async (vacancyId: number) => {
         try {
-            const response = await fetch(`http://127.0.0.1:8000/tests/delete_vacancy/${vacancyId}`, {
+            const response = await fetch(`${DELETE_VACANCY}/${vacancyId}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -163,7 +164,7 @@ const Page = () => {
                                             </HoverCard>
                                         </div>
                                     </div>
-                                    <div>
+                                    <div className={'flex'}>
                                         {hoveredResumeId === resume.id &&
                                             <div className={'flex justify-center self-center'}>
                                                 <ComplaintsForm  isFull report_user_id={user?.id} setHoveredId={setHoveredResumeId} setIsDialogOpen={setIsDialogOpen} vacancy_id={resume.id} report_username={user?.username}/>
@@ -172,37 +173,36 @@ const Page = () => {
                                         <Link href={`${resume.id}`}>
                                             <p className={'text-5xl justify-center flex text-center  text-ellipsis overflow-hidden font-bold  cursor-pointer'}>{resume.exp} {resume.vacancy_name}</p>
                                         </Link>
+                                        {user?.id === resume.user_id || user?.is_superuser &&
+                                            <div className={'flex space-x-2 ml-2 justify-end self-center relative'}>
+                                                <div className={'flex gap-x-4'}>
+                                                    <Button className={'rounded-full gap-x-2 '}
+                                                            onClick={() => router.push(`${pathname}/edit`)}>
+                                                        <Pencil />
+                                                    </Button>
+                                                </div>
+                                                <Dialog>
+                                                    <DialogTrigger asChild>
+                                                        <Button className={'bg-destructive  rounded-full gap-x-2'}>
+                                                            <Trash2 />
+                                                        </Button>
+                                                    </DialogTrigger>
+                                                    <DialogContent className={'flex self-justify-center flex-col'} >
+                                                        <DialogHeader className={'self-center'}>
+                                                            <DialogTitle >Вы уверены, что хотите удалить резюме?</DialogTitle>
+                                                        </DialogHeader>
+                                                        <div className={'flex justify-center space-x-4'}>
+                                                            <Button size={'lg'} className={'font-bold'}  onClick={() =>deleteResume(resume.id)}>Да, удалить</Button>
+                                                            <DialogClose asChild>
+                                                                <Button size={'lg'} className={'flex self-center  bg-green-600  font-bold'}>Нет</Button>
+                                                            </DialogClose>
+                                                        </div>
+                                                    </DialogContent>
+                                                </Dialog>
+                                            </div>
+                                        }
                                     </div>
                                 </div>
-
-                                {user?.id === resume.user_id || user?.is_superuser &&
-                                    <div className={'flex space-x-2 justify-end self-center relative'}>
-                                        <div className={'flex gap-x-4'}>
-                                            <Button className={'rounded-full gap-x-2 '}
-                                                    onClick={() => router.push(`${pathname}/edit`)}>
-                                                <Pencil />
-                                            </Button>
-                                        </div>
-                                            <Dialog>
-                                                <DialogTrigger asChild>
-                                                    <Button className={'bg-destructive  rounded-full gap-x-2'}>
-                                                        <Trash2 />
-                                                    </Button>
-                                                </DialogTrigger>
-                                                <DialogContent className={'flex self-justify-center flex-col'} >
-                                                    <DialogHeader className={'self-center'}>
-                                                        <DialogTitle >Вы уверены, что хотите удалить резюме?</DialogTitle>
-                                                    </DialogHeader>
-                                                    <div className={'flex justify-center space-x-4'}>
-                                                        <Button size={'lg'} className={'font-bold'}  onClick={() =>deleteResume(resume.id)}>Да, удалить</Button>
-                                                        <DialogClose asChild>
-                                                            <Button size={'lg'} className={'flex self-center  bg-green-600  font-bold'}>Нет</Button>
-                                                        </DialogClose>
-                                                    </div>
-                                                </DialogContent>
-                                            </Dialog>
-                                    </div>
-                                }
                             </div>
                             {resume.salary_type === 'range' ?
                                 <p className={'text-center text-3xl font-light text-ellipsis overflow-hidden '}>{resume.min_salary} - {resume.max_salary} &#8381; </p>
@@ -292,7 +292,7 @@ const Page = () => {
                             </div>
                             <div className={'p-2 m-4 space-y-4'}>
                                 <h2 className={'font-black'}>Контакты:</h2>
-                                <p className={'text-start'}>{resume.description}</p>
+                                <p className={'text-start'}>{resume.contacts}</p>
                                 <p className={'text-xs opacity-50'}>Вы можете связаться с соискателем по
                                     этим контактам</p>
                             </div>

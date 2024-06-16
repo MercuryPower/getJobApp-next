@@ -18,6 +18,7 @@ import {useAuth} from "@/providers";
 import {formattedDate} from "@/hooks/formatDate";
 import {Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
 import ComplaintsForm from "@/components/forms/ComplaintsForm";
+import {DELETE_VACANCY} from "@/url/urls";
 
 const Page = () => {
     const [hoveredVacancyId, setHoveredVacancyId] = useState<number | null>(null);
@@ -30,14 +31,14 @@ const Page = () => {
     useEffect(() => {
         const fetchVacancy = async () => {
             try {
-                const response = await fetch(`http://127.0.0.1:8000/tests/vacancy/${params.vacancy}`);
+                const response = await fetch(`http://127.0.0.1:8000/search/vacancy/${params.vacancy}`);
                 if (!response.ok) {
                     throw new Error('Ошибка при сборе данных о резюме');
                 }
                 const data = await response.json();
 
                 if (data.is_reported && user?.is_superuser) {
-                    const reportedResponse = await fetch(`http://127.0.0.1:8000/tests/reported_vacancy/${params.vacancy}`,{
+                    const reportedResponse = await fetch(`http://127.0.0.1:8000/admin/reported_vacancy/${params.vacancy}`,{
                         headers: {
                             'Authorization': `Bearer ${localStorage.getItem('token')}`,
                         },
@@ -58,7 +59,7 @@ const Page = () => {
     }, [params.vacancy, user]);
     const deleteVacancy = async (vacancyId: number) => {
         try {
-            const response = await fetch(`http://127.0.0.1:8000/tests/delete_vacancy/${vacancyId}`, {
+            const response = await fetch(`${DELETE_VACANCY}/${vacancyId}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -151,7 +152,7 @@ const Page = () => {
                                         </HoverCard>
                                     </div>
                                 </div>
-                                <div>
+                                <div className={'flex'}>
                                     {hoveredVacancyId === vacancy.id &&
                                         <div className={'flex justify-center self-center'}>
                                             <ComplaintsForm  isFull report_user_id={user?.id} setHoveredId={setHoveredVacancyId} setIsDialogOpen={setIsDialogOpen} vacancy_id={vacancy.id} report_username={user?.username}/>
@@ -160,37 +161,36 @@ const Page = () => {
                                     <Link href={`${vacancy.id}`}>
                                         <p className={'text-5xl justify-center flex text-center  text-ellipsis overflow-hidden font-bold  cursor-pointer'}>{vacancy.exp} {vacancy.vacancy_name}</p>
                                     </Link>
+                                    {user?.id === vacancy.user_id || user?.is_superuser &&
+                                        <div className={'flex  ml-2 space-x-2 justify-end self-center relative'}>
+                                            <div className={'flex gap-x-4'}>
+                                                <Button className={'rounded-full gap-x-2 '}
+                                                        onClick={() => router.push(`${pathname}/edit`)}>
+                                                    <Pencil />
+                                                </Button>
+                                            </div>
+                                            <Dialog>
+                                                <DialogTrigger asChild>
+                                                    <Button className={'bg-destructive  rounded-full gap-x-2'}>
+                                                        <Trash2 />
+                                                    </Button>
+                                                </DialogTrigger>
+                                                <DialogContent className={'flex self-justify-center flex-col'} >
+                                                    <DialogHeader className={'self-center'}>
+                                                        <DialogTitle >Вы уверены, что хотите удалить резюме?</DialogTitle>
+                                                    </DialogHeader>
+                                                    <div className={'flex justify-center space-x-4'}>
+                                                        <Button size={'lg'} className={'font-bold'}  onClick={() =>deleteVacancy(vacancy.id)}>Да, удалить</Button>
+                                                        <DialogClose asChild>
+                                                            <Button size={'lg'} className={'flex self-center  bg-green-600  font-bold'}>Нет</Button>
+                                                        </DialogClose>
+                                                    </div>
+                                                </DialogContent>
+                                            </Dialog>
+                                        </div>
+                                    }
                                 </div>
                             </div>
-
-                            {user?.id === vacancy.user_id || user?.is_superuser &&
-                                <div className={'flex space-x-2 justify-end self-center relative'}>
-                                    <div className={'flex gap-x-4'}>
-                                        <Button className={'rounded-full gap-x-2 '}
-                                                onClick={() => router.push(`${pathname}/edit`)}>
-                                            <Pencil />
-                                        </Button>
-                                    </div>
-                                    <Dialog>
-                                        <DialogTrigger asChild>
-                                            <Button className={'bg-destructive  rounded-full gap-x-2'}>
-                                                <Trash2 />
-                                            </Button>
-                                        </DialogTrigger>
-                                        <DialogContent className={'flex self-justify-center flex-col'} >
-                                            <DialogHeader className={'self-center'}>
-                                                <DialogTitle >Вы уверены, что хотите удалить резюме?</DialogTitle>
-                                            </DialogHeader>
-                                            <div className={'flex justify-center space-x-4'}>
-                                                <Button size={'lg'} className={'font-bold'}  onClick={() =>deleteVacancy(vacancy.id)}>Да, удалить</Button>
-                                                <DialogClose asChild>
-                                                    <Button size={'lg'} className={'flex self-center  bg-green-600  font-bold'}>Нет</Button>
-                                                </DialogClose>
-                                            </div>
-                                        </DialogContent>
-                                    </Dialog>
-                                </div>
-                            }
                         </div>
                         {vacancy.salary_type === 'range' ?
                             <p className={'text-center text-3xl font-light text-ellipsis overflow-hidden '}>{vacancy.min_salary} - {vacancy.max_salary} &#8381; </p>
@@ -280,7 +280,7 @@ const Page = () => {
                         </div>
                         <div className={'p-2 m-4 space-y-4'}>
                             <h2 className={'font-black'}>Контакты:</h2>
-                            <p className={'text-start'}>{vacancy.description}</p>
+                            <p className={'text-start'}>{vacancy.contacts}</p>
                             <p className={'text-xs opacity-50'}>Вы можете связаться с соискателем по
                                 этим контактам</p>
                         </div>

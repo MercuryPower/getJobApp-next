@@ -1,11 +1,10 @@
-
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Button} from "@/components/ui/button";
-import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "@/components/ui/carousel";
+import {Carousel, CarouselContent, CarouselItem, CarouselNext} from "@/components/ui/carousel";
 import {Card, CardContent} from "@/components/ui/card";
 import {CardsProperties, VacancyInfo} from "@/types/types";
 import {HoverCard, HoverCardContent, HoverCardTrigger} from "@/components/ui/hover-card";
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import {Avatar, AvatarImage} from "@/components/ui/avatar";
 import VacancyCardSkeleton from "@/components/ui/skeletons/VacancyCardSkeleton";
 import {BadgeCheck, CircleX, Pencil, Trash2} from "lucide-react";
 import {usePathname, useRouter} from "next/navigation";
@@ -13,9 +12,8 @@ import Link from "next/link";
 import {formattedDate} from "@/hooks/formatDate";
 import {useAuth} from "@/providers";
 import {Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
-import {useLogOut} from "@/hooks/useLogOut";
 import ComplaintsForm from "@/components/forms/ComplaintsForm";
-
+import {DELETE_VACANCY} from "@/url/urls";
 
 
 const RecommendationCards = ({data,setIsHovered,page, query, queryString}: CardsProperties) => {
@@ -43,7 +41,7 @@ const RecommendationCards = ({data,setIsHovered,page, query, queryString}: Cards
     // }, [data, query]);
     const deleteVacancy = async (vacancyId: number) => {
         try {
-            const response = await fetch(`http://127.0.0.1:8000/tests/delete_vacancy/${vacancyId}`, {
+            const response = await fetch(`${DELETE_VACANCY}/${vacancyId}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,

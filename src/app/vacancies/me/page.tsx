@@ -24,6 +24,7 @@ import {
     DialogTitle,
     DialogTrigger
 } from "@/components/ui/dialog";
+import {DELETE_VACANCY} from "@/url/urls";
 
 const Page = () => {
     const router = useRouter();
@@ -36,7 +37,7 @@ const Page = () => {
         const fetchVacancy = async () => {
             setIsLoading(true)
             try {
-                const response = await fetch(`http://127.0.0.1:8000/tests/vacancy_by_user`,{
+                const response = await fetch(`http://127.0.0.1:8000/user/vacancy_by_user`,{
                     method:'GET',
                     headers:{
                         'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -66,7 +67,7 @@ const Page = () => {
     }
     const deleteVacancy = async (vacancyId: number) => {
         try {
-            const response = await fetch(`http://127.0.0.1:8000/tests/delete_vacancy/${vacancyId}`, {
+            const response = await fetch(`${DELETE_VACANCY}/${vacancyId}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,

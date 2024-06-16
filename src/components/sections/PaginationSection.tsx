@@ -56,7 +56,7 @@ const PaginationSection = ({currentPage,queryString, query}:{currentPage:number,
     useEffect(() => {
         const fetchTotalPages = async () => {
             try {
-                const response = await fetch(`http://127.0.0.1:8000/tests/${type}_count?page=${page}&query=${query}&${queryString}`);
+                const response = await fetch(`http://127.0.0.1:8000/search/${type}_count?page=${page}&query=${query}&${queryString}`);
                 if (response.ok) {
                     const data = parseInt(await response.text(), 10);
                     setTotalPages(data);

@@ -136,7 +136,7 @@ const Page = () => {
                 skills: values.skills,
                 typeOfEmploy: values.typeOfEmploy,
             };
-            fetch('http://127.0.0.1:8000/tests/add_vacancy', {
+            fetch('http://127.0.0.1:8000/user/add_vacancy', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
