@@ -85,12 +85,12 @@ const Page = () => {
                 <div className={'flex justify-center flex-col'}>
                     <h2 className={'text-3xl text-center font-light mt-4 p-2  rounded-2xl'}>Названия вакансий</h2>
                     <Separator className={'max-w-sm  self-center'} />
-                    <Statistics verifyTableType={'vacancyName'} updateVerificationData={setDataCitiesVerifications} isVerification data={dataVacancyNamesVerifications}/>
+                    <Statistics verifyTableType={'vacancyName'} updateVerificationData={setDataVacancyNamesVerifications} isVerification data={dataVacancyNamesVerifications}/>
                 </div>
                 <div className={'flex justify-center flex-col'}>
                     <h2 className={'text-3xl text-center font-light mt-4 p-2  rounded-2xl'}>Скиллы</h2>
                     <Separator className={'max-w-sm  self-center'} />
-                    <Statistics verifyTableType={'skill'} updateVerificationData={setDataCitiesVerifications} isVerification data={dataSkillsVerifications}/>
+                    <Statistics verifyTableType={'skill'} updateVerificationData={setDataSkillsVerifications} isVerification data={dataSkillsVerifications}/>
                 </div>
                 <div className={'flex justify-center flex-col'}>
                     <h2 className={'text-3xl text-center font-light mt-4 p-2  rounded-2xl'}>Города</h2>

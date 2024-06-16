@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {GET_CITIES} from "@/url/urls";
+import {GET_CITIES, GET_SKILLS} from "@/url/urls";
 import MultipleSelector, {Option} from "@/components/multiselect";
 import {Select} from "@/components/ui/select";
 
@@ -8,7 +8,7 @@ const MultiselectSkills = ({ onChange }: { onChange: (selectedSkills: string[]) 
     useEffect(() => {
         const fetchSkills = async () => {
             try {
-                const response = await fetch(`http://127.0.0.1:8000/tests/skills`, { cache: 'force-cache', next: { revalidate: 1800 } });
+                const response = await fetch(GET_SKILLS, { cache: 'force-cache', next: { revalidate: 1800 } });
                 if (response.ok) {
                     const data = await response.json();
                     const formattedData: Option[] = data.map((item: any) => ({

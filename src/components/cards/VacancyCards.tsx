@@ -126,7 +126,7 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
                             </Avatar>
                                 <HoverCard>
                                     <HoverCardTrigger asChild>
-                                        <Button variant="link">{vacancy.companyName}{vacancy.is_verified && <BadgeCheck size={16} color="#16a34a" strokeWidth={1.25} />}</Button>
+                                        <Button variant="link" className={'gap-x-1'}>{vacancy.companyName}{vacancy.is_verified && <BadgeCheck color="#16a34a" size={18} />}</Button>
                                     </HoverCardTrigger>
                                     <HoverCardContent className="w-fit ">
                                         <div className="flex justify-between space-x-4 self-center " >
@@ -136,7 +136,7 @@ const VacancyCards = ({data, page, query, queryString}: {data:VacancyInfo[], pag
                                                 <AvatarFallback>VC</AvatarFallback>
                                             </Avatar>
                                             <div className="space-y-2 flex max-w-md flex-col  justify-center self-center ">
-                                                <p className="text-sm text-ellipsis overflow-hidden font-semibold">{vacancy.companyName}{vacancy.is_verified && <BadgeCheck size={16} color="#16a34a" strokeWidth={1.25} />}</p>
+                                                <p className="text-sm flex gap-x-1 text-ellipsis overflow-hidden font-semibold">{vacancy.companyName}{vacancy.is_verified && <BadgeCheck size={18}  color="#16a34a" />}</p>
                                                 <p className="text-xs max-w-32 max-h-14  text-ellipsis overflow-hidden">
                                                     {vacancy.companyDescription}
                                                 </p>

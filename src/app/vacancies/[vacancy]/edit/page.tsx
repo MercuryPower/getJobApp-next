@@ -33,21 +33,68 @@ import {usePathname, useRouter} from "next/navigation";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {VacancyInfo} from "@/types/types";
 import {citiesForChoice, skillsForChoice, workTypes} from "@/data/data";
+import {GET_CITIES, GET_SKILLS, GET_TYPES_OF_EMPLOY} from "@/url/urls";
 
 const Page = () => {
     const [isPending, startTransition] = useTransition();
     const {user, isLoggedIn} = useAuth();
     const pathname = usePathname();
+    const [dataSkills, setDataSkills] = useState<Option[]>([])
+    const [dataCities, setDataCities] = useState<Option[]>([])
+    const [dataTypesOfEmploy, setDataTypesOfEmploy] = useState<Option[]>([])
     const [skills, setSkills] = useState<Option[]>([])
     const [cities, setCities] = useState<Option[]>([])
-    const [range, setRange] = useState([0, 500000]);
     const [typesOfEmploy, setTypesOfEmploy] = useState<Option[]>([])
+    const [range, setRange] = useState([0, 500000]);
     const [isByAgreement, setIsByAgreement] = useState(false);
     const [isFixedSalary, setIsFixedSalary] = useState(true)
     const router = useRouter()
     const [vacancyData, setVacancyData] = useState<VacancyInfo>();
     const id = pathname.split('/')[2];
-
+    useEffect(() => {
+        const fetchCities = async () => {
+            try {
+                const response = await fetch(GET_CITIES, {cache:'force-cache'});
+                if (response.ok) {
+                    const data = await response.json();
+                    setDataCities(data.map((city: Option, index: number) => ({ key: index, value: city.name, label: city.name })));
+                } else {
+                    console.error('Failed to fetch cities');
+                }
+            } catch (error) {
+                console.error('Error fetching cities:', error);
+            }
+        };
+        const fetchSkills = async () => {
+            try {
+                const response = await fetch(GET_SKILLS, {cache:'force-cache'});
+                if (response.ok) {
+                    const data = await response.json();
+                    setDataSkills(data.map((skill: Option, index: number) => ({ key: index, value: skill.name, label: skill.name })));
+                } else {
+                    console.error('Ошибка при получение навыков');
+                }
+            } catch (error) {
+                console.error('Ошибка при получение навыков:', error);
+            }
+        };
+        const fetchTypesOfEmploy = async () => {
+            try {
+                const response = await fetch(GET_TYPES_OF_EMPLOY,{cache:'force-cache'});
+                if (response.ok) {
+                    const data = await response.json();
+                    setDataTypesOfEmploy(data.map((typeOfEmploy: Option, index: number) => ({ key: index, value: typeOfEmploy.name, label: typeOfEmploy.name })));
+                } else {
+                    console.error('Ошибка при получение типов занятости');
+                }
+            } catch (error) {
+                console.error('Ошибка при получение типов занятости:', error);
+            }
+        };
+        void fetchTypesOfEmploy();
+        void fetchSkills();
+        void fetchCities();
+    }, []);
     const fetchVacancyData = useCallback(async () => {
         try {
             const response = await fetch(`http://127.0.0.1:8000/tests/vacancy/${id}`);
@@ -289,7 +336,7 @@ const Page = () => {
                                             badgeClassName={'text-md'}
                                             className={'self-center max-h-44 w-full h-20 overflow-y-auto overflow-x-hidden'}
                                             placeholder="Добавьте тип занятости"
-                                            options={workTypes}
+                                            options={dataTypesOfEmploy}
                                             onChange={(selectedWorkTypes) => {
                                                 field.onChange(selectedWorkTypes.map(workType => workType.value));
                                             }}
@@ -372,7 +419,7 @@ const Page = () => {
                                             creatable
                                             className={'self-center max-h-44 w-full h-20 overflow-y-auto overflow-x-hidden'}
                                             placeholder="Добавьте навыки"
-                                            options={skillsForChoice}
+                                            options={dataSkills}
                                             value={skills}
                                             onChange={(selectedSkills) => {
                                                 field.onChange(selectedSkills.map(skill => skill.value))
@@ -398,7 +445,7 @@ const Page = () => {
                                             creatable
                                             className={'self-center max-h-40 h-16 w-full overflow-y-auto overflow-x-hidden'}
                                             placeholder="Добавьте города"
-                                            options={citiesForChoice}
+                                            options={dataCities}
                                             value={cities}
                                             onChange={(selectedCities) => {
                                                 field.onChange(selectedCities.map(city => city.value))
@@ -427,7 +474,7 @@ const Page = () => {
                                 </DialogHeader>
                                 <div className={'flex gap-x-2 justify-center'}>
                                     <Button className={'flex self-center bg-green-600 font-bold'} type={"submit"} onClick={form.handleSubmit(onSubmit)}>Подтвердить</Button>
-                                    <DialogClose>
+                                    <DialogClose asChild>
                                         <Button className={'flex self-center  font-bold '} type={"submit"}>Отменить редактирование</Button>
                                     </DialogClose>
                                 </div>

@@ -171,7 +171,7 @@ const Page = () => {
                         <div className={'flex flex-col justify-center p-2 max-h-23'}>
                             <HoverCard>
                                 <HoverCardTrigger asChild>
-                                    <Button variant="link">{vacancy.companyName}{vacancy.is_verified && <BadgeCheck size={16} color="#16a34a" strokeWidth={1.25} />}</Button>
+                                    <Button variant="link" className={'gap-x-1'}>{vacancy.companyName}{vacancy.is_verified && <BadgeCheck color="#16a34a" />}</Button>
                                 </HoverCardTrigger>
                                 <HoverCardContent className="w-fit ">
                                     <div className="flex justify-between space-x-4 self-center ">
@@ -181,7 +181,7 @@ const Page = () => {
                                             <AvatarFallback>VC</AvatarFallback>
                                         </Avatar>
                                         <div className="space-y-2 flex max-w-md flex-col  justify-center self-center ">
-                                            <p className="text-xl font-bold  text-ellipsis overflow-hidden">@{vacancy.companyName}{vacancy.verified && <BadgeCheck size={16} color="#16a34a" strokeWidth={1.25} />}</p>
+                                            <p className="text-xl font-bold flex text-ellipsis overflow-hidden gap-x-1">@{vacancy.companyName}{vacancy.is_verified && <BadgeCheck color="#16a34a" />}</p>
                                             <p className="text-xs max-w-32 max-h-14  text-ellipsis overflow-hidden">
                                                 {vacancy.companyDescription}
                                             </p>

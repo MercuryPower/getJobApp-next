@@ -4,6 +4,7 @@ import {ThemeProvider} from "next-themes";
 import React, {createContext, useContext, useEffect, useState} from "react";
 import {IsEmployerContextProps, userProperties} from "@/types/types";
 import {router} from "next/client";
+import {GET_USER} from "@/url/urls";
 export const AuthContext = createContext<{
     isLoggedIn: boolean;
     setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
@@ -21,7 +22,7 @@ export default function Providers({children}:{children:React.ReactNode}){
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const user_response = await fetch('http://127.0.0.1:8000/users/me', {
+                const user_response = await fetch(GET_USER, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',

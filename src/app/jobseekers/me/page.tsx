@@ -22,6 +22,7 @@ import {
     DialogTitle,
     DialogTrigger
 } from "@/components/ui/dialog";
+import {GET_MY_VACANCIES_OR_RESUMES} from "@/url/urls";
 
 const Page = () => {
     const router = useRouter();
@@ -34,7 +35,7 @@ const Page = () => {
         const fetchVacancy = async () => {
             setIsLoading(true)
             try {
-                const response = await fetch(`http://127.0.0.1:8000/tests/vacancy_by_user`,{
+                const response = await fetch(GET_MY_VACANCIES_OR_RESUMES,{
                     method:'GET',
                     headers:{
                         'Authorization': `Bearer ${localStorage.getItem('token')}`,

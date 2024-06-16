@@ -32,16 +32,15 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import {columnTranslations, StatisticProps, VerificationCompanyProps, VerificationProps} from "@/types/types";
+import {columnTranslations, StatisticProps, VerificationProps} from "@/types/types";
 import {
-    GET_USER_INFO_BY_ID, PATCH_USER_INFO_BY_ID,
-    SET_UNVERIFIED_CITY,
+    SET_UNVERIFIED_CITY, SET_UNVERIFIED_COMPANY_NAME,
     SET_UNVERIFIED_SKILL, SET_UNVERIFIED_VACANCY_NAME,
     SET_VERIFICATION_CITY, SET_VERIFICATION_COMPANY_NAME,
     SET_VERIFICATION_SKILL, SET_VERIFICATION_VACANCY_NAME,
 } from "@/url/urls";
 import {useEffect, useMemo, useState} from "react";
-const generateColumns = (data: StatisticProps[] | VerificationProps[] | VerificationCompanyProps[], isEmployer?:boolean, isVerification?:boolean, verifyTableType?: 'skill' | 'city' | 'vacancyName' | 'companyName'): ColumnDef<StatisticProps | VerificationProps | VerificationCompanyProps>[] => {
+const generateColumns = (data: StatisticProps[] | VerificationProps[], isEmployer?:boolean, isVerification?:boolean, verifyTableType?: 'skill' | 'city' | 'vacancyName' | 'companyName'): ColumnDef<StatisticProps | VerificationProps>[] => {
 
     if (!data || data.length === 0) {
         return [];
@@ -109,7 +108,7 @@ const generateColumns = (data: StatisticProps[] | VerificationProps[] | Verifica
     });
 };
 
-export function Statistics({ data, isEmployer, isVerification,  verifyTableType, updateVerificationData}: { data: StatisticProps[] | VerificationProps[] | VerificationCompanyProps[], isEmployer?:boolean, isVerification?:boolean,  verifyTableType?: 'skill' | 'city' | 'vacancyName' | 'companyName', updateVerificationData?: (newData: (VerificationProps)[]) => void;}) {
+export function Statistics({ data, isEmployer, isVerification,  verifyTableType, updateVerificationData}: { data: StatisticProps[] | VerificationProps[], isEmployer?:boolean, isVerification?:boolean,  verifyTableType?: 'skill' | 'city' | 'vacancyName' | 'companyName', updateVerificationData?: (newData: (VerificationProps)[]) => void;}) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
@@ -132,7 +131,7 @@ export function Statistics({ data, isEmployer, isVerification,  verifyTableType,
         });
     }
 
-    async function handleVerification(item :VerificationProps | VerificationCompanyProps, action: 'accept' | 'reject') {
+    async function handleVerification(item :VerificationProps, action: 'accept' | 'reject') {
         let requestUrl = ''
         let secondCompanyRequestUrl = ''
         switch(verifyTableType){
@@ -156,9 +155,9 @@ export function Statistics({ data, isEmployer, isVerification,  verifyTableType,
                 break;
             case "companyName":
                 action === 'accept' ?
-                        requestUrl = GET_USER_INFO_BY_ID
+                    requestUrl = SET_VERIFICATION_COMPANY_NAME
                     :
-                    requestUrl = SET_UNVERIFIED_VACANCY_NAME
+                    requestUrl = SET_UNVERIFIED_COMPANY_NAME
                 break;
             default:
                 return;

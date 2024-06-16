@@ -3,6 +3,7 @@ import MultipleSelector, {Option} from "@/components/multiselect";
 import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel} from "@/components/ui/form";
 import {Checkbox} from "@/components/ui/checkbox";
 import {CheckedState} from "@radix-ui/react-checkbox";
+import {GET_TYPES_OF_EMPLOY} from "@/url/urls";
 const SelectTypeOfEmploy = ({onChecked}: { onChecked: (typeOfEmploy: (prevSelected: string[]) => any) => void }) => {
     const [typesOfEmploy, setTypesOfEmploy] = useState<Array<{id: number, name: string}>>([])
 
@@ -10,7 +11,7 @@ const SelectTypeOfEmploy = ({onChecked}: { onChecked: (typeOfEmploy: (prevSelect
     useEffect(() => {
         const fetchTypesOfEmploy = async () => {
             try {
-                const response = await fetch(`http://127.0.0.1:8000/tests/types_of_employ`, { cache: 'force-cache', next: { revalidate: 1800 } });
+                const response = await fetch(GET_TYPES_OF_EMPLOY, { cache: 'force-cache', next: { revalidate: 1800 } });
                 if (response.ok) {
                     const data = await response.json();
                     setTypesOfEmploy(data);

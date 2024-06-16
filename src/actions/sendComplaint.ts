@@ -2,6 +2,7 @@ import {z} from "zod";
 import {ComplaintSchema, LoginSchema, RegistrationSchema} from "@/schemas";
 import ComplaintsForm from "@/components/forms/ComplaintsForm";
 import {json} from "stream/consumers";
+import {REPORT_VACANCY} from "@/url/urls";
 
 export const sendComplaint = async (values: z.infer<typeof ComplaintSchema>, vacancy_id: number, report_username?: string, report_user_id?:number) => {
     const validatedFields = ComplaintSchema.safeParse(values);
@@ -22,7 +23,7 @@ export const sendComplaint = async (values: z.infer<typeof ComplaintSchema>, vac
             report_user_id
         };
         console.log(payload)
-        const response = await fetch(`http://127.0.0.1:8000/tests/report_vacancy`, {
+        const response = await fetch(REPORT_VACANCY, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'

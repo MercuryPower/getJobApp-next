@@ -9,6 +9,9 @@ export const LoginSchema = z.object({
         message:'Необходимо ввести пароль'
     })
 })
+export const ProfileSchema = z.object({
+    file: z.instanceof(File)
+})
 export const RegistrationSchema = z.object({
     username: z.string().min(3, {
         message: 'Имя пользователя должно быть больше 3 символов.'

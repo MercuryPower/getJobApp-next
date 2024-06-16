@@ -9,17 +9,39 @@ import {Button} from "@/components/ui/button";
 import {Container} from "@mui/material";
 import {toast, useToast} from "@/components/ui/use-toast";
 import {ToastAction} from "@/components/ui/toast";
-import {BadgeAlert, Check, Mail, MailPlus} from "lucide-react";
+import {BadgeAlert, Check, Mail, MailPlus, Paperclip} from "lucide-react";
 import FormSuccess from "@/components/forms/form-success";
-import {GET_VERIFICATIONS_SKILLS, SET_VERIFICATION_COMPANY_NAME} from "@/url/urls";
+import {
+    ADD_PHOTO,
+    GET_VERIFICATIONS_SKILLS,
+    SET_VERIFICATION_COMPANY_NAME,
+    SET_VERIFICATION_REQUEST_COMPANY_NAME
+} from "@/url/urls";
+import {Input} from "@/components/ui/input";
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription, DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger
+} from "@/components/ui/dialog";
+import {Label} from "@/components/ui/label";
+import {FormProvider, useForm} from "react-hook-form";
+import {z} from "zod";
+import {LoginSchema, ProfileSchema} from "@/schemas";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 
 const Page = () => {
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [error, setError] = useState('')
     const [success, setSuccess] = useState('')
-    // const [isVerificationRequestSend, setIsVerificationRequestSend] = useState(false);
-    const [isVerificationRequestSend, setIsVerificationRequestSend] = useState(() => {
-        return sessionStorage.getItem('isVerificationRequestSend') === 'true';
-    })
+    const [isVerificationRequestSend, setIsVerificationRequestSend] = useState(false);
+    // const [isVerificationRequestSend, setIsVerificationRequestSend] = useState(() => {
+    //     return localStorage.getItem('isVerificationRequestSend') === 'true';
+    // })
     const pathname = usePathname();
     const { toast } = useToast()
     const {user, isLoggedIn} = useAuth()
@@ -28,10 +50,15 @@ const Page = () => {
     // useEffect(() => {
     //     localStorage.setItem('isVerificationRequestSend', JSON.stringify(isVerificationRequestSend));
     // }, [isVerificationRequestSend]);
-
+    const form = useForm<z.infer<typeof ProfileSchema>>({
+        resolver:zodResolver(LoginSchema),
+        defaultValues:{
+            file: undefined,
+        }
+    });
     const sendVerificationRequest = async () => {
         try {
-            const response = await fetch(SET_VERIFICATION_COMPANY_NAME, {
+            const response = await fetch(SET_VERIFICATION_REQUEST_COMPANY_NAME, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -72,10 +99,66 @@ const Page = () => {
             });
         }
     };
-
     if(!isLoggedIn){
         return notFound();
     }
+
+    const handleFileChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+        if(e.target.files && e.target.files.length > 0)
+        {
+            setSelectedFile(e.target.files[0]);
+        }
+    };
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (!selectedFile) {
+            setError('No file selected');
+            return;
+        }
+        const formData = new FormData();
+        formData.append('file', selectedFile);
+
+        try {
+            const response = await fetch(ADD_PHOTO, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                body: formData
+            });
+            console.log(await response.json());
+            if(response.ok){
+                toast({
+                    title: "Фото успешно загружено",
+                    description: `Ваше фото было успешно загружено.`,
+                    action: (
+                        <ToastAction altText="Ок">Хорошо</ToastAction>
+                    )
+                });
+            }
+            else{
+                toast({
+                    variant: 'destructive',
+                    title: "Ошибка при загрузке фото",
+                    description: `Произошла ошибка при загрузке фото. Попробуйте еще раз.`,
+                    action: (
+                        <ToastAction altText="Ок">Хорошо</ToastAction>
+                    )
+                });
+            }
+        } catch (error) {
+            console.error('Error uploading photo', error);
+            toast({
+                variant: 'destructive',
+                title: "Ошибка при загрузке фото",
+                description: `Произошла ошибка при загрузке фото. Попробуйте еще раз.`,
+                action: (
+                    <ToastAction altText="Ок">Хорошо</ToastAction>
+                )
+            });
+        }
+    }
+
     return (
         <div className={'flex justify-center max-w- self-center shadow p-4 m-2 my-6 rounded-2xl gap-5 border relative max-w-screen-lg w-full mx-auto'}>
             <Button onClick={() => router.back()} className={'absolute left-1 self-start mt-8 space-x-2 hover:no-underline hover:opacity-75 transition-all'} variant={'link'} type={'button'}>
@@ -88,14 +171,55 @@ const Page = () => {
                     Назад
                 </h2>
             </Button>
+
             <div className={'p-2 flex flex-col  justify-center rounded'}>
             <div className={'flex justify-center space-x-4 '}>
                 <h1 className={'text-3xl self-center flex justify-center font-bold mt-4 p-2 rounded-2xl'}>Здравствуйте, {user?.username}!</h1>
-                <Avatar  className={'self-center h-14 w-14'}>
-                    <AvatarImage
-                        src="https://cdn-icons-png.flaticon.com/512/8801/8801434.png"/>
-                    <AvatarFallback>VC</AvatarFallback>
-                </Avatar>
+                <Dialog>
+                    <DialogTrigger asChild>
+                        {/*<Paperclip />*/}
+                        <Avatar  className={'self-center h-14 w-14 hover:after:'}>
+                            <AvatarImage
+                                src='https://cdn-icons-png.flaticon.com/512/8801/8801434.png'/>
+                            <AvatarFallback>VC</AvatarFallback>
+                        </Avatar>
+                    </DialogTrigger>
+                        <DialogContent className="sm:max-w-[425px]">
+                            <DialogHeader>
+                                <DialogTitle>Загрузка фото профиля</DialogTitle>
+                                <DialogDescription>
+                                    Здесь вы можете загрузить фото для профиля. Нажмите "Сохранить" после того как загрузили фотографию.
+                                </DialogDescription>
+                            </DialogHeader>
+                            <div className="grid gap-4 py-4">
+                                <FormProvider {...form}>
+                                <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4">
+                                    <FormField
+                                        control={form.control}
+                                        name="file"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormControl>
+                                                    <Input type="file" onChange={handleFileChange} />
+                                                </FormControl>
+                                                <FormDescription>
+                                                    Выберите файл для загрузки фотографии.
+                                                </FormDescription>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <DialogClose asChild>
+                                        <Button type={'submit'} size={"lg"} className={'h-12 p-4 border-black bg-green-600 rounded  font-bold  transition'} >
+                                            <span>Загрузить</span>
+                                        </Button>
+                                    </DialogClose>
+
+                                </form>
+                                </FormProvider>
+                            </div>
+                        </DialogContent>
+                </Dialog>
             </div>
                 {user?.type === 'company' && !user.is_superuser && !user?.is_verified && !isVerificationRequestSend &&
                 <div className={'flex flex-col justify-end self-center p-2 '}>

@@ -32,15 +32,60 @@ import {
     DialogTitle, DialogTrigger
 } from "@/components/ui/dialog";
 import {citiesForChoice, workTypes} from "@/data/data";
+import {GET_CITIES, GET_SKILLS, GET_TYPES_OF_EMPLOY} from "@/url/urls";
 const Page = () => {
     const {user} = useAuth();
-    const [skills, setSkills] = useState<Option[]>()
-    const [cities, setCities] = useState<Option[]>()
+    const [dataSkills, setDataSkills] = useState<Option[]>()
+    const [dataCities, setDataCities] = useState<Option[]>()
+    const [dataTypesOfEmploy, setDataTypesOfEmploy] = useState<Option[]>()
     const [range, setRange] = useState([0, 500000]);
     const [isByAgreement, setIsByAgreement] = useState(false);
     const [isFixedSalary, setIsFixedSalary] = useState(true)
     const router = useRouter()
-
+    useEffect(() => {
+        const fetchCities = async () => {
+            try {
+                const response = await fetch(GET_CITIES, {cache:'force-cache'});
+                if (response.ok) {
+                    const data = await response.json();
+                    setDataCities(data.map((city: Option, index: number) => ({ key: index, value: city.name, label: city.name })));
+                } else {
+                    console.error('Failed to fetch cities');
+                }
+            } catch (error) {
+                console.error('Error fetching cities:', error);
+            }
+        };
+        const fetchSkills = async () => {
+            try {
+                const response = await fetch(GET_SKILLS, {cache:'force-cache'});
+                if (response.ok) {
+                    const data = await response.json();
+                    setDataSkills(data.map((skill: Option, index: number) => ({ key: index, value: skill.name, label: skill.name })));
+                } else {
+                    console.error('Ошибка при получение навыков');
+                }
+            } catch (error) {
+                console.error('Ошибка при получение навыков:', error);
+            }
+        };
+        const fetchTypesOfEmploy = async () => {
+            try {
+                const response = await fetch(GET_TYPES_OF_EMPLOY,{cache:'force-cache'});
+                if (response.ok) {
+                    const data = await response.json();
+                    setDataTypesOfEmploy(data.map((typeOfEmploy: Option, index: number) => ({ key: index, value: typeOfEmploy.name, label: typeOfEmploy.name })));
+                } else {
+                    console.error('Ошибка при получение типов занятости');
+                }
+            } catch (error) {
+                console.error('Ошибка при получение типов занятости:', error);
+            }
+        };
+        void fetchTypesOfEmploy();
+        void fetchSkills();
+        void fetchCities();
+    }, []);
     const form = useForm<z.infer<typeof VacancyCreateSchema>>({
         resolver: zodResolver(VacancyCreateSchema),
         defaultValues: {
@@ -212,7 +257,7 @@ const Page = () => {
                                             badgeClassName={'text-md'}
                                             className={'self-center max-h-44 w-full h-20 overflow-y-auto overflow-x-hidden'}
                                             placeholder="Добавьте тип занятости"
-                                            options={workTypes}
+                                            options={dataTypesOfEmploy}
                                             onChange={(selectedWorkTypes) => {
                                                 field.onChange(selectedWorkTypes.map(workType => workType.value));
                                             }}
@@ -294,7 +339,7 @@ const Page = () => {
                                             creatable
                                             className={'self-center max-h-44 w-full h-20 overflow-y-auto overflow-x-hidden'}
                                             placeholder="Добавьте навыки"
-                                            options={skills}
+                                            options={dataSkills}
                                             onChange={(selectedSkills) => {
                                                 field.onChange(selectedSkills.map(skill => skill.value));
                                             }}
@@ -317,7 +362,7 @@ const Page = () => {
                                             badgeClassName={'text-md'}
                                             creatable className={'self-center max-h-40 h-16 w-full overflow-y-auto overflow-x-hidden'}
                                             placeholder="Добавьте города"
-                                            options={citiesForChoice}
+                                            options={dataCities}
                                             onChange={(selectedCities) => {
                                                 field.onChange(selectedCities.map(city => city.value));
                                             }}
@@ -345,7 +390,7 @@ const Page = () => {
                                 </DialogHeader>
                                 <div className={'flex gap-x-2 justify-center'}>
                                     <Button className={'flex self-center bg-green-600 font-bold'} type={"submit"} onClick={form.handleSubmit(onSubmit)}>Подтвердить</Button>
-                                    <DialogClose>
+                                    <DialogClose asChild>
                                         <Button className={'flex self-center  font-bold '} type={"submit"}>Отменить создание</Button>
                                     </DialogClose>
                                 </div>

@@ -34,7 +34,7 @@ const Page = () => {
     }
     return (
         <div className={'flex flex-col items-center '}>
-            <Statistics verifyTableType={'companyName'} isVerification data={dataCompanyNames}  />
+            <Statistics updateVerificationData={setDataCompanyNames} verifyTableType={'companyName'} isVerification data={dataCompanyNames}  />
         </div>
     );
 };

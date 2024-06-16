@@ -6,6 +6,7 @@ import {useRouter} from "next/navigation";
 import {Router} from "next/router";
 import {AppRouterInstance} from "next/dist/shared/lib/app-router-context.shared-runtime";
 import {router} from "next/client";
+import {REGISTRATION_REQUEST} from "@/url/urls";
 
 
 export const register = async (values: TypeOf<typeof RegistrationSchema>, type:string) => {
@@ -26,7 +27,7 @@ export const register = async (values: TypeOf<typeof RegistrationSchema>, type:s
             type,
         };
 
-        const response = await fetch('http://127.0.0.1:8000/auth/register', {
+        const response = await fetch(REGISTRATION_REQUEST, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

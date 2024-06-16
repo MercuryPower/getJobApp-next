@@ -44,8 +44,9 @@ export interface VacancyInfo {
         report_username:string;
     }[]
     type:string;
+    photo_url?: any;
     is_reported:boolean;
-    verified:boolean;
+    is_verified:boolean;
     [key: string]: any;
 }
 export interface ResumeInfo extends VacancyInfo {
@@ -69,9 +70,6 @@ export interface StatisticProps {
 export interface VerificationProps {
     id:number;
     name:string;
-}
-export interface VerificationCompanyProps {
-    id:number;
     company_name:string;
     company_description:string
     company_email:string
@@ -97,6 +95,7 @@ export interface userProperties {
     id: number,
     username:string,
     email: string,
+    photo_url:any;
     description:string,
     type:string,
     registered_at: string,
