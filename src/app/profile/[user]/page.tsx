@@ -214,7 +214,7 @@ const Page = () => {
                             <DialogHeader>
                                 <DialogTitle>Загрузка фото профиля</DialogTitle>
                                 <DialogDescription>
-                                    Здесь вы можете загрузить фото для профиля. Нажмите "Сохранить" после того как загрузили фотографию.
+                                    Здесь вы можете загрузить фото для профиля. Нажмите Сохранить после того как загрузили фотографию.
                                 </DialogDescription>
                             </DialogHeader>
                             <div className="grid gap-4 py-4">
