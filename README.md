@@ -21,12 +21,12 @@
 ```bash
 git clone https://github.com/MercuryPower/getJobApp-next
 cd frontend
+npm install
 ```
 ### Запуск проекта
 
 ```bash
 cd frontend
-npm install
 npm run dev/start
 ```
 
