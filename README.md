@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Платформа поиска специалистов и компаний
 
-## Getting Started
+Добро пожаловать! Это веб-ориентированная система для поиска специалистов и компаний GET JOB, созданная для удобства соискателей. Проект использует **Next.js**, **TypeScript** и **Tailwind CSS** (немного **Sass**) на фронтенде и **Python FastAPI** на бекенде.
 
-First, run the development server:
+## Описание проекта
+
+Проект направлен на предоставление удобного интерфейса для поиска и взаимодействия с профессионалами и компаниями. Фронтенд обеспечивает быстрый пользовательский интерфейс, в то время как бекенд обрабатывает запросы и взаимодействует с базой данных.
+
+## Технологии
+
+- **Next.js**: Framework для серверного рендеринга React приложений.
+- **React** - популярная библиотека на JavaScript
+- **TypeScript**: Надстройка JavaScript, обеспечивающая строгую типизацию.
+- **Tailwind CSS**: Утилитарный CSS фреймворк для стилизации.
+- **Python FastAPI**: Мощный и быстрый фреймворк для создания API на Python.
+
+## Установка и запуск
+
+### Клонирование репозитория
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/MercuryPower/getJobApp-next
+cd repository
+```
+### Запуск проекта
+
+```bash
+cd frontend
+npm install
+npm run dev/start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Связь
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Это open-source проект, поэтому можете спокойно в случае если были найдены какие-то вопросы или предложения связаться в телеграмме 
+- @MercuryPower
