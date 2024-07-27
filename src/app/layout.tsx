@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import {Inter, Rubik} from "next/font/google";
-import "./globals.css";
+import "@/app/globals.css";
 import Navbar from "@/components/Navbar";
 import Providers from "../providers";
 import {cn} from "@/lib/utils";
@@ -8,6 +8,7 @@ import { Rubik as FontSans } from "next/font/google"
 import {ThemeProvider} from "next-themes";
 import {SessionContext, SessionProvider} from "next-auth/react";
 import {Toaster} from "@/components/ui/toaster";
+import Head from "next/head";
 
   const inter = Rubik({ subsets: ["latin"] });
 
@@ -27,6 +28,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+    <Head>
+        <meta name="viewport" content="viewport-fit=cover" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    </Head>
       <body className={cn(
           "min-h-screen bg-background font-sans antialiased",
           fontSans.variable)}>

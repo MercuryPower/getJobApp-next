@@ -1,15 +1,8 @@
 'use client'
-import Link from "next/link";
-import Navbar from "@/components/Navbar";
-import AnimatedNumbers from "react-animated-numbers";
-import Image from "next/image";
-import {FormControl, InputLabel, MenuItem, Select, SelectChangeEvent} from "@mui/material";
 import SearchMainSection from "@/components/sections/SearchMainSection";
 import VacancyForm from "@/components/forms/VacancyForm";
 import KeyFeaturesSection from "@/components/sections/KeyFeaturesSection";
-import {auth} from "@/auth";
 import LoginSection from "@/components/sections/LoginSection";
-import {useRouter} from "next/navigation";
 import React, {useEffect, useState} from "react";
 import {useAuth, useIsEmployer} from "@/providers";
 import JobSeekerForm from "@/components/forms/JobSeekerForm";
@@ -18,10 +11,9 @@ import RecommendationSection from "@/components/sections/RecommendationSection";
 import {RESUME_STATISTIC, VACANCY_STATISTIC} from "@/url/urls";
 import TypeChanger from "@/components/TypeChanger";
 import {StatisticProps} from "@/types/types";
-
-import {ArrowDown, ArrowUp, BookPlus, CircleX, FileQuestion, Lightbulb, LogIn} from "lucide-react";
+import {FileQuestion, Lightbulb, LogIn} from "lucide-react";
 import StatisticTips from "@/components/tips/StatisticTips";
-export default function Home() {
+export default function Page() {
     const [offTips, setOffTips] = useState(true);
     const {isEmployer} = useIsEmployer()
     const [fadeOut, setFadeOut] = useState(false);
