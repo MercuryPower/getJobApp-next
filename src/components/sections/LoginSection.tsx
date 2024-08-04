@@ -14,12 +14,12 @@ import {
 } from "@/components/ui/dialog";
 import CompanyForm from "@/components/forms/CompanyForm";
 import UserForm from "@/components/forms/UserForm";
-import {login} from "@/actions/login";
+import {login} from "@/features/login/login";
 import RegistrationForm from "@/components/forms/RegistrationForm";
 import {LoginSchema, RegistrationSchema} from "@/schemas";
 import FormSuccess from "@/components/forms/form-success";
 import FormError from "@/components/forms/form-error";
-import {register} from "@/actions/registration";
+import {register} from "@/features/registration/registration";
 
 const LoginSection = () => {
     const [userType, setUserType] = useState('')

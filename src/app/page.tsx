@@ -9,10 +9,11 @@ import JobSeekerForm from "@/components/forms/JobSeekerForm";
 import {Statistics} from "@/components/tables/Statistics";
 import RecommendationSection from "@/components/sections/RecommendationSection";
 import {RESUME_STATISTIC, VACANCY_STATISTIC} from "@/url/urls";
-import TypeChanger from "@/components/TypeChanger";
+import TypeChanger from "@/entities/TypeChanger/TypeChanger";
 import {StatisticProps} from "@/types/types";
 import {FileQuestion, Lightbulb, LogIn} from "lucide-react";
 import StatisticTips from "@/components/tips/StatisticTips";
+import Scene from "@/entities/Scene/scene";
 export default function Page() {
     const [offTips, setOffTips] = useState(true);
     const {isEmployer} = useIsEmployer()
@@ -76,6 +77,9 @@ export default function Page() {
     };
     return (
         <main>
+            <div className={'absolute w-full h-96 inset-y-20'}>
+                <Scene />
+            </div>
             <SearchMainSection/>
             <KeyFeaturesSection/>
             <section>

@@ -40,34 +40,36 @@ const Page = () => {
     //     void fetchResume();
     // }, [params.resume]);
     useEffect(() => {
-        const fetchResume = async () => {
-            try {
-                const response = await fetch(`http://127.0.0.1:8000/search/vacancy/${params.resume}`);
-                if (!response.ok) {
-                    throw new Error('Ошибка при сборе данных о резюме');
-                }
-                const data = await response.json();
-
-                if (data.is_reported && user?.is_superuser) {
-                    const reportedResponse = await fetch(`http://127.0.0.1:8000/admin/reported_vacancy/${params.resume}`,{
-                        headers: {
-                            'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                        },
-                    });
-                    if (!reportedResponse.ok) {
-                        throw new Error('Ошибка при сборе данных о репортед вакансии');
+        if (params?.resume) {
+            const fetchResume = async () => {
+                try {
+                    const response = await fetch(`http://127.0.0.1:8000/search/vacancy/${params.resume}`);
+                    if (!response.ok) {
+                        throw new Error('Ошибка при сборе данных о резюме');
                     }
-                    const reportedData = await reportedResponse.json();
-                    setResume(reportedData);
-                } else {
-                    setResume(data);
+                    const data = await response.json();
+
+                    if (data.is_reported && user?.is_superuser) {
+                        const reportedResponse = await fetch(`http://127.0.0.1:8000/admin/reported_vacancy/${params.resume}`, {
+                            headers: {
+                                'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                            },
+                        });
+                        if (!reportedResponse.ok) {
+                            throw new Error('Ошибка при сборе данных о репортед вакансии');
+                        }
+                        const reportedData = await reportedResponse.json();
+                        setResume(reportedData);
+                    } else {
+                        setResume(data);
+                    }
+                } catch (error) {
+                    console.error('Ошибка при сборе данных:', error);
                 }
-            } catch (error) {
-                console.error('Ошибка при сборе данных:', error);
-            }
-        };
-        void fetchResume();
-    }, [params.resume, user]);
+            };
+            void fetchResume();
+        }
+        }, [params?.resume, user]);
 
     const deleteResume = async (vacancyId: number) => {
         try {

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import {Inter, Rubik} from "next/font/google";
 import "@/app/globals.css";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/widgets/Navbar/Navbar";
 import Providers from "../providers";
 import {cn} from "@/lib/utils";
 import { Rubik as FontSans } from "next/font/google"

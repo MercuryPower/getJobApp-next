@@ -1,7 +1,7 @@
 
 'use client'
 import React, {useState} from 'react';
-import style from "@/components/styles/style.module.sass";
+import style from "@/styles/style.module.sass";
 import {ArrowDown, ArrowLeft, ArrowRight, ArrowUp} from "lucide-react";
 
 const StatisticTips = ({isUp, isLeft, isRight,fadeOut, setFadeOut}:{isUp?:boolean, fadeOut?:boolean, isLeft?:boolean, isRight?:boolean, setFadeOut?:(b:boolean) => void}) => {

@@ -9,8 +9,8 @@ import {
     SKILLS_STATISTIC_VACANCY,
     VACANCY_STATISTIC
 } from "@/url/urls";
-import TypeChanger from "@/components/TypeChanger";
-import style from "@/components/styles/style.module.sass";
+import TypeChanger from "@/entities/TypeChanger/TypeChanger";
+import style from "@/styles/style.module.sass";
 import {
     ArrowLeft,
     ArrowUp, ChevronDown,

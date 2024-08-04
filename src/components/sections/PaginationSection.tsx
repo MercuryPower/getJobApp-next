@@ -23,9 +23,9 @@ const PaginationSection = ({currentPage,queryString, query}:{currentPage:number,
 
     const router = useRouter();
     const searchParams = useSearchParams();
-    const page = searchParams.get('page') ?? '1'
+    const page = searchParams?.get('page') ?? '1'
     const pathname = usePathname()
-    const type = pathname.includes('jobseekers') ? 'user' : 'company';
+    const type = pathname?.includes('jobseekers') ? 'user' : 'company';
 
     const navigateToPage = (pageNumber: number) => {
         if (pageNumber >= 1 && pageNumber <= totalPages) {

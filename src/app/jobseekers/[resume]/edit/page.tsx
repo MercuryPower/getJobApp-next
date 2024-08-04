@@ -50,7 +50,7 @@ const Page = () => {
     const [isFixedSalary, setIsFixedSalary] = useState(true)
     const router = useRouter()
     const [resumeData, setResumeData] = useState<VacancyInfo>();
-    const id = pathname.split('/')[2];
+    const id = pathname ? pathname.split('/')[2] : '';
     useEffect(() => {
         const fetchCities = async () => {
             try {
