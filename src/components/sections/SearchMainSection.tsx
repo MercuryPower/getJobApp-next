@@ -93,20 +93,20 @@ const SearchMainSection = () => {
                 {/*        fill={true}*/}
                 {/*    />*/}
                 {/*</div>*/}
-                <h1 className={'text-8xl m-2 font-bold'}>Подберем</h1>
+                <h1 className={'xl:text-8xl lg:text-7xl md:text-6xl sm:text-7xl text-5xl m-2 font-bold'}>Подберем</h1>
                 <div className={'flex gap-10'}>
-                    <div className={'flex'}>
+                    <div className={'flex justify-center'}>
                         {isEmployer ?
-                            <h1  className={'text-8xl font-bold text-green-600 '}>лучших</h1> :
-                            <h1  className={'text-8xl font-bold text-green-600 '}>лучшую</h1> }
+                            <h1  className={'xl:text-8xl lg:text-7xl md:text-6xl text-4xl sm:text-4xl self-center font-bold text-green-600 '}>лучших</h1> :
+                            <h1  className={'xl:text-8xl lg:text-7xl md:text-6xl text-4xl sm:text-4xl self-center font-bold text-green-600 '}>лучшую</h1> }
                     </div>
                     <form onSubmit={handleSubmit}>
                         <div className={'flex self-center m-4 mt-7 h-14 rounded'}>
                             <input onChange={handleInputChange}
                                    onSubmit={() => router.push(`${isEmployer ? `vacancies/?query=${inputValue}` : `jobseekers/?query=${inputValue}`}`)}
-                                   className={'w-96 flex p-2 text-xl rounded-l '} placeholder={`${text}`}></input>
+                                   className={'xl:w-96 lg:w-72 md:w-56 sm:w-32 flex p-2 l:text-xl lg:text-lg md:text-md sm:text-sm rounded-l '} placeholder={`${text}`}></input>
                             <button type={'submit'}
-                                    className={'flex text-white bg-green-600 p-4 gap-1 rounded-r-lg self-center font-bold hover:opacity-70 transition'}>
+                                    className={'flex  text-white bg-green-600 p-4 gap-1 rounded-r-lg self-center font-bold hover:opacity-70 transition'}>
                                 <svg className={'flex self-center '} width="23" height="22" viewBox="0 0 23 22"
                                      fill="white" xmlns="http://www.w3.org/2000/svg">
                                     <path
@@ -119,13 +119,13 @@ const SearchMainSection = () => {
 
                 </div>
                 {isEmployer ?
-                    <h1 className={'text-8xl font-bold m-2'}>специалистов</h1>
-                    : <h1 className={'text-8xl font-bold m-2'}>компанию</h1>}
+                    <h1 className={'xl:text-8xl lg:text-7xl md:text-6xl sm:text-4xl text-5xl font-bold m-2'}>специалистов</h1>
+                    : <h1 className={'xl:text-8xl lg:text-7xl md:text-6xl sm:text-4xl text-5xl font-bold m-2'}>компанию</h1>}
             </div>
-            <div className={'flex  justify-center gap-12'}>
+            <div className={'flex  justify-center gap-12 '}>
                 <div className={'w-80  flex justify-center self-end text-center'}>
                     <h2>
-                        <span className={'font-bold flex flex-col text-center text-4xl'}>
+                        <span className={'font-bold justify-center flex flex-col text-center text-4xl lg:text-4xl md:text-5xl sm:text-5xl'}>
                             <AnimatedNumbers
                                 includeComma
                                 transitions={(index) => ({
@@ -138,7 +138,7 @@ const SearchMainSection = () => {
                 </div>
                 <div className={'w-80 flex justify-center self-end text-center mb-4'}>
                     <h2>
-                            <span className={'font-bold self-center flex flex-col text-center text-4xl '}>
+                            <span className={'font-bold self-center flex flex-col text-center text-4xl lg:text-4xl md:text-5xl sm:text-5xl '}>
                                 <AnimatedNumbers
                                     includeComma
                                     transitions={(index) => ({
@@ -151,7 +151,7 @@ const SearchMainSection = () => {
                 </div>
                 <div className={'w-80 flex justify-center self-end text-center mb-8'}>
                     <h2>
-                        <span className={'font-bold self-center flex flex-col text-center text-4xl transition-all '}>
+                        <span className={'font-bold self-center flex flex-col text-center text-4xl  lg:text-4xl md:text-5xl sm:text-5xl transition-all '}>
                             <AnimatedNumbers
                                 includeComma
                                 transitions={(index) => ({

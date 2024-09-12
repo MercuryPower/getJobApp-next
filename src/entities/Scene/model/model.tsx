@@ -1,10 +1,11 @@
 import React, {useEffect, useRef} from 'react';
 import {useGLTF} from "@react-three/drei";
 import {Group} from "three";
-import {useFrame, useThree} from "@react-three/fiber";
+import {useFrame, useLoader, useThree} from "@react-three/fiber";
 import {useRouter} from "next/navigation";
 
 useGLTF.preload('/case1.glb')
+
 
 const Model = () => {
     const group = useRef<Group>(null)
@@ -12,8 +13,8 @@ const Model = () => {
     const router = useRouter()
 
     const handleMouseMove = (event: MouseEvent) => {
-        pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
-        pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        pointer.x = (event.clientX / window.innerWidth / 2) * 2 - 1;
+        pointer.y = -(event.clientY / window.innerHeight / 2) * 2 + 1;
     };
 
     useEffect(() => {

@@ -1,0 +1,52 @@
+.fadeOut {
+  transition: opacity 0.75s ease-out;
+  opacity: 0;
+}
+
+.fadeIn {
+  transition: opacity 0.3s ease;
+}
+
+.fadeIn.opacity-0 {
+  opacity: 0;
+}
+
+.fadeIn.opacity-100 {
+  opacity: 1;
+}
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+.blink {
+  animation: blink 3s infinite;
+}
+
+@media (max-width: 1200px) {
+  header {
+    width: 100px;
+  }
+}
+@media (max-width: 1024px) {
+  header {
+    width: 100px;
+  }
+}
+@media (max-width: 768px) {
+  header {
+    width: 100px;
+    background-color: aqua;
+  }
+}
+@media (max-width: 576px) {
+  header {
+    width: 100px;
+  }
+}
+
+/*# sourceMappingURL=header-module-media.css.map */

@@ -1,0 +1,22 @@
+@media (max-width: 1200px) {
+  header {
+    width: 100px;
+  }
+}
+@media (max-width: 1024px) {
+  header {
+    width: 100px;
+  }
+}
+@media (max-width: 768px) {
+  header {
+    width: 100px;
+  }
+}
+@media (max-width: 576px) {
+  header {
+    width: 100px;
+  }
+}
+
+/*# sourceMappingURL=media.css.map */

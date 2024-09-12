@@ -77,9 +77,9 @@ export default function Page() {
     };
     return (
         <main>
-            <div className={'absolute w-full h-96 inset-y-20'}>
-                <Scene />
-            </div>
+            {/*<div className={'absolute w-full h-96  top-20 bottom-0'}>*/}
+            {/*    <Scene />*/}
+            {/*</div>*/}
             <SearchMainSection/>
             <KeyFeaturesSection/>
             <section>
@@ -105,7 +105,7 @@ export default function Page() {
                             )
                         :
                         <div
-                            className={'flex text-center self-center space-y-4 flex-col shadow-lg m-4 p-4 border rounded-2xl w-[700px] m h-96 justify-center'}>
+                            className={'flex text-center self-center space-y-4 flex-col shadow-lg m-4 p-4 border rounded-2xl w-full h-96 justify-center'}>
                             <div className={'flex justify-center self-center p-2 bg-green-600 shadow-lg rounded-full'}>
                                 <LogIn className={'self-center dark:invert '} color={'white'} size={64}/>
                             </div>
@@ -122,7 +122,7 @@ export default function Page() {
                             <RecommendationSection />
                             :
                             <div
-                                className={'flex text-center self-center gap-2 flex-col shadow-lg m-4 p-4 border rounded-2xl w-[700px] m h-96 justify-center'}>
+                                className={'flex text-center self-center gap-2 flex-col shadow-lg m-4 p-4 border rounded-2xl w-full m h-96 justify-center'}>
                                 <div className={'flex justify-center self-center p-2 bg-green-600 shadow-lg rounded-full'}>
                                     <Lightbulb className={'self-center dark:invert '} color={'white'} size={64}/>
                                 </div>
@@ -142,7 +142,7 @@ export default function Page() {
                         className={'text-xl text-center'}>Вы можете посмотреть статистику о востребованности профессии внизу.</span>
                     </h1>
                     {
-                        dataVacancyStatistics ?
+                        dataVacancyStatistics.length !== 0 ?
                             <div className={'flex justify-center mt-4 h-auto gap-x-4'}>
                                 <div className={'flex-grow justify-center flex w-[300px]'}>
                                     <div className={'flex relative'}>
@@ -156,7 +156,7 @@ export default function Page() {
                             </div>
                         :
                             <div
-                                className={'flex text-center self-center gap-2 flex-col shadow-lg m-4 p-4 border rounded-2xl w-[700px] m h-96 justify-center'}>
+                                className={'flex text-center self-center gap-2 flex-col shadow-lg m-4 p-4 border rounded-2xl w-full m h-96 justify-center'}>
                                 <FileQuestion className={'self-center'} size={64}/>
                                 <span className={'self-center text-3xl font-extrabold '}>Данных о статистике не найдено.</span>
                                 <div className={'mt-2'}>

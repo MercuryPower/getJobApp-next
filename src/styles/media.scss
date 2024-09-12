@@ -1,0 +1,23 @@
+@import "mixins";
+
+@include desktop{
+  header{
+    width: 100px;
+  }
+}
+@include laptop{
+  header{
+    width: 100px;
+  }
+}
+@include tablet{
+  header{
+    width: 100px;
+    background-color: aqua;
+  }
+}
+@include mobile{
+  header{
+    width: 100px;
+  }
+}
